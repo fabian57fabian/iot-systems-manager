@@ -13,7 +13,7 @@ jobs:
           # test against several Java versions:
           include:
             - java: 8
-              additional-maven-args: "-Pjacoco"
+              additional-maven-args: "-Pjacoco -DrepoToken=$COVERALLS_REPO_TOKEN coveralls:report"
             - java: 11
       
       name: Build with Java ${{ matrix.java }} on Linux
@@ -25,9 +25,11 @@ jobs:
             java-version: ${{ matrix.java }}
       -  name: Build with Maven
          run: >
-           mvn -f iotsystem/pom.xml clean verify
+           mvn -f iotsystem/pom.xml
            clean verify ${{ matrix.additional-maven-args }}
            surefire-report:report-only site:site -DgenerateReports=false
+         env:
+           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_TOKEN }}
          if: ${{ always() }}
       -  name: Archive JUnit Report
          uses: actions/upload-artifact@v2
