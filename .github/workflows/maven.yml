@@ -11,7 +11,10 @@ jobs:
       strategy:
         matrix:
           # test against several Java versions:
-          java: [ 8, 11 ]
+          include:
+            - java: 8
+              additional-maven-args: "-Pjacoco"
+            - java: 11
       
       name: Build with Java ${{ matrix.java }} on Linux
       steps:
@@ -23,7 +26,7 @@ jobs:
       -  name: Build with Maven
          run: >
            mvn -f iotsystem/pom.xml clean verify
-           clean verify
+           clean verify ${{ matrix.additional-maven-args }}
            surefire-report:report-only site:site -DgenerateReports=false
          if: ${{ always() }}
       -  name: Archive JUnit Report
