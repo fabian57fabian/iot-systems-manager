@@ -39,4 +39,15 @@ public class SystemsManagerControllerTest extends TestCase{
 		List<SystemHeader> res = controller.GetSystems();
 		assertNotNull(res);
 	}
+
+	@Test
+	public void testGetSystemsNames_right() {
+		List<SystemHeader> list = new ArrayList<SystemHeader>();
+		list.add(new SystemHeader(0, "foo"));
+		list.add(new SystemHeader(1, "bar"));
+		when(db_connector.RetrieveSystemNames()).thenReturn(list);
+		
+		List<SystemHeader> res = controller.GetSystems();
+		assertSame(list, res);
+	}
 }
