@@ -6,11 +6,5 @@ package com.fabian57fabian.app;
  */
 public class App 
 {
-	public App() {
-		
-	}
-	
-	public String sayHello() {
-		return "Hello";
-	}
+
 }
