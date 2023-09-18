@@ -17,9 +17,12 @@ public class SystemsManagerControllerTest extends TestCase{
 	
 	private SystemsManagerController controller;
 	
+	private DatabaseConnector db_connector;
+	
 	@Before
 	public void setUp() throws Exception {
-		controller = new SystemsManagerController();
+		db_connector = mock(DatabaseConnector.class);
+		controller = new SystemsManagerController(db_connector);
 	}
 
 	@After
@@ -29,11 +32,9 @@ public class SystemsManagerControllerTest extends TestCase{
 	
 	@Test
 	public void testGetSystemsNames_notnull() {
-		DatabaseConnector db = mock(DatabaseConnector.class);
-		
 		List<SystemHeader> list = new ArrayList<SystemHeader>();
 		list.add(new SystemHeader(0, "foo"));
-		when(db.RetrieveSystemNames()).thenReturn(list);
+		when(db_connector.RetrieveSystemNames()).thenReturn(list);
 		
 		List<SystemHeader> res = controller.GetSystems();
 		assertNotNull(res);
