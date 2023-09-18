@@ -23,4 +23,25 @@ public class SystemHeaderTest extends TestCase {
 		assertTrue(system_header.equals(new_sh));
 	}
 
+	@Test
+	public void testEquals_wrongId() {
+		SystemHeader new_sh = new SystemHeader(system_header.GetId()+1, system_header.GetName());
+		assertFalse(system_header.equals(new_sh));
+	}
+
+	@Test
+	public void testEquals_wrongName() {
+		SystemHeader new_sh = new SystemHeader(system_header.GetId(), system_header.GetName() + ".");
+		assertFalse(system_header.equals(new_sh));
+	}
+
+	@Test
+	public void testEquals_null() {
+		assertFalse(system_header.equals(null));
+	}	
+
+	@Test
+	public void testEquals_wrongObject() {
+		assertFalse(system_header.equals(new Object()));
+	}
 }
