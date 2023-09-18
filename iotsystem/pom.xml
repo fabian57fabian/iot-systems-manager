@@ -60,6 +60,23 @@ since javax.xml.bind has been removed from the JDK -->
 						</dependency>
 					</dependencies>
 				</plugin>
+				<plugin>
+					<groupId>org.pitest</groupId>
+					<artifactId>pitest-maven</artifactId>
+					<version>1.5.2</version>
+					<configuration>
+						<excludedClasses>
+							<param>com.fabian57fabian.app.App</param>
+						</excludedClasses>
+						<targetTests>
+							<param>com.fabian57fabian.app.*</param>
+						</targetTests>
+						<mutators>
+							<mutator>DEFAULTS</mutator>
+						</mutators>
+						<mutationThreshold>80</mutationThreshold>
+					</configuration>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
