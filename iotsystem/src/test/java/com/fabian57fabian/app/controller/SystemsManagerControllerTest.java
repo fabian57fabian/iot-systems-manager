@@ -1,5 +1,6 @@
 package com.fabian57fabian.app.controller;
 import com.fabian57fabian.app.model.DatabaseConnector;
+import com.fabian57fabian.app.model.entities.SystemEntity;
 import com.fabian57fabian.app.model.entities.SystemHeader;
 
 import java.util.ArrayList;
@@ -48,6 +49,28 @@ public class SystemsManagerControllerTest extends TestCase{
 		when(db_connector.RetrieveSystemNames()).thenReturn(list);
 		
 		List<SystemHeader> res = controller.GetSystems();
-		assertSame(list, res);
+		assertEquals(list, res);
 	}
+	
+	@Test
+	public void testGetOneSystem_notnull() {
+		int id = 0;
+		SystemEntity sys = new SystemEntity(id, "foo", "Description of 'foo' ", false);
+		when(db_connector.GetSystemById(id)).thenReturn(sys);
+		
+		SystemEntity res = controller.GetOneSystem(id);
+		assertNotNull(res);
+	}	
+	
+
+	@Test
+	public void testGetOneSystem_right() {
+		int id = 1;
+		SystemEntity sys = new SystemEntity(id, "bar", "Description of 'bar' ", false);
+		when(db_connector.GetSystemById(id)).thenReturn(sys);
+		
+		SystemEntity res = controller.GetOneSystem(id);
+		assertEquals(sys, res);
+	}
+
 }
