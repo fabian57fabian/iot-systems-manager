@@ -169,5 +169,16 @@ since javax.xml.bind has been removed from the JDK -->
 			<artifactId>log4j-core</artifactId>
 			<version>2.13.0</version>
 		</dependency>
+		<dependency>
+			<groupId>org.mongodb</groupId>
+			<artifactId>mongo-java-driver</artifactId>
+			<version>3.12.7</version>
+		</dependency>
+		<dependency>
+			<groupId>de.bwaldvogel</groupId>
+			<artifactId>mongo-java-server</artifactId>
+			<version>1.11.1</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 </project>

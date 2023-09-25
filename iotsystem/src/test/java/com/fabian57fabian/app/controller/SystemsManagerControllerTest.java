@@ -2,6 +2,7 @@ package com.fabian57fabian.app.controller;
 import com.fabian57fabian.app.model.DatabaseConnector;
 import com.fabian57fabian.app.model.entities.SystemEntity;
 import com.fabian57fabian.app.model.entities.SystemHeader;
+import com.fabian57fabian.app.view.IotView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,16 +15,19 @@ import junit.framework.TestCase;
 
 import static org.mockito.Mockito.*;
 
+
 public class SystemsManagerControllerTest extends TestCase{
 	
 	private SystemsManagerController controller;
 	
 	private DatabaseConnector db_connector;
+	private IotView view;
 	
 	@Before
 	public void setUp() throws Exception {
 		db_connector = mock(DatabaseConnector.class);
-		controller = new SystemsManagerController(db_connector);
+		view = mock(IotView.class)
+		controller = new SystemsManagerController(db_connector, view);
 	}
 
 	@After
@@ -32,36 +36,15 @@ public class SystemsManagerControllerTest extends TestCase{
 	}
 	
 	@Test
-	public void testGetSystemsNames_notnull() {
-		List<SystemHeader> list = new ArrayList<SystemHeader>();
-		list.add(new SystemHeader(0, "foo"));
-		when(db_connector.RetrieveSystemNames()).thenReturn(list);
-		
-		List<SystemHeader> res = controller.GetSystems();
-		assertNotNull(res);
-	}
-
-	@Test
 	public void testGetSystemsNames_right() {
 		List<SystemHeader> list = new ArrayList<SystemHeader>();
 		list.add(new SystemHeader(0, "foo"));
-		list.add(new SystemHeader(1, "bar"));
 		when(db_connector.RetrieveSystemNames()).thenReturn(list);
 		
-		List<SystemHeader> res = controller.GetSystems();
-		assertEquals(list, res);
-	}
-	
-	@Test
-	public void testGetOneSystem_notnull() {
-		int id = 0;
-		SystemEntity sys = new SystemEntity(id, "foo", "Description of 'foo' ", false);
-		when(db_connector.GetSystemById(id)).thenReturn(sys);
+		controller.viewAllSystems();
 		
-		SystemEntity res = controller.GetOneSystem(id);
-		assertNotNull(res);
-	}	
-	
+		verify(view).ShowSystems(list);
+	}
 
 	@Test
 	public void testGetOneSystem_right() {
@@ -69,8 +52,8 @@ public class SystemsManagerControllerTest extends TestCase{
 		SystemEntity sys = new SystemEntity(id, "bar", "Description of 'bar' ", false);
 		when(db_connector.GetSystemById(id)).thenReturn(sys);
 		
-		SystemEntity res = controller.GetOneSystem(id);
-		assertEquals(sys, res);
+		controller.ExpandOneSystem(id);
+		verify(view).ShowOneSystem(sys);
 	}
 
 }
