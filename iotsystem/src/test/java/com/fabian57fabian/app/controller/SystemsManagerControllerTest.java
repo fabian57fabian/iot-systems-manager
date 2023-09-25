@@ -26,7 +26,7 @@ public class SystemsManagerControllerTest extends TestCase{
 	@Before
 	public void setUp() throws Exception {
 		db_connector = mock(DatabaseConnector.class);
-		view = mock(IotView.class)
+		view = mock(IotView.class);
 		controller = new SystemsManagerController(db_connector, view);
 	}
 
