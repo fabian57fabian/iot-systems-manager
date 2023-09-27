@@ -1,5 +1,5 @@
 package com.fabian57fabian.app.controller;
-import com.fabian57fabian.app.model.DatabaseConnector;
+import com.fabian57fabian.app.model.SystemRepository;
 import com.fabian57fabian.app.model.entities.SystemEntity;
 import com.fabian57fabian.app.model.entities.SystemHeader;
 import com.fabian57fabian.app.view.IotView;
@@ -20,12 +20,12 @@ public class SystemsManagerControllerTest extends TestCase{
 	
 	private SystemsManagerController controller;
 	
-	private DatabaseConnector db_connector;
+	private SystemRepository db_connector;
 	private IotView view;
 	
 	@Before
 	public void setUp() throws Exception {
-		db_connector = mock(DatabaseConnector.class);
+		db_connector = mock(SystemRepository.class);
 		view = mock(IotView.class);
 		controller = new SystemsManagerController(db_connector, view);
 	}
