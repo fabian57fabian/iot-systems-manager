@@ -9,11 +9,14 @@ import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 
 import junit.framework.TestCase;
 
 import static org.mockito.Mockito.*;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.VerificationCollector;
 
 
 public class SystemsManagerControllerTest extends TestCase{
@@ -22,6 +25,9 @@ public class SystemsManagerControllerTest extends TestCase{
 	
 	private SystemRepository db_connector;
 	private IotView view;
+	
+	@Rule
+	public VerificationCollector collector = MockitoJUnit.collector();
 	
 	@Before
 	public void setUp() throws Exception {
