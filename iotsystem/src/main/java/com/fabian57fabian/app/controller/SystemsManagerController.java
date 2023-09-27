@@ -2,10 +2,10 @@ package com.fabian57fabian.app.controller;
 
 import java.util.List;
 
-import com.fabian57fabian.app.model.SystemRepository;
 import com.fabian57fabian.app.view.IotView;
 import com.fabian57fabian.app.model.entities.SystemEntity;
 import com.fabian57fabian.app.model.entities.SystemHeader;
+import com.fabian57fabian.app.model.repository.SystemRepository;
 
 public class SystemsManagerController {
 	private SystemRepository db_connector;
