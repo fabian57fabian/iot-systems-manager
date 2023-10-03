@@ -17,7 +17,20 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 
+		<!-- Dependencies versions -->
 		<junit.version>4.13</junit.version>
+		<mockito.version>4.0.0</mockito.version>
+		<assertj.version>3.15.0</assertj.version>
+		<log4j.version>2.13.0</log4j.version>
+
+		<!-- Plugins versions -->
+		<surefire-report.version>2.22.2</surefire-report.version>
+		<site.version>3.9.1</site.version>
+		<jacoco.version>0.8.6</jacoco.version>
+		<coveralls.version>4.3.0</coveralls.version>
+		<jaxb-api.version>2.3.1</jaxb-api.version>
+		<pitest.version>1.7.2</pitest.version>
+		<sonar.version>3.9.0.2155</sonar.version>
 	</properties>
 
 	<build>
@@ -25,16 +38,16 @@
 			<plugins>
 				<plugin>
 					<artifactId>maven-surefire-report-plugin</artifactId>
-					<version>2.22.2</version>
+					<version>${surefire-report.version}</version>
 				</plugin>
 				<plugin>
 					<artifactId>maven-site-plugin</artifactId>
-					<version>3.9.1</version>
+					<version>${site.version}</version>
 				</plugin>
 				<plugin>
 					<groupId>org.jacoco</groupId>
 					<artifactId>jacoco-maven-plugin</artifactId>
-					<version>0.8.6</version>
+					<version>${jacoco.version}</version>
 					<executions>
 						<execution>
 							<goals>
@@ -53,21 +66,20 @@
 				<plugin>
 					<groupId>org.eluder.coveralls</groupId>
 					<artifactId>coveralls-maven-plugin</artifactId>
-					<version>4.3.0</version>
+					<version>${coveralls.version}</version>
 					<dependencies>
-						<!-- This is required when using JDK 9 or higher
-since javax.xml.bind has been removed from the JDK -->
+						<!-- Required on JDK 9+ -->
 						<dependency>
 							<groupId>javax.xml.bind</groupId>
 							<artifactId>jaxb-api</artifactId>
-							<version>2.3.1</version>
+							<version>${jaxb-api.version}</version>
 						</dependency>
 					</dependencies>
 				</plugin>
 				<plugin>
 					<groupId>org.pitest</groupId>
 					<artifactId>pitest-maven</artifactId>
-					<version>1.5.2</version>
+					<version>${pitest.version}</version>
 					<configuration>
 						<excludedClasses>
 							<param>com.fabian57fabian.app.App</param>
@@ -84,7 +96,7 @@ since javax.xml.bind has been removed from the JDK -->
 				<plugin>
 					<groupId>org.sonarsource.scanner.maven</groupId>
 					<artifactId>sonar-maven-plugin</artifactId>
-					<version>3.9.0.2155</version>
+					<version>${sonar.version}</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
@@ -128,24 +140,24 @@ since javax.xml.bind has been removed from the JDK -->
 		<dependency>
 			<groupId>org.assertj</groupId>
 			<artifactId>assertj-core</artifactId>
-			<version>3.15.0</version>
+			<version>${assertj.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-core</artifactId>
-			<version>3.2.4</version>
+			<version>${mockito.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-api</artifactId>
-			<version>2.13.0</version>
+			<version>${log4j.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-core</artifactId>
-			<version>2.13.0</version>
+			<version>${log4j.version}</version>
 		</dependency>
 	</dependencies>
 </project>
