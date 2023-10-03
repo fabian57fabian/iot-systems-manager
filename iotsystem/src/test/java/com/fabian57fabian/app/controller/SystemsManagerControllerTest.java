@@ -25,7 +25,6 @@ public class SystemsManagerControllerTest extends TestCase{
 	
 	private SystemsManagerController controller;
 	
-	private SystemRepository db_connector;
 	private SystemService systemService;
 	private IotView view;
 	
@@ -34,10 +33,9 @@ public class SystemsManagerControllerTest extends TestCase{
 	
 	@Before
 	public void setUp() throws Exception {
-		db_connector = mock(SystemRepository.class);
 		systemService = mock(SystemService.class);
 		view = mock(IotView.class);
-		controller = new SystemsManagerController(db_connector, systemService, view);
+		controller = new SystemsManagerController(systemService, view);
 	}
 
 	@After
@@ -49,7 +47,7 @@ public class SystemsManagerControllerTest extends TestCase{
 	public void testGetSystemsNames_one() {
 		List<SystemHeader> list = new ArrayList<SystemHeader>();
 		list.add(new SystemHeader(0, "foo"));
-		when(db_connector.RetrieveSystemNames()).thenReturn(list);
+		when(systemService.GetAllSystems()).thenReturn(list);
 		
 		controller.viewAllSystems();
 		
@@ -63,7 +61,7 @@ public class SystemsManagerControllerTest extends TestCase{
 	public void testGetOneSystem_right() {
 		int id = 1;
 		SystemEntity sys = new SystemEntity(id, "bar", "Description of 'bar' ", false);
-		when(db_connector.GetSystemById(id)).thenReturn(sys);
+		when(systemService.GetSystem(id)).thenReturn(sys);
 		
 		controller.expandOneSystem(id);
 		verify(view).ShowOneSystem(sys);
@@ -73,7 +71,7 @@ public class SystemsManagerControllerTest extends TestCase{
 	public void testGetOneSystem_noexist() {
 		int id = 1;
 		String error_msg = "System not found.";
-		when(db_connector.GetSystemById(id)).thenReturn(null);
+		when(systemService.GetSystem(id)).thenReturn(null);
 		
 		controller.expandOneSystem(id);
 		verify(view, never()).ShowOneSystem(null);
