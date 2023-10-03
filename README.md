@@ -8,8 +8,12 @@ This code with be the official project for the exam involving:
 - Coveralls
 - Continous integration with Github Actions
 
+**Continous Integration** workflow and coveralls state:
+
 [![Java CI with Maven in Linux](https://github.com/fabian57fabian/iot-systems-manager/actions/workflows/maven.yml/badge.svg)](https://github.com/fabian57fabian/iot-systems-manager/actions/workflows/maven.yml)
 [![Coverage Status](https://coveralls.io/repos/github/fabian57fabian/iot-systems-manager/badge.svg?branch=master)](https://coveralls.io/github/fabian57fabian/iot-systems-manager?branch=master)
+
+**SonarCloud** Code quality states:
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=fabian57fabian_iot-systems-manager&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=fabian57fabian_iot-systems-manager)
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=fabian57fabian_iot-systems-manager&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=fabian57fabian_iot-systems-manager)
