@@ -58,7 +58,7 @@
 					</executions>
 					<configuration>
 						<excludes>
-							<exclude>**/entity/*.*</exclude>
+							<exclude>**/entities/*.*</exclude>
 						</excludes>
 					</configuration>
 
