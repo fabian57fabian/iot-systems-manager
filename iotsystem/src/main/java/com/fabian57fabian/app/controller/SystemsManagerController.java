@@ -12,19 +12,24 @@ public class SystemsManagerController {
 	private SystemRepository db_connector;
 	private SystemService systemService;
 	private IotView view;
-	
-	public SystemsManagerController(SystemRepository db_connector, SystemService systemService,IotView view) {
+
+	public SystemsManagerController(SystemRepository db_connector, SystemService systemService, IotView view) {
 		this.db_connector = db_connector;
 		this.systemService = systemService;
 		this.view = view;
 	}
-	
+
 	public void viewAllSystems() {
 		view.ShowSystems(db_connector.RetrieveSystemNames());
 	}
 
-	public void ExpandOneSystem(int id) {
-		view.ShowOneSystem(db_connector.GetSystemById(id));
+	public void expandOneSystem(int id) {
+		SystemEntity s = db_connector.GetSystemById(id);
+		if (s != null) {
+			view.ShowOneSystem(s);
+		} else {
+			view.ShowOneSystemError("System not found.");
+		}
 	}
 
 }

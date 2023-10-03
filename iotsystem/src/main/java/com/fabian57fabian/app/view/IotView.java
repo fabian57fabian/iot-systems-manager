@@ -9,4 +9,6 @@ public interface IotView {
 	public void ShowSystems(List<SystemHeader> systems);
 
 	public void ShowOneSystem(SystemEntity getSystemById);
+
+	public void ShowOneSystemError(String string);
 }

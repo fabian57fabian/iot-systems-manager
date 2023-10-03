@@ -65,8 +65,19 @@ public class SystemsManagerControllerTest extends TestCase{
 		SystemEntity sys = new SystemEntity(id, "bar", "Description of 'bar' ", false);
 		when(db_connector.GetSystemById(id)).thenReturn(sys);
 		
-		controller.ExpandOneSystem(id);
+		controller.expandOneSystem(id);
 		verify(view).ShowOneSystem(sys);
+	}
+
+	@Test
+	public void testGetOneSystem_noexist() {
+		int id = 1;
+		String error_msg = "System not found.";
+		when(db_connector.GetSystemById(id)).thenReturn(null);
+		
+		controller.expandOneSystem(id);
+		verify(view, never()).ShowOneSystem(null);
+		verify(view).ShowOneSystemError(error_msg);
 	}
 
 }
