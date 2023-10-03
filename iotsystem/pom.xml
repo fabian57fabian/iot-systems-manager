@@ -31,24 +31,6 @@
 		<jaxb-api.version>2.3.1</jaxb-api.version>
 		<pitest.version>1.7.2</pitest.version>
 		<sonar.version>3.9.0.2155</sonar.version>
-		
-		<sonar.issue.ignore.multicriteria>e1,e2,e3</sonar.issue.ignore.multicriteria>
-		<!-- Disable rule for "Local variable and method parameter names should comply 
-			with a naming convention" in SwingView -->
-		<sonar.issue.ignore.multicriteria.e1.ruleKey>
-			java:S117
-		</sonar.issue.ignore.multicriteria.e1.ruleKey>
-		<!-- Disable rule for "Tests should include assertions": 
-			SonarQube is not aware of AssertJ Swing -->
-		<sonar.issue.ignore.multicriteria.e2.ruleKey>
-			java:S2699
-		</sonar.issue.ignore.multicriteria.e2.ruleKey>
-		<!-- Disable rule for "Tests classes should comply with a naming convention": 
-			for end to end tests classes -->
-		<sonar.issue.ignore.multicriteria.e3.ruleKey>
-			java:S3577
-		</sonar.issue.ignore.multicriteria.e3.ruleKey>
-		<!-- TODOS: E2E, future swing views -->
 
 		<sonar.coverage.exclusions>
 			**/entities/*.*
