@@ -47,11 +47,11 @@ public class SystemsManagerControllerTest extends TestCase{
 	public void testGetSystemsNames_one() {
 		List<SystemHeader> list = new ArrayList<SystemHeader>();
 		list.add(new SystemHeader(0, "foo"));
-		when(systemService.GetAllSystems()).thenReturn(list);
+		when(systemService.getAllSystems()).thenReturn(list);
 		
 		controller.viewAllSystems();
 		
-		verify(view).ShowSystems(list);
+		verify(view).showSystems(list);
 		
 		// Verify systemService not called?
 		//assertThat(systemService.toString()).isEqualTo(0);
@@ -61,21 +61,21 @@ public class SystemsManagerControllerTest extends TestCase{
 	public void testGetOneSystem_right() {
 		int id = 1;
 		SystemEntity sys = new SystemEntity(id, "bar", "Description of 'bar' ", false);
-		when(systemService.GetSystem(id)).thenReturn(sys);
+		when(systemService.getSystem(id)).thenReturn(sys);
 		
 		controller.expandOneSystem(id);
-		verify(view).ShowOneSystem(sys);
+		verify(view).showOneSystem(sys);
 	}
 
 	@Test
 	public void testGetOneSystem_noexist() {
 		int id = 1;
 		String error_msg = "System not found.";
-		when(systemService.GetSystem(id)).thenReturn(null);
+		when(systemService.getSystem(id)).thenReturn(null);
 		
 		controller.expandOneSystem(id);
-		verify(view, never()).ShowOneSystem(null);
-		verify(view).ShowOneSystemError(error_msg);
+		verify(view, never()).showOneSystem(null);
+		verify(view).showOneSystemError(error_msg);
 	}
 
 }

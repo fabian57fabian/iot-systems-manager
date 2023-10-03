@@ -14,15 +14,15 @@ public class SystemsManagerController {
 	}
 
 	public void viewAllSystems() {
-		view.ShowSystems(systemService.GetAllSystems());
+		view.showSystems(systemService.getAllSystems());
 	}
 
 	public void expandOneSystem(int id) {
-		SystemEntity s = systemService.GetSystem(id);
+		SystemEntity s = systemService.getSystem(id);
 		if (s != null) {
-			view.ShowOneSystem(s);
+			view.showOneSystem(s);
 		} else {
-			view.ShowOneSystemError("System not found.");
+			view.showOneSystemError("System not found.");
 		}
 	}
 

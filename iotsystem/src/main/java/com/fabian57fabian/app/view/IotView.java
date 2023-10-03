@@ -6,9 +6,9 @@ import com.fabian57fabian.app.model.entities.SystemEntity;
 import com.fabian57fabian.app.model.entities.SystemHeader;
 
 public interface IotView {
-	public void ShowSystems(List<SystemHeader> systems);
+	public void showSystems(List<SystemHeader> systems);
 
-	public void ShowOneSystem(SystemEntity getSystemById);
+	public void showOneSystem(SystemEntity getSystemById);
 
-	public void ShowOneSystemError(String string);
+	public void showOneSystemError(String string);
 }

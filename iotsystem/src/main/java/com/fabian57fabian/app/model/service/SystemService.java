@@ -6,7 +6,7 @@ import com.fabian57fabian.app.model.entities.SystemEntity;
 import com.fabian57fabian.app.model.entities.SystemHeader;
 
 public interface SystemService {
-	public List<SystemHeader> GetAllSystems();
+	public List<SystemHeader> getAllSystems();
 
-	public SystemEntity GetSystem(int id);
+	public SystemEntity getSystem(int id);
 }
