@@ -31,6 +31,10 @@
 		<jaxb-api.version>2.3.1</jaxb-api.version>
 		<pitest.version>1.7.2</pitest.version>
 		<sonar.version>3.9.0.2155</sonar.version>
+		
+		<sonar.coverage.exclusions>
+			**/entities/*.*
+		</sonar.coverage.exclusions>
 	</properties>
 
 	<build>
@@ -102,18 +106,30 @@
 		</pluginManagement>
 	</build>
 
+<!-- Profiles configurations -->
 	<profiles>
+		<!-- jacoco locally -->
 		<profile>
 			<id>jacoco</id>
 			<build>
 				<plugins>
 					<plugin>
-						<!-- configured in pluginManagement -->
+						<groupId>org.jacoco</groupId>
+						<artifactId>jacoco-maven-plugin</artifactId>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<!-- coveralls locally and send to Coveralls -->
+		<profile>
+			<id>coveralls</id>
+			<build>
+				<plugins>
+					<plugin>
 						<groupId>org.jacoco</groupId>
 						<artifactId>jacoco-maven-plugin</artifactId>
 					</plugin>
 					<plugin>
-						<!-- configured in pluginManagement -->
 						<groupId>org.eluder.coveralls</groupId>
 						<artifactId>coveralls-maven-plugin</artifactId>
 						<executions>
@@ -122,6 +138,26 @@
 								<goals>
 									<goal>report</goal>
 								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<!-- local PIT plugin running mutation testing -->
+		<profile>
+			<id>pit</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.pitest</groupId>
+						<artifactId>pitest-maven</artifactId>
+						<executions>
+							<execution>
+								<goals>
+									<goal>mutationCoverage</goal>
+								</goals>
+								<phase>verify</phase>
 							</execution>
 						</executions>
 					</plugin>
