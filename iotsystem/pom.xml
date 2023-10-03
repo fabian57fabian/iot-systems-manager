@@ -37,7 +37,7 @@
 					<version>0.8.5</version>
 					<configuration>
 						<excludes>
-							<exclude>**/Main.*</exclude>
+							<exclude>**/entity/*.*</exclude>
 						</excludes>
 					</configuration>
 					<executions>
