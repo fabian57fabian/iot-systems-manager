@@ -26,4 +26,9 @@ public class SystemHeader {
 		return Objects.equals(Id, second.Id) 
 				&& Objects.equals(Name, second.Name);
 	}
+	
+	@Override
+	public int hashCode() {
+		return super.hashCode();
+	}
 }
