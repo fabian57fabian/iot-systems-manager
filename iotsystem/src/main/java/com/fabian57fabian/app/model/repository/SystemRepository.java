@@ -5,7 +5,7 @@ import com.fabian57fabian.app.model.entities.SystemEntity;
 import com.fabian57fabian.app.model.entities.SystemHeader;
 
 public interface SystemRepository {
-	public List<SystemHeader> RetrieveSystemNames();
+	public List<SystemEntity> RetrieveSystemNames();
 
 	public SystemEntity GetSystemById(int Id);
 }

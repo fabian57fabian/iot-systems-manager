@@ -22,6 +22,9 @@
 		<mockito.version>4.0.0</mockito.version>
 		<assertj.version>3.15.0</assertj.version>
 		<log4j.version>2.13.0</log4j.version>
+		<mongodb.version>3.12.7</mongodb.version>
+		<logback.version>1.2.3</logback.version>
+		<mongo-server.version>1.11.1</mongo-server.version>
 
 		<!-- Plugins versions -->
 		<surefire-report.version>2.22.2</surefire-report.version>
@@ -163,6 +166,23 @@
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-core</artifactId>
 			<version>${log4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mongodb</groupId>
+			<artifactId>mongo-java-driver</artifactId>
+			<version>${mongodb.version}</version>
+		</dependency>
+		<dependency>
+			<!-- required to see Mongo Java Driver logs -->
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>${logback.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>de.bwaldvogel</groupId>
+			<artifactId>mongo-java-server</artifactId>
+			<version>${mongo-server.version}</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 </project>
