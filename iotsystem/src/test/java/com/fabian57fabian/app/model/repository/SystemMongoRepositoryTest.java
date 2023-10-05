@@ -2,6 +2,10 @@ package com.fabian57fabian.app.model.repository;
 
 import static org.assertj.core.api.Assertions.*;
 import java.net.InetSocketAddress;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
 import org.bson.Document;
 
 import com.fabian57fabian.app.model.entities.SystemEntity;
@@ -85,6 +89,27 @@ public class SystemMongoRepositoryTest {
 		addTestSystemToDatabase(1, "test1", "wow", false);
 		addTestSystemToDatabase(2, "test2", "woow", true);
 		assertThat(systemRepository.GetSystemById(2)).isEqualTo(new SystemEntity(2, "test2", "woow", true));
+	}
+
+	@Test
+	public void testSave() {
+		SystemEntity system = new SystemEntity(1, "test1", "wow", false);
+		systemRepository.save(system);
+		assertThat(readAllSystemsFromDatabase()).containsExactly(system);
+	}
+
+	private List<SystemEntity> readAllSystemsFromDatabase() {
+		return StreamSupport
+				.stream(systemCollection.find().spliterator(), false).map(d -> new SystemEntity((int) d.get("id"),
+						"" + d.get("name"), "" + d.get("description"), (Boolean) d.get("active")))
+				.collect(Collectors.toList());
+	}
+
+	@Test
+	public void testDelete() {
+		addTestSystemToDatabase(1, "test1", "wow", false);
+		systemRepository.delete(1);
+		assertThat(readAllSystemsFromDatabase()).isEmpty();
 	}
 
 }

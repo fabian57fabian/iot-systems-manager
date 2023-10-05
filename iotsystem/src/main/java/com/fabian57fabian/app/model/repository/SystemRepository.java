@@ -7,4 +7,8 @@ public interface SystemRepository {
 	public List<SystemEntity> RetrieveSystemNames();
 
 	public SystemEntity GetSystemById(int id);
+
+	void save(SystemEntity system);
+	
+	void delete(int id);
 }

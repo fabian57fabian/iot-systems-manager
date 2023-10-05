@@ -43,4 +43,15 @@ public class SystemMongoRepository implements SystemRepository {
 		return null;
 	}
 
+	@Override
+	public void save(SystemEntity system) {
+		systemCollection.insertOne(new Document().append("id", system.GetId()).append("name", system.GetName())
+				.append("description", system.GetDescription()).append("active", system.GetAcrive()));
+	}
+	
+	@Override
+	public void delete(int id) {
+		systemCollection.deleteOne(Filters.eq("id", id));
+	}
+
 }

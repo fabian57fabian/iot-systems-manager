@@ -32,4 +32,12 @@ public class SystemEntity extends SystemHeader {
 	public int hashCode() {
 		return super.hashCode();
 	}
+
+	public String GetDescription() {
+		return description;
+	}
+
+	public boolean GetAcrive() {
+		return active;
+	}
 }
