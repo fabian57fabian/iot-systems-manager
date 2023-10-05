@@ -1,7 +1,6 @@
 package com.fabian57fabian.app.controller;
 import com.fabian57fabian.app.model.entities.SystemEntity;
 import com.fabian57fabian.app.model.entities.SystemHeader;
-import com.fabian57fabian.app.model.repository.SystemRepository;
 import com.fabian57fabian.app.model.service.SystemService;
 import com.fabian57fabian.app.view.IotView;
 
@@ -15,7 +14,6 @@ import org.junit.Test;
 
 import junit.framework.TestCase;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.VerificationCollector;

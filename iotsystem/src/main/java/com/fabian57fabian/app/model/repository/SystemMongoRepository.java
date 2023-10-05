@@ -1,6 +1,5 @@
 package com.fabian57fabian.app.model.repository;
 
-import java.util.Collections;
 import java.util.List;
 
 import java.util.stream.Collectors;
@@ -11,7 +10,6 @@ import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
 import com.fabian57fabian.app.model.entities.SystemEntity;
-import com.fabian57fabian.app.model.entities.SystemHeader;
 
 public class SystemMongoRepository implements SystemRepository {
 
@@ -38,8 +36,8 @@ public class SystemMongoRepository implements SystemRepository {
 	}
 
 	@Override
-	public SystemEntity GetSystemById(int Id) {
-		Document d = systemCollection.find(Filters.eq("id", Id)).first();
+	public SystemEntity GetSystemById(int id) {
+		Document d = systemCollection.find(Filters.eq("id", id)).first();
 		if (d != null)
 		return fromDocumentToStudent(d);
 		return null;
