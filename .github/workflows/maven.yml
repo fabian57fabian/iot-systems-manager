@@ -31,7 +31,7 @@ jobs:
           restore-keys: ${{ runner.os }}-m2-
       - name: Build with Maven
         run: >
-          xvfb-run mvn verify -Pjacoco sonar:sonar
+          xvfb-run mvn verify -Pcoveralls,pit sonar:sonar
           -DrepoToken=$COVERALLS_TOKEN -DpullRequest=${{ github.event.pull_request.number }}
           -Dsonar.organization=$SONAR_ORG -Dsonar.host.url=$SONAR_HOST -Dsonar.projectKey=$SONAR_PKEY    
         working-directory: ${{ env.workdir }}
@@ -42,8 +42,12 @@ jobs:
           SONAR_PKEY: fabian57fabian_iot-systems-manager
           SONAR_HOST: https://sonarcloud.io
           SONAR_ORG: fabian57fabian
+      - name: Generate JUnit Report
+        run: mvn surefire-report:report-only site:site -DgenerateReports=false
+        working-directory: ${{ env.workdir }}
+        if: ${{ always() }}
       - name: Archive JUnit Report
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         if: ${{ always() }}
         with:
           name: reports
