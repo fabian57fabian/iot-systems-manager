@@ -28,7 +28,7 @@ public class SystemMongoRepository implements SystemRepository {
 
 	@Override
 	public List<SystemEntity> retrieveSystemNames() {
-		return StreamSupport.stream(systemCollection.find().spliterator(), false).map(d -> fromDocumentToStudent(d))
+		return StreamSupport.stream(systemCollection.find().spliterator(), false).map(this::fromDocumentToStudent)
 				.collect(Collectors.toList());
 	}
 
