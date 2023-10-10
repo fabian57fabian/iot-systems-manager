@@ -22,7 +22,7 @@ public class SystemsManagerController {
 		if (s != null) {
 			view.showOneSystem(s);
 		} else {
-			view.showOneSystemError("System not found.");
+			view.showOneSystemError("System not found.", null);
 		}
 	}
 

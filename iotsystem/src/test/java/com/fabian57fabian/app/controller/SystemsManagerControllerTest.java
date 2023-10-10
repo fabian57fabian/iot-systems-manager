@@ -72,7 +72,7 @@ public class SystemsManagerControllerTest extends TestCase{
 		
 		controller.expandOneSystem(id);
 		verify(view, never()).showOneSystem(null);
-		verify(view).showOneSystemError(error_msg);
+		verify(view).showOneSystemError(error_msg, null);
 	}
 
 }
