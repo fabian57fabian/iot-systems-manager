@@ -31,8 +31,8 @@ jobs:
           restore-keys: ${{ runner.os }}-m2-
       - name: Build with Maven
         run: >
-          xvfb-run mvn verify -Pjacoco sonar:sonar
-          -DrepoToken=$COVERALLS_TOKEN -DpullRequest=${{ github.event.pull_request.number }}
+          xvfb-run mvn verify -Pjacoco org.pitest:pitest-maven:mutationCoverage sonar:sonar
+          -DrepoToken=$COVERALLS_REPO_TOKEN -DpullRequest=${{ github.event.pull_request.number }}
           -Dsonar.organization=$SONAR_ORG -Dsonar.host.url=$SONAR_HOST -Dsonar.projectKey=$SONAR_PKEY    
         working-directory: ${{ env.workdir }}
         env:
@@ -42,8 +42,18 @@ jobs:
           SONAR_PKEY: fabian57fabian_iot-systems-manager
           SONAR_HOST: https://sonarcloud.io
           SONAR_ORG: fabian57fabian
+      - name: Send Coveralls coverage
+        run: mvn coveralls:report -DrepoToken=$COVERALLS_REPO_TOKEN
+        working-directory: ${{ env.workdir }}
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_TOKEN }}
+        if: ${{ always() }}
+      - name: Generate JUnit Report
+        run: mvn surefire-report:report-only surefire-report:failsafe-report-only site:site -DgenerateReports=false
+        working-directory: ${{ env.workdir }}
+        if: ${{ always() }}
       - name: Archive JUnit Report
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         if: ${{ always() }}
         with:
           name: reports
