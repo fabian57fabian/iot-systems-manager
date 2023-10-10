@@ -1,6 +1,5 @@
 package com.fabian57fabian.app.controller;
 import com.fabian57fabian.app.model.entities.SystemEntity;
-import com.fabian57fabian.app.model.entities.SystemHeader;
 import com.fabian57fabian.app.model.service.SystemService;
 import com.fabian57fabian.app.view.IotView;
 
@@ -43,8 +42,8 @@ public class SystemsManagerControllerTest extends TestCase{
 	
 	@Test
 	public void testGetSystemsNames_one() {
-		List<SystemHeader> list = new ArrayList<SystemHeader>();
-		list.add(new SystemHeader(0, "foo"));
+		List<SystemEntity> list = new ArrayList<SystemEntity>();
+		list.add(new SystemEntity(0, "bar", "Description of 'bar' ", false));
 		when(systemService.getAllSystems()).thenReturn(list);
 		
 		controller.viewAllSystems();

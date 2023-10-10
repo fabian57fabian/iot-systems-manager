@@ -1,7 +1,6 @@
 package com.fabian57fabian.app;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,28 +14,14 @@ import com.fabian57fabian.app.model.entities.SystemEntity;
 
 import org.junit.Test;
 
-import static org.assertj.core.api.Assertions.*;
-import java.net.InetSocketAddress;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import org.bson.Document;
-
-import com.fabian57fabian.app.model.entities.SystemEntity;
 import com.fabian57fabian.app.model.repository.SystemMongoRepository;
 import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import de.bwaldvogel.mongo.MongoServer;
-import de.bwaldvogel.mongo.backend.memory.MemoryBackend;
 
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
 
 public class SystemMongoRepositoryTestcontainersIT {
 	@SuppressWarnings("rawtypes")
@@ -65,11 +50,6 @@ public class SystemMongoRepositoryTestcontainersIT {
 		client.close();
 	}
 
-	@Test
-	public void test() {
-		// just to check that we can connect to the container
-	}
-
 	private void addTestSystemToDatabase(Integer id, String name, String description, Boolean active) {
 		systemCollection.insertOne(new Document().append("id", id).append("name", name)
 				.append("description", description).append("active", active));
@@ -79,7 +59,7 @@ public class SystemMongoRepositoryTestcontainersIT {
 	public void testFindAll() {
 		addTestSystemToDatabase(1, "test1", "wow", false);
 		addTestSystemToDatabase(2, "test2", "woow", true);
-		assertThat(systemRepository.RetrieveSystemNames()).containsExactly(new SystemEntity(1, "test1", "wow", false),
+		assertThat(systemRepository.retrieveSystemNames()).containsExactly(new SystemEntity(1, "test1", "wow", false),
 				new SystemEntity(2, "test2", "woow", true));
 	}
 
@@ -87,7 +67,7 @@ public class SystemMongoRepositoryTestcontainersIT {
 	public void testFindById() {
 		addTestSystemToDatabase(1, "test1", "wow", false);
 		addTestSystemToDatabase(2, "test2", "woow", true);
-		assertThat(systemRepository.GetSystemById(2)).isEqualTo(new SystemEntity(2, "test2", "woow", true));
+		assertThat(systemRepository.getSystemById(2)).isEqualTo(new SystemEntity(2, "test2", "woow", true));
 	}
 
 	@Test

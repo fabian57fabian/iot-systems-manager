@@ -63,7 +63,7 @@ public class SystemMongoRepositoryTest {
 
 	@Test
 	public void testRetrieveSystemNamesWhenDatabaseIsEmpty() {
-		assertThat(systemRepository.RetrieveSystemNames()).isEmpty();
+		assertThat(systemRepository.retrieveSystemNames()).isEmpty();
 	}
 
 	private void addTestSystemToDatabase(Integer id, String name, String description, Boolean active) {
@@ -75,20 +75,20 @@ public class SystemMongoRepositoryTest {
 	public void testRetrieveSystemNamesWhenDatabaseIsNotEmpty() {
 		addTestSystemToDatabase(1, "test1", "wow", false);
 		addTestSystemToDatabase(2, "test2", "woow", true);
-		assertThat(systemRepository.RetrieveSystemNames()).containsExactly(new SystemEntity(1, "test1", "wow", false),
+		assertThat(systemRepository.retrieveSystemNames()).containsExactly(new SystemEntity(1, "test1", "wow", false),
 				new SystemEntity(2, "test2", "woow", true));
 	}
 
 	@Test
 	public void testFindByIdNotFound() {
-		assertThat(systemRepository.GetSystemById(1)).isNull();
+		assertThat(systemRepository.getSystemById(1)).isNull();
 	}
 
 	@Test
 	public void testFindByIdFound() {
 		addTestSystemToDatabase(1, "test1", "wow", false);
 		addTestSystemToDatabase(2, "test2", "woow", true);
-		assertThat(systemRepository.GetSystemById(2)).isEqualTo(new SystemEntity(2, "test2", "woow", true));
+		assertThat(systemRepository.getSystemById(2)).isEqualTo(new SystemEntity(2, "test2", "woow", true));
 	}
 
 	@Test

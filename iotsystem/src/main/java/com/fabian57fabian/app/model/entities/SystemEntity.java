@@ -2,7 +2,7 @@ package com.fabian57fabian.app.model.entities;
 
 import java.util.Objects;
 
-public class SystemEntity extends SystemHeader {
+public class SystemEntity extends EntityBase {
 	private String description;
 	private boolean active;
 		
@@ -33,11 +33,11 @@ public class SystemEntity extends SystemHeader {
 		return super.hashCode();
 	}
 
-	public String GetDescription() {
+	public String getDescription() {
 		return description;
 	}
 
-	public boolean GetAcrive() {
+	public boolean getAcrive() {
 		return active;
 	}
 }
