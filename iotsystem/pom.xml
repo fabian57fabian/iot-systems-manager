@@ -25,8 +25,11 @@
 		<mongodb.version>3.12.7</mongodb.version>
 		<logback.version>1.2.3</logback.version>
 		<mongo-server.version>1.11.1</mongo-server.version>
+		<testcontainers.version>1.15.1</testcontainers.version>
 
 		<!-- Plugins versions -->
+		<build-helper.version>3.0.0</build-helper.version>
+		<failsafe.version>2.22.1</failsafe.version>
 		<surefire-report.version>2.22.2</surefire-report.version>
 		<site.version>3.9.1</site.version>
 		<jacoco.version>0.8.6</jacoco.version>
@@ -46,6 +49,42 @@
 	</properties>
 
 	<build>
+
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>${build-helper.version}</version>
+				<executions>
+					<execution>
+						<id>add-test-source</id>
+						<phase>generate-test-sources</phase>
+						<goals>
+							<goal>add-test-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>src/it/java</source>
+							</sources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>${failsafe.version}</version>
+				<executions>
+					<execution>
+						<id>integration-test</id>
+						<goals>
+							<goal>integration-test</goal>
+							<goal>verify</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
 		<pluginManagement>
 			<plugins>
 				<plugin>
@@ -182,6 +221,12 @@
 			<groupId>de.bwaldvogel</groupId>
 			<artifactId>mongo-java-server</artifactId>
 			<version>${mongo-server.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>testcontainers</artifactId>
+			<version>${testcontainers.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
