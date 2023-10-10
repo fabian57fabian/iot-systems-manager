@@ -31,7 +31,7 @@ jobs:
           restore-keys: ${{ runner.os }}-m2-
       - name: Build with Maven
         run: >
-          xvfb-run mvn verify -Pcoveralls,pit sonar:sonar
+          xvfb-run mvn verify -Pjacoco -Pcoveralls,pit sonar:sonar
           -DrepoToken=$COVERALLS_TOKEN -DpullRequest=${{ github.event.pull_request.number }}
           -Dsonar.organization=$SONAR_ORG -Dsonar.host.url=$SONAR_HOST -Dsonar.projectKey=$SONAR_PKEY    
         working-directory: ${{ env.workdir }}
