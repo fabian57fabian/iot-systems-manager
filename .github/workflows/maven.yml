@@ -32,7 +32,7 @@ jobs:
       - name: Build with Maven
         run: >
           xvfb-run mvn verify -Pjacoco -Pcoveralls,pit sonar:sonar
-          -DrepoToken=$COVERALLS_TOKEN -DpullRequest=${{ github.event.pull_request.number }}
+          -DrepoToken=$COVERALLS_REPO_TOKEN -DpullRequest=${{ github.event.pull_request.number }}
           -Dsonar.organization=$SONAR_ORG -Dsonar.host.url=$SONAR_HOST -Dsonar.projectKey=$SONAR_PKEY    
         working-directory: ${{ env.workdir }}
         env:
@@ -42,7 +42,7 @@ jobs:
           SONAR_PKEY: fabian57fabian_iot-systems-manager
           SONAR_HOST: https://sonarcloud.io
           SONAR_ORG: fabian57fabian
-      - name: Send Coveralls coverage -DrepoToken=$COVERALLS_TOKEN
+      - name: Send Coveralls coverage -DrepoToken=$COVERALLS_REPO_TOKEN
         run: mvn coveralls:report
         working-directory: ${{ env.workdir }}
         env:
