@@ -43,7 +43,7 @@ jobs:
           SONAR_HOST: https://sonarcloud.io
           SONAR_ORG: fabian57fabian
       - name: Send Coveralls coverage -DrepoToken=$COVERALLS_TOKEN
-        run: mvn scoveralls:report
+        run: mvn coveralls:report
         working-directory: ${{ env.workdir }}
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_TOKEN }}
