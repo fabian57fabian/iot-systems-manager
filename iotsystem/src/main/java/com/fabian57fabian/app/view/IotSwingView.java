@@ -3,7 +3,6 @@ package com.fabian57fabian.app.view;
 import com.fabian57fabian.app.controller.SystemsManagerController;
 import com.fabian57fabian.app.model.entities.SystemEntity;
 
-import java.awt.EventQueue;
 import java.util.List;
 
 import javax.swing.DefaultListModel;
