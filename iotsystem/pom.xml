@@ -143,14 +143,13 @@
 					<version>${pitest.version}</version>
 					<configuration>
 						<excludedClasses>
-							<param>SystemEntity</param>
-							<param>com.fabian57fabian.app.view.IotSwingApp</param>
+							<param>com.fabian57fabian.model.entities.*</param>
+							<param>com.fabian57fabian.app.swing.*</param>
 						</excludedClasses>
 						<targetTests>
 							<param>com.fabian57fabian.app.*</param>
 						</targetTests>
 						<excludedTestClasses>
-							<param>com.fabian57fabian.app.view.*</param>
 							<param>**.*IT</param>
 							<param>**.*Test</param>
 						</excludedTestClasses>
