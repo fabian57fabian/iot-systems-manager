@@ -110,9 +110,8 @@
 					</executions>
 					<configuration>
 						<excludes>
-							<exclude>**/Main.*</exclude>							
+							<exclude>**/app/swing/*.*</exclude>							
 							<exclude>**/entities/*.*</exclude>
-							<exclude>**/app/view*.*</exclude>
 						</excludes>
 					</configuration>
 

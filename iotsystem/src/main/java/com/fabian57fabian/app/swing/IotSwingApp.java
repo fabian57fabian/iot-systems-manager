@@ -1,9 +1,10 @@
-package com.fabian57fabian.app.view;
+package com.fabian57fabian.app.swing;
 
 import java.awt.EventQueue;
 
 import com.fabian57fabian.app.controller.SystemsManagerController;
 import com.fabian57fabian.app.model.repository.SystemMongoRepository;
+import com.fabian57fabian.app.view.IotSwingView;
 import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
 
