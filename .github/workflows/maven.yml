@@ -31,7 +31,7 @@ jobs:
           restore-keys: ${{ runner.os }}-m2-
       - name: Build with Maven
         run: >
-          xvfb-run mvn verify -Pjacoco coveralls:report sonar:sonar org.pitest:pitest-maven:mutationCoverage 
+          xvfb-run mvn verify -Pcoveralls,pit sonar:sonar
           -DrepoToken=$COVERALLS_REPO_TOKEN -DpullRequest=${{ github.event.pull_request.number }}
           -Dsonar.organization=$SONAR_ORG -Dsonar.host.url=$SONAR_HOST -Dsonar.projectKey=$SONAR_PKEY    
         working-directory: ${{ env.workdir }}

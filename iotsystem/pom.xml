@@ -143,14 +143,15 @@
 					<version>${pitest.version}</version>
 					<configuration>
 						<excludedClasses>
-							<param>com.fabian57fabian.model.entities.*</param>
+							<param>com.fabian57fabian.app.model.entities.*</param>
 							<param>com.fabian57fabian.app.swing.*</param>
+							<param>com.fabian57fabian.app.view.*</param>
 						</excludedClasses>
 						<targetTests>
 							<param>com.fabian57fabian.app.*</param>
 						</targetTests>
 						<excludedTestClasses>
-							<param>**.*IT</param>
+							<param>**/*IT</param>
 							<param>**.*Test</param>
 						</excludedTestClasses>
 						<mutators>
