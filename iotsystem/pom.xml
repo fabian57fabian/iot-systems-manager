@@ -26,6 +26,7 @@
 		<logback.version>1.2.3</logback.version>
 		<mongo-server.version>1.11.1</mongo-server.version>
 		<testcontainers.version>1.15.1</testcontainers.version>
+		<picocli.version>4.6.1</picocli.version>
 
 		<!-- Plugins versions -->
 		<build-helper.version>3.0.0</build-helper.version>
@@ -109,7 +110,9 @@
 					</executions>
 					<configuration>
 						<excludes>
+							<exclude>**/Main.*</exclude>							
 							<exclude>**/entities/*.*</exclude>
+							<exclude>**/app/view*.*</exclude>
 						</excludes>
 					</configuration>
 
@@ -141,11 +144,17 @@
 					<version>${pitest.version}</version>
 					<configuration>
 						<excludedClasses>
-							<param>com.fabian57fabian.app.App</param>
+							<param>SystemEntity</param>
+							<param>com.fabian57fabian.app.view.IotSwingApp</param>
 						</excludedClasses>
 						<targetTests>
 							<param>com.fabian57fabian.app.*</param>
 						</targetTests>
+						<excludedTestClasses>
+							<param>com.fabian57fabian.app.view.*</param>
+							<param>**.*IT</param>
+							<param>**.*Test</param>
+						</excludedTestClasses>
 						<mutators>
 							<mutator>DEFAULTS</mutator>
 						</mutators>
@@ -228,6 +237,11 @@
 			<artifactId>testcontainers</artifactId>
 			<version>${testcontainers.version}</version>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>info.picocli</groupId>
+			<artifactId>picocli</artifactId>
+			<version>${picocli.version}</version>
 		</dependency>
 	</dependencies>
 </project>

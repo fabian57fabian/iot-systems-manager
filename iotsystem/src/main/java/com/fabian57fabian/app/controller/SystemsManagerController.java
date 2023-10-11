@@ -2,23 +2,23 @@ package com.fabian57fabian.app.controller;
 
 import com.fabian57fabian.app.view.IotView;
 import com.fabian57fabian.app.model.entities.SystemEntity;
-import com.fabian57fabian.app.model.service.SystemService;
+import com.fabian57fabian.app.model.repository.SystemRepository;
 
 public class SystemsManagerController {
-	private SystemService systemService;
+	private SystemRepository systemRepository;
 	private IotView view;
 
-	public SystemsManagerController(SystemService systemService, IotView view) {
-		this.systemService = systemService;
+	public SystemsManagerController(SystemRepository systemRepository, IotView view) {
+		this.systemRepository = systemRepository;
 		this.view = view;
 	}
 
 	public void viewAllSystems() {
-		view.showSystems(systemService.getAllSystems());
+		view.showSystems(systemRepository.retrieveSystemNames());
 	}
 
 	public void expandOneSystem(int id) {
-		SystemEntity s = systemService.getSystem(id);
+		SystemEntity s = systemRepository.getSystemById(id);
 		if (s != null) {
 			view.showOneSystem(s);
 		} else {

@@ -1,15 +1,12 @@
 package com.fabian57fabian.app.view;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.*;
 
 import java.util.Arrays;
 
 import com.fabian57fabian.app.controller.SystemsManagerController;
 import com.fabian57fabian.app.model.entities.SystemEntity;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import org.assertj.swing.junit.runner.GUITestRunner;
