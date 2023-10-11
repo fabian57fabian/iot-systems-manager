@@ -40,8 +40,30 @@
 		<sonar.version>3.9.0.2155</sonar.version>
 
 		<sonar.coverage.exclusions>
-			**/entities/*.*
+			**/entities/*.*,
+			**/app/swing/*.*
 		</sonar.coverage.exclusions>
+
+		<!-- For each rule to be ignore, add another eXX and two corresponding
+		properties with eXX in the name as below -->
+		<sonar.issue.ignore.multicriteria>e11,e12</sonar.issue.ignore.multicriteria>
+		<!-- Disable rule for "Inheritance tree of classes should not be too
+		deep" (just an example) -->
+		<sonar.issue.ignore.multicriteria.e11.ruleKey>
+			java:S110
+		</sonar.issue.ignore.multicriteria.e11.ruleKey>
+		<sonar.issue.ignore.multicriteria.e11.resourceKey>
+			**/*.java
+		</sonar.issue.ignore.multicriteria.e11.resourceKey>
+
+		<!-- Disable rule for "Local variable and method parameter names should
+		comply with a naming convention" (just an example) -->
+		<sonar.issue.ignore.multicriteria.e12.ruleKey>
+			java:S117
+		</sonar.issue.ignore.multicriteria.e12.ruleKey>
+		<sonar.issue.ignore.multicriteria.e12.resourceKey>
+			**/IotSwingView.java
+		</sonar.issue.ignore.multicriteria.e12.resourceKey>
 
 		<sonar.junit.reportPaths>
 			${project.build.directory}/surefire-reports,
@@ -110,9 +132,8 @@
 					</executions>
 					<configuration>
 						<excludes>
-							<exclude>**/Main.*</exclude>							
+							<exclude>**/app/swing/*.*</exclude>
 							<exclude>**/entities/*.*</exclude>
-							<exclude>**/app/view*.*</exclude>
 						</excludes>
 					</configuration>
 
@@ -144,15 +165,15 @@
 					<version>${pitest.version}</version>
 					<configuration>
 						<excludedClasses>
-							<param>SystemEntity</param>
-							<param>com.fabian57fabian.app.view.IotSwingApp</param>
+							<param>com.fabian57fabian.app.model.entities.*</param>
+							<param>com.fabian57fabian.app.swing.*</param>
+							<param>com.fabian57fabian.app.view.*</param>
 						</excludedClasses>
 						<targetTests>
 							<param>com.fabian57fabian.app.*</param>
 						</targetTests>
 						<excludedTestClasses>
-							<param>com.fabian57fabian.app.view.*</param>
-							<param>**.*IT</param>
+							<param>**/*IT</param>
 							<param>**.*Test</param>
 						</excludedTestClasses>
 						<mutators>
@@ -172,7 +193,7 @@
 
 	<!-- Profiles configurations -->
 	<profiles>
-		<!-- jacoco locally -->
+		<!-- Configuration of Jacoco locally plugin  -->
 		<profile>
 			<id>jacoco</id>
 			<build>
@@ -180,6 +201,50 @@
 					<plugin>
 						<groupId>org.jacoco</groupId>
 						<artifactId>jacoco-maven-plugin</artifactId>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<!-- Configuration of Coveralls plugin  -->
+		<profile>
+			<id>coveralls</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.jacoco</groupId>
+						<artifactId>jacoco-maven-plugin</artifactId>
+					</plugin>
+					<plugin>
+						<groupId>org.eluder.coveralls</groupId>
+						<artifactId>coveralls-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<phase>verify</phase>
+								<goals>
+									<goal>report</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<!-- Configuration of PIT plugin  -->
+		<profile>
+			<id>pit</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.pitest</groupId>
+						<artifactId>pitest-maven</artifactId>
+						<executions>
+							<execution>
+								<goals>
+									<goal>mutationCoverage</goal>
+								</goals>
+								<phase>verify</phase>
+							</execution>
+						</executions>
 					</plugin>
 				</plugins>
 			</build>

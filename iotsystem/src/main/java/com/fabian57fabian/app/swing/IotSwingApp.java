@@ -1,9 +1,12 @@
-package com.fabian57fabian.app.view;
+package com.fabian57fabian.app.swing;
 
 import java.awt.EventQueue;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.fabian57fabian.app.controller.SystemsManagerController;
 import com.fabian57fabian.app.model.repository.SystemMongoRepository;
+import com.fabian57fabian.app.view.IotSwingView;
 import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
 
@@ -25,7 +28,7 @@ public class IotSwingApp {
 				systemView.setVisible(true);
 				systemController.viewAllSystems();
 			} catch (Exception e) {
-				e.printStackTrace();
+				Logger.getLogger(IotSwingApp.class.getName()).log(Level.SEVERE, "Exception", e);
 			}
 		});
 	}

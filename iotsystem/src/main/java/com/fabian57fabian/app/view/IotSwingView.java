@@ -3,7 +3,6 @@ package com.fabian57fabian.app.view;
 import com.fabian57fabian.app.controller.SystemsManagerController;
 import com.fabian57fabian.app.model.entities.SystemEntity;
 
-import java.awt.EventQueue;
 import java.util.List;
 
 import javax.swing.DefaultListModel;
@@ -44,22 +43,6 @@ public class IotSwingView extends JFrame implements IotView {
 
 	DefaultListModel<SystemEntity> getListSystemsModel() {
 		return listSystemsModel;
-	}
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					IotSwingView frame = new IotSwingView();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
 	}
 
 	/**
