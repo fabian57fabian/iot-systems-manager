@@ -41,7 +41,7 @@
 
 		<sonar.coverage.exclusions>
 			**/entities/*.*,
-			**/app/swing/*.*
+			**/ui/swing/*.*
 		</sonar.coverage.exclusions>
 
 		<!-- For each rule to be ignore, add another eXX and two corresponding
@@ -148,7 +148,7 @@
 					</executions>
 					<configuration>
 						<excludes>
-							<exclude>**/app/swing/*.*</exclude>
+							<exclude>**/ui/swing/*.*</exclude>
 							<exclude>**/entities/*.*</exclude>
 						</excludes>
 					</configuration>
