@@ -100,7 +100,7 @@
 				<version>${failsafe.version}</version>
 				<executions>
 					<execution>
-						<id>integration-test</id>
+						<id>default-it</id>
 						<goals>
 							<goal>integration-test</goal>
 							<goal>verify</goal>

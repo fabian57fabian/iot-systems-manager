@@ -1,6 +1,6 @@
 package com.fabian57fabian.app.controller;
 import com.fabian57fabian.app.model.entities.SystemEntity;
-import com.fabian57fabian.app.model.repository.SystemRepository;
+import com.fabian57fabian.app.model.service.ISystemService;
 import com.fabian57fabian.app.view.IotView;
 
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ public class SystemsManagerControllerTest extends TestCase{
 	
 	private SystemsManagerController controller;
 	
-	private SystemRepository systemRepository;
+	private ISystemService systemService;
 	private IotView view;
 	
 	@Rule
@@ -30,9 +30,9 @@ public class SystemsManagerControllerTest extends TestCase{
 	
 	@Before
 	public void setUp() throws Exception {
-		systemRepository = mock(SystemRepository.class);
+		systemService = mock(ISystemService.class);
 		view = mock(IotView.class);
-		controller = new SystemsManagerController(systemRepository, view);
+		controller = new SystemsManagerController(systemService, view);
 	}
 
 	@After
@@ -44,7 +44,7 @@ public class SystemsManagerControllerTest extends TestCase{
 	public void testGetSystemsNames_one() {
 		List<SystemEntity> list = new ArrayList<SystemEntity>();
 		list.add(new SystemEntity(0, "bar", "Description of 'bar' ", false));
-		when(systemRepository.retrieveSystemNames()).thenReturn(list);
+		when(systemService.getSystemNames()).thenReturn(list);
 		
 		controller.viewAllSystems();
 		
@@ -58,7 +58,7 @@ public class SystemsManagerControllerTest extends TestCase{
 	public void testGetOneSystem_right() {
 		int id = 1;
 		SystemEntity sys = new SystemEntity(id, "bar", "Description of 'bar' ", false);
-		when(systemRepository.getSystemById(id)).thenReturn(sys);
+		when(systemService.getSystemById(id)).thenReturn(sys);
 		
 		controller.expandOneSystem(id);
 		verify(view).showOneSystem(sys);
@@ -68,7 +68,7 @@ public class SystemsManagerControllerTest extends TestCase{
 	public void testGetOneSystem_noexist() {
 		int id = 1;
 		String error_msg = "System not found.";
-		when(systemRepository.getSystemById(id)).thenReturn(null);
+		when(systemService.getSystemById(id)).thenReturn(null);
 		
 		controller.expandOneSystem(id);
 		verify(view, never()).showOneSystem(null);

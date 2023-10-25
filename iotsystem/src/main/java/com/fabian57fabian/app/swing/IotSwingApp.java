@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 
 import com.fabian57fabian.app.controller.SystemsManagerController;
 import com.fabian57fabian.app.model.repository.SystemMongoRepository;
+import com.fabian57fabian.app.model.service.SystemService;
 import com.fabian57fabian.app.view.IotSwingView;
 import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
@@ -32,12 +33,13 @@ public class IotSwingApp implements Callable<Void> {
 	public Void call() throws Exception {
 		EventQueue.invokeLater(() -> {
 			try {
-				SystemMongoRepository systemRepository = new SystemMongoRepository(
-						new MongoClient(new ServerAddress(mongoHost, mongoPort)));
-				IotSwingView systemView = new IotSwingView();
-				SystemsManagerController systemController = new SystemsManagerController(systemRepository, systemView);
-				systemView.setController(systemController);
-				systemView.setVisible(true);
+				MongoClient client = new MongoClient(new ServerAddress(mongoHost, mongoPort));
+				SystemMongoRepository systemRepository = new SystemMongoRepository(client);
+				SystemService systemService = new SystemService(systemRepository);
+				IotSwingView iotView = new IotSwingView();
+				SystemsManagerController systemController = new SystemsManagerController(systemService, iotView);
+				iotView.setController(systemController);
+				iotView.setVisible(true);
 				systemController.viewAllSystems();
 			} catch (Exception e) {
 				Logger.getLogger(IotSwingApp.class.getName()).log(Level.SEVERE, "Exception", e);
