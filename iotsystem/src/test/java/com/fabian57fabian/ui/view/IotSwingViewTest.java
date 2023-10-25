@@ -18,6 +18,7 @@ import org.mockito.MockitoAnnotations;
 import org.assertj.swing.annotation.GUITest;
 import org.assertj.swing.core.matcher.JButtonMatcher;
 import org.assertj.swing.core.matcher.JLabelMatcher;
+import org.assertj.swing.core.matcher.JTextComponentMatcher;
 import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.fixture.FrameFixture;
 import org.assertj.swing.fixture.JButtonFixture;
@@ -54,16 +55,16 @@ public class IotSwingViewTest extends AssertJSwingJUnitTestCase {
 	@Test
 	@GUITest
 	public void testControlsInitialStates() {
-		window.label(JLabelMatcher.withText("id"));
-		window.label(JLabelMatcher.withText("name"));
-		window.label(JLabelMatcher.withText("desc"));
-		window.textBox("descTextBox").requireEnabled();
-		window.textBox("txtId").requireEnabled();
-		window.textBox("nameTextBox").requireEnabled();
-		window.button(JButtonMatcher.withText("add")).requireDisabled();
-		window.button(JButtonMatcher.withText("delete")).requireDisabled();
-		window.label("errorMessageLabel").requireText(" ");
-		window.label("lblSystemDescription").requireText(" ");
+		window.label(JLabelMatcher.withName("lblSystemId")).requireText("id");
+		window.label(JLabelMatcher.withName("lblSystemName")).requireText("name");
+		window.label(JLabelMatcher.withName("lblSystemDescription")).requireText("desc");
+		window.textBox(JTextComponentMatcher.withName("txtSystemName")).requireEnabled();
+		window.textBox(JTextComponentMatcher.withName("txtSystemId")).requireEnabled();
+		window.textBox(JTextComponentMatcher.withName("txtSystemDescription")).requireEnabled();
+		window.button(JButtonMatcher.withName("btnAddSystem")).requireDisabled();
+		window.button(JButtonMatcher.withName("btnDeleteSystem")).requireDisabled();
+		window.label(JLabelMatcher.withName("lblSystemErrorMessageLabel")).requireText(" ");
+		window.label(JLabelMatcher.withName("lblCurrentSystemDescription")).requireText(" ");
 		window.list("listSystems");
 	}
 
@@ -72,7 +73,7 @@ public class IotSwingViewTest extends AssertJSwingJUnitTestCase {
 		GuiActionRunner.execute(() -> iotSwingView.getListSystemsModel()
 				.addElement(new SystemEntity(0, "bar", "Description of 'bar' ", false)));
 		window.list("listSystems").selectItem(0);
-		JButtonFixture deleteButton = window.button(JButtonMatcher.withText("delete"));
+		JButtonFixture deleteButton = window.button(JButtonMatcher.withName("btnDeleteSystem"));
 		deleteButton.requireEnabled();
 		window.list("listSystems").clearSelection();
 		deleteButton.requireDisabled();
@@ -83,21 +84,21 @@ public class IotSwingViewTest extends AssertJSwingJUnitTestCase {
 		SystemEntity system1 = new SystemEntity(0, "bar", "Description of 'bar' ", false);
 		SystemEntity system2 = new SystemEntity(1, "foo", "Description of 'foo' ", true);
 		GuiActionRunner.execute(() -> iotSwingView.showSystems(Arrays.asList(system1, system2)));
-		String[] listContents = window.list().contents();
+		String[] listContents = window.list("listSystems").contents();
 		assertThat(listContents).containsExactly(system1.toString(), system2.toString());
 	}
 
 	@Test
 	public void testsShowOneSystemShouldShowDescriptionToLabel() {
-		SystemEntity system1 = new SystemEntity(0, "bar", "Description of 'bar' ", false);
+		SystemEntity system1 = new SystemEntity(0, "bar", "Description of bar ", false);
 		GuiActionRunner.execute(() -> iotSwingView.showOneSystem(system1));
-		window.label("lblSystemDescription").requireText(system1.getDescription());
+		window.label(JLabelMatcher.withName("lblCurrentSystemDescription")).requireText(system1.getDescription());
 	}
 
 	@Test
 	public void testShowErrorShouldShowTheMessageInTheErrorLabel() {
 		SystemEntity system1 = new SystemEntity(0, "bar", "Description of 'bar' ", false);
 		GuiActionRunner.execute(() -> iotSwingView.showOneSystemError("error message", system1));
-		window.label("errorMessageLabel").requireText("error message: " + system1);
+		window.label(JLabelMatcher.withName("lblSystemErrorMessageLabel")).requireText("error message: " + system1);
 	}
 }
