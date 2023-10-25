@@ -2,7 +2,7 @@ package com.fabian57fabian.app.controller;
 
 import com.fabian57fabian.app.model.entities.SystemEntity;
 import com.fabian57fabian.app.model.service.ISystemService;
-import com.fabian57fabian.app.view.IotView;
+import com.fabian57fabian.ui.view.IotView;
 
 public class SystemsManagerController {
 	private ISystemService systemService;

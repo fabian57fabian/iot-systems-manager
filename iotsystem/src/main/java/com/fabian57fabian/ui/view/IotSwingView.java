@@ -1,4 +1,4 @@
-package com.fabian57fabian.app.view;
+package com.fabian57fabian.ui.view;
 
 import com.fabian57fabian.app.controller.SystemsManagerController;
 import com.fabian57fabian.app.model.entities.SystemEntity;

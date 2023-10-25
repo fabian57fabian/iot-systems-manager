@@ -1,4 +1,4 @@
-package com.fabian57fabian.app.swing;
+package com.fabian57fabian.ui.swing;
 
 import java.awt.EventQueue;
 import java.util.logging.Level;
@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 import com.fabian57fabian.app.controller.SystemsManagerController;
 import com.fabian57fabian.app.model.repository.SystemMongoRepository;
 import com.fabian57fabian.app.model.service.SystemService;
-import com.fabian57fabian.app.view.IotSwingView;
+import com.fabian57fabian.ui.view.IotSwingView;
 import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
 

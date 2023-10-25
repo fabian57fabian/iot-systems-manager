@@ -1,7 +1,7 @@
 package com.fabian57fabian.app.controller;
 import com.fabian57fabian.app.model.entities.SystemEntity;
 import com.fabian57fabian.app.model.service.ISystemService;
-import com.fabian57fabian.app.view.IotView;
+import com.fabian57fabian.ui.view.IotView;
 
 import java.util.ArrayList;
 import java.util.List;

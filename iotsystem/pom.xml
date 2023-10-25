@@ -182,8 +182,8 @@
 					<configuration>
 						<excludedClasses>
 							<param>com.fabian57fabian.app.model.entities.*</param>
-							<param>com.fabian57fabian.app.swing.*</param>
-							<param>com.fabian57fabian.app.view.*</param>
+							<param>com.fabian57fabian.ui.swing.*</param>
+							<param>com.fabian57fabian.ui.view.*</param>
 						</excludedClasses>
 						<targetTests>
 							<param>com.fabian57fabian.app.*</param>
@@ -191,12 +191,11 @@
 						<excludedTestClasses>
 							<param>**/*IT</param>
 							<param>**/*E2E</param>
-							<param>**.*Test</param>
 						</excludedTestClasses>
 						<mutators>
 							<mutator>DEFAULTS</mutator>
 						</mutators>
-						<mutationThreshold>50</mutationThreshold>
+						<mutationThreshold>80</mutationThreshold>
 					</configuration>
 				</plugin>
 				<plugin>
