@@ -49,7 +49,7 @@ public class SystemMongoRepositoryTest {
 	@Before
 	public void setUp() throws Exception {
 		client = new MongoClient(new ServerAddress(serverAddress));
-		systemRepository = new SystemMongoRepository(client);
+		systemRepository = new SystemMongoRepository(client, DB_NAME, SYSTEM_COLLECTION_NAME);
 		MongoDatabase database = client.getDatabase(DB_NAME);
 		// make sure we always start with a clean database
 		database.drop();

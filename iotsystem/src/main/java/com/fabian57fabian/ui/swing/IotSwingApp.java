@@ -25,6 +25,15 @@ public class IotSwingApp implements Callable<Void> {
 	@Option(names = { "--mongo-port" }, description = "MongoDB host port")
 	private int mongoPort = 27017;
 	
+	@Option(names = { "--db-name" }, description = "Database name")
+	private String dbName = "iot";
+	
+	@Option(names = { "--db-collection-systems-name" }, description = "Systems collection name")
+	private String collectionSystemsName = "systems";
+	
+	@Option(names = { "--db-collection-sensors-name" }, description = "Sensors collection name")
+	private String collectionSensorsName = "sensors";
+	
 	public static void main(String[] args) {
 		new CommandLine(new IotSwingApp()).execute(args);
 	}
@@ -34,7 +43,7 @@ public class IotSwingApp implements Callable<Void> {
 		EventQueue.invokeLater(() -> {
 			try {
 				MongoClient client = new MongoClient(new ServerAddress(mongoHost, mongoPort));
-				SystemMongoRepository systemRepository = new SystemMongoRepository(client);
+				SystemMongoRepository systemRepository = new SystemMongoRepository(client, dbName, collectionSystemsName);
 				SystemService systemService = new SystemService(systemRepository);
 				IotSwingView iotView = new IotSwingView();
 				SystemsManagerController systemController = new SystemsManagerController(systemService, iotView);

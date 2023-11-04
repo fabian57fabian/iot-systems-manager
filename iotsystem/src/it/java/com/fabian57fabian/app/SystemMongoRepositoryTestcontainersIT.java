@@ -38,7 +38,7 @@ public class SystemMongoRepositoryTestcontainersIT {
 	@Before
 	public void setup() {
 		client = new MongoClient(new ServerAddress(mongo.getContainerIpAddress(), mongo.getMappedPort(27017)));
-		systemRepository = new SystemMongoRepository(client);
+		systemRepository = new SystemMongoRepository(client, DB_NAME, SYSTEM_COLLECTION_NAME);
 		MongoDatabase database = client.getDatabase(DB_NAME);
 		// make sure we always start with a clean database
 		database.drop();

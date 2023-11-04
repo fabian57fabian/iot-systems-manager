@@ -12,13 +12,10 @@ import com.mongodb.client.model.Filters;
 import com.fabian57fabian.app.model.entities.SystemEntity;
 
 public class SystemMongoRepository implements SystemRepository {
-
-	public static final String DB_NAME = "iotsystems";
-	public static final String SYSTEM_COLLECTION_NAME = "system";
 	private MongoCollection<Document> systemCollection;
 
-	public SystemMongoRepository(MongoClient client) {
-		systemCollection = client.getDatabase(DB_NAME).getCollection(SYSTEM_COLLECTION_NAME);
+	public SystemMongoRepository(MongoClient client, String dbName, String collectionName) {
+		systemCollection = client.getDatabase(dbName).getCollection(collectionName);
 	}
 
 	private SystemEntity fromDocumentToStudent(Document d) {
