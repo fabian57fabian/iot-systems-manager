@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.Arrays;
 
 import com.fabian57fabian.app.controller.SystemsManagerController;
+import com.fabian57fabian.app.model.entities.SensorEntity;
 import com.fabian57fabian.app.model.entities.SystemEntity;
 
 import org.junit.Test;
@@ -86,6 +87,15 @@ public class IotSwingViewTest extends AssertJSwingJUnitTestCase {
 		GuiActionRunner.execute(() -> iotSwingView.showSystems(Arrays.asList(system1, system2)));
 		String[] listContents = window.list("listSystems").contents();
 		assertThat(listContents).containsExactly(system1.toString(), system2.toString());
+	}
+	
+	@Test
+	public void testsShowSensorsOfSystemShouldAddSensorsToTheList() {
+		SensorEntity sensor1 = new SensorEntity(0, "bar", "Description of 'bar' ", 0.1, 0.2, 10);
+		SensorEntity sensor2 = new SensorEntity(1, "foo", "Description of 'foo' ", 0.3, 0.4, 10);
+		GuiActionRunner.execute(() -> iotSwingView.ShowSensorsOfSystem(Arrays.asList(sensor1, sensor2)));
+		String[] listContents = window.list("listSensors").contents();
+		assertThat(listContents).containsExactly(sensor1.toString(), sensor2.toString());
 	}
 
 	@Test

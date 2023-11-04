@@ -361,4 +361,9 @@ public class IotSwingView extends JFrame implements IotView {
 		this.systemsManagerController = controller;
 	}
 
+	@Override
+	public void ShowSensorsOfSystem(List<SensorEntity> sensors) {
+		sensors.stream().forEach(listSensorsModel::addElement);
+	}
+
 }

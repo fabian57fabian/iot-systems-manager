@@ -8,6 +8,8 @@ public interface SensorRepository {
 	public List<SensorEntity> retrieveSensorsNames();
 
 	public SensorEntity getSensorById(int id);
+	
+	public List<SensorEntity> getSensorsOfSystem(int id);
 
 	void save(SensorEntity system);
 

@@ -5,7 +5,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.fabian57fabian.app.controller.SystemsManagerController;
+import com.fabian57fabian.app.model.repository.SensorMongoRepository;
 import com.fabian57fabian.app.model.repository.SystemMongoRepository;
+import com.fabian57fabian.app.model.service.SensorService;
 import com.fabian57fabian.app.model.service.SystemService;
 import com.fabian57fabian.ui.view.IotSwingView;
 import com.mongodb.MongoClient;
@@ -45,8 +47,10 @@ public class IotSwingApp implements Callable<Void> {
 				MongoClient client = new MongoClient(new ServerAddress(mongoHost, mongoPort));
 				SystemMongoRepository systemRepository = new SystemMongoRepository(client, dbName, collectionSystemsName);
 				SystemService systemService = new SystemService(systemRepository);
+				SensorMongoRepository sensorRepository = new SensorMongoRepository(client, dbName, collectionSensorsName);
+				SensorService sensorService = new SensorService(sensorRepository);
 				IotSwingView iotView = new IotSwingView();
-				SystemsManagerController systemController = new SystemsManagerController(systemService, iotView);
+				SystemsManagerController systemController = new SystemsManagerController(systemService, sensorService, iotView);
 				iotView.setController(systemController);
 				iotView.setVisible(true);
 				systemController.viewAllSystems();

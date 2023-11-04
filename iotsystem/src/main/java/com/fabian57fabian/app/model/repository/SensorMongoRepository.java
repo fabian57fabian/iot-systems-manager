@@ -7,6 +7,7 @@ import java.util.stream.StreamSupport;
 
 import org.bson.Document;
 import com.mongodb.MongoClient;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
 import com.fabian57fabian.app.model.entities.SensorEntity;
@@ -20,7 +21,7 @@ public class SensorMongoRepository implements SensorRepository {
 
 	private SensorEntity fromDocumentToSensor(Document d) {
 		return new SensorEntity((int) d.get("id"), "" + d.get("name"), "" + d.get("description"),
-				(double) d.get("offset"), (double) d.get("multiplier"));
+				(double) d.get("offset"), (double) d.get("multiplier"), (int) d.get("systemId"));
 	}
 
 	@Override
@@ -39,13 +40,17 @@ public class SensorMongoRepository implements SensorRepository {
 	}
 
 	@Override
+	public List<SensorEntity> getSensorsOfSystem(int systemId) {
+		FindIterable<Document> documents = sensorsCollection.find(Filters.eq("systemId", systemId));
+		return StreamSupport.stream(documents.spliterator(), false).map(this::fromDocumentToSensor)
+				.collect(Collectors.toList());
+	}
+
+	@Override
 	public void save(SensorEntity system) {
-		sensorsCollection.insertOne(new Document()
-				.append("id", system.getId())
-				.append("name", system.getName())
-				.append("description", system.getDescription())
-				.append("offset", system.getOffset())
-				.append("multiplier", system.getMultiplier()));
+		sensorsCollection.insertOne(new Document().append("id", system.getId()).append("name", system.getName())
+				.append("description", system.getDescription()).append("offset", system.getOffset())
+				.append("multiplier", system.getMultiplier()).append("systemId", system.getSystemId()));
 	}
 
 	@Override

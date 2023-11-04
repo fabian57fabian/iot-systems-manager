@@ -8,6 +8,8 @@ public interface ISensorService {
 	public List<SensorEntity> getSensorNames();
 
 	public SensorEntity getSensorById(int id);
+	
+	public List<SensorEntity> getSensorsOfSystem(int id);
 
 	void create(SensorEntity sensor);
 	

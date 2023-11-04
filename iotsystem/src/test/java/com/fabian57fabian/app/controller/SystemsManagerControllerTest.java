@@ -1,5 +1,7 @@
 package com.fabian57fabian.app.controller;
+import com.fabian57fabian.app.model.entities.SensorEntity;
 import com.fabian57fabian.app.model.entities.SystemEntity;
+import com.fabian57fabian.app.model.service.ISensorService;
 import com.fabian57fabian.app.model.service.ISystemService;
 import com.fabian57fabian.ui.view.IotView;
 
@@ -23,6 +25,7 @@ public class SystemsManagerControllerTest extends TestCase{
 	private SystemsManagerController controller;
 	
 	private ISystemService systemService;
+	private ISensorService sensorService;
 	private IotView view;
 	
 	@Rule
@@ -31,8 +34,9 @@ public class SystemsManagerControllerTest extends TestCase{
 	@Before
 	public void setUp() throws Exception {
 		systemService = mock(ISystemService.class);
+		sensorService = mock(ISensorService.class);
 		view = mock(IotView.class);
-		controller = new SystemsManagerController(systemService, view);
+		controller = new SystemsManagerController(systemService, sensorService, view);
 	}
 
 	@After
@@ -56,12 +60,18 @@ public class SystemsManagerControllerTest extends TestCase{
 
 	@Test
 	public void testGetOneSystem_right() {
-		int id = 1;
-		SystemEntity sys = new SystemEntity(id, "bar", "Description of 'bar' ", false);
-		when(systemService.getSystemById(id)).thenReturn(sys);
+		int systemId = 10;
+		SystemEntity sys = new SystemEntity(systemId, "bar", "Description of 'bar' ", false);
+		when(systemService.getSystemById(systemId)).thenReturn(sys);
 		
-		controller.expandOneSystem(id);
+		List<SensorEntity> sensors = new ArrayList<SensorEntity>();
+		sensors.add(new SensorEntity(2,  "foo2",  "wow2",  0.1, 0.2, systemId));
+		sensors.add(new SensorEntity(3,  "foo3",  "wow3",  0.1, 0.2, systemId));
+		when(sensorService.getSensorsOfSystem(systemId)).thenReturn(sensors);
+		
+		controller.expandOneSystem(systemId);
 		verify(view).showOneSystem(sys);
+		verify(view).ShowSensorsOfSystem(sensors);
 	}
 
 	@Test
@@ -72,6 +82,7 @@ public class SystemsManagerControllerTest extends TestCase{
 		
 		controller.expandOneSystem(id);
 		verify(view, never()).showOneSystem(null);
+		verify(view, never()).ShowSensorsOfSystem(null);
 		verify(view).showOneSystemError(error_msg, null);
 	}
 

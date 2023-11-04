@@ -21,6 +21,11 @@ public class SensorService implements ISensorService{
 	public SensorEntity getSensorById(int id) {
 		return sensorRepository.getSensorById(id);
 	}
+	
+	@Override
+	public List<SensorEntity> getSensorsOfSystem(int system_id){
+		return sensorRepository.getSensorsOfSystem(system_id);
+	}
 
 	@Override
 	public void create(SensorEntity sensor) {

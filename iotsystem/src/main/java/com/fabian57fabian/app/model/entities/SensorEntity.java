@@ -6,12 +6,14 @@ public class SensorEntity extends EntityBase {
 	private String description;
 	private double offset;
 	private double multiplier;
+	private int systemId;
 
-	public SensorEntity(int id, String name, String description, double offset, double multiplier) {
+	public SensorEntity(int id, String name, String description, double offset, double multiplier, int systemId) {
 		super(id, name);
 		this.description = description;
 		this.offset = offset;
 		this.multiplier = multiplier;
+		this.setSystemId(systemId);
 	}
 
 	@Override
@@ -26,7 +28,7 @@ public class SensorEntity extends EntityBase {
 		if (!super.equals(o))
 			return false;
 		return Objects.equals(description, second.description) && Objects.equals(offset, second.offset)
-				&& Objects.equals(multiplier, second.multiplier);
+				&& Objects.equals(multiplier, second.multiplier) && Objects.equals(systemId, second.systemId);
 	}
 
 	@Override
@@ -44,5 +46,13 @@ public class SensorEntity extends EntityBase {
 
 	public double getMultiplier() {
 		return multiplier;
+	}
+
+	public int getSystemId() {
+		return systemId;
+	}
+
+	public void setSystemId(int systemId) {
+		this.systemId = systemId;
 	}
 }
