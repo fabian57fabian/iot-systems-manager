@@ -73,6 +73,7 @@ public class IotSwingView extends JFrame implements IotView {
 	 * Create the frame.
 	 */
 	public IotSwingView() {
+		setTitle("Iot Systems");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 700, 500);
 		contentPane = new JPanel();

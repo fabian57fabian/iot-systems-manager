@@ -40,4 +40,9 @@ public class SystemEntity extends EntityBase {
 	public boolean getAcrive() {
 		return active;
 	}
+	
+	@Override
+	public String toString() {
+		return getId() + " : " + getName() + " ( " + getDescription() + " ) ";
+	}
 }

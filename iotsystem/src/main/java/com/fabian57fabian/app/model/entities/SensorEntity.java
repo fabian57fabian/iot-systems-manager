@@ -55,4 +55,9 @@ public class SensorEntity extends EntityBase {
 	public void setSystemId(int systemId) {
 		this.systemId = systemId;
 	}
+	
+	@Override
+	public String toString() {
+		return getId() + " : " + getName() + " ( " + getDescription() + " ) ";
+	}
 }
