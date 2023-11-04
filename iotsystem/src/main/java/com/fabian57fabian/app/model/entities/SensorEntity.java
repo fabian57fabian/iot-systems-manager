@@ -4,17 +4,16 @@ import java.util.Objects;
 
 public class SensorEntity extends EntityBase {
 	private String description;
-	private float offset;
-	private float multiplier;
-		
-	
-	public SensorEntity(int id, String name, String description, float offset, float multiplier) {
+	private double offset;
+	private double multiplier;
+
+	public SensorEntity(int id, String name, String description, double offset, double multiplier) {
 		super(id, name);
 		this.description = description;
 		this.offset = offset;
 		this.multiplier = multiplier;
 	}
-	
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o)
@@ -23,14 +22,13 @@ public class SensorEntity extends EntityBase {
 			return false;
 		if (getClass() != o.getClass())
 			return false;
-		SensorEntity second = (SensorEntity)o;
-		if(!super.equals(o))
+		SensorEntity second = (SensorEntity) o;
+		if (!super.equals(o))
 			return false;
-		return Objects.equals(description, second.description) 
-				&& Objects.equals(offset, second.offset)
+		return Objects.equals(description, second.description) && Objects.equals(offset, second.offset)
 				&& Objects.equals(multiplier, second.multiplier);
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return super.hashCode();
@@ -40,11 +38,11 @@ public class SensorEntity extends EntityBase {
 		return description;
 	}
 
-	public float getOffset() {
+	public double getOffset() {
 		return offset;
 	}
 
-	public float getMultiplier() {
+	public double getMultiplier() {
 		return multiplier;
 	}
 }
