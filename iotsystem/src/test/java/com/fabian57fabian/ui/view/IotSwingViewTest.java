@@ -1,6 +1,7 @@
 package com.fabian57fabian.ui.view;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.*;
 
 import java.util.Arrays;
 
@@ -164,7 +165,8 @@ public class IotSwingViewTest extends AssertJSwingJUnitTestCase {
 			listSystemsModel.addElement(system2);
 		});
 		// execute
-		GuiActionRunner.execute(() -> iotSwingView.onSystemRemoved(new SystemEntity(1, "foo", "Description of 'foo' ", true)));
+		GuiActionRunner
+				.execute(() -> iotSwingView.onSystemRemoved(new SystemEntity(1, "foo", "Description of 'foo' ", true)));
 		// verify
 		String[] listContents = window.list("listSystems").contents();
 		assertThat(listContents).containsExactly(system1.toString());
@@ -315,5 +317,37 @@ public class IotSwingViewTest extends AssertJSwingJUnitTestCase {
 		offsetTextBox.enterText("0.1");
 		multiplierTextBox.enterText("0.2");
 		window.button(JButtonMatcher.withName("btnAddSensor")).requireEnabled();
+	}
+
+	@Test
+	public void testAddSystemButtonShouldDelegateToSystemsControllerNewSystem() {
+		window.textBox(JTextComponentMatcher.withName("txtSystemId")).enterText("10");
+		window.textBox(JTextComponentMatcher.withName("txtSystemName")).enterText("n");
+		window.textBox(JTextComponentMatcher.withName("txtSystemDescription")).enterText("d");
+		window.button(JButtonMatcher.withName("btnAddSystem")).click();
+		verify(controller).addSystem(new SystemEntity(10, "n", "d", false));
+	}
+
+	@Test
+	public void testAddSystemButtonOnNotIntIdShouldShowAnError() {
+		window.textBox(JTextComponentMatcher.withName("txtSystemId")).enterText("aaa");
+		window.textBox(JTextComponentMatcher.withName("txtSystemName")).enterText("n");
+		window.textBox(JTextComponentMatcher.withName("txtSystemDescription")).enterText("d");
+		window.button(JButtonMatcher.withName("btnAddSystem")).click();
+		window.label(JLabelMatcher.withName("lblSystemErrorMessageLabel")).requireText("Id not int!");
+	}
+
+	@Test
+	public void testDeleteButtonShouldDelegateToSchoolControllerDeleteStudent() {
+		SystemEntity system1 = new SystemEntity(0, "bar", "Description of 'bar' ", false);
+		SystemEntity system2 = new SystemEntity(1, "foo", "Description of 'foo' ", true);
+		GuiActionRunner.execute(() -> {
+			DefaultListModel<SystemEntity> listSystemsModel = iotSwingView.getListSystemsModel();
+			listSystemsModel.addElement(system1);
+			listSystemsModel.addElement(system2);
+		});
+		window.list("listSystems").selectItem(1);
+		window.button(JButtonMatcher.withName("btnDeleteSystem")).click();
+		verify(controller).removeSystem(system2);
 	}
 }

@@ -29,5 +29,14 @@ public class SystemsManagerController {
 			view.showOneSystemError("System not found.", null);
 		}
 	}
-
+	
+	public void addSystem(SystemEntity system) {
+		systemService.create(system);
+		view.onSystemAdded(system);
+	}
+	
+	public void removeSystem(SystemEntity system) {
+		systemService.delete(system.getId());
+		view.onSystemRemoved(system);
+	}
 }

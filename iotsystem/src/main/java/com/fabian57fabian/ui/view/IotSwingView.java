@@ -302,6 +302,9 @@ public class IotSwingView extends JFrame implements IotView {
 		gbc_btnAddSystem.gridy = 6;
 		btnAddSystem.setName("btnAddSystem");
 		contentPane.add(btnAddSystem, gbc_btnAddSystem);
+		btnAddSystem.addActionListener(
+				e -> btnAddSystem_Click()
+				);
 
 		btnAddSensor = new JButton("add");
 		btnAddSensor.setEnabled(false);
@@ -358,6 +361,9 @@ public class IotSwingView extends JFrame implements IotView {
 		gbc_btnDeleteSystem.gridy = 10;
 		btnDeleteSystem.setName("btnDeleteSystem");
 		contentPane.add(btnDeleteSystem, gbc_btnDeleteSystem);
+		btnDeleteSystem.addActionListener(
+				e -> systemsManagerController.removeSystem(listSystems.getSelectedValue())
+				);
 
 		btnDeleteSensor = new JButton("delete");
 		btnDeleteSensor.setEnabled(false);
@@ -382,6 +388,23 @@ public class IotSwingView extends JFrame implements IotView {
 		gbc_lblSensorErrorMessageLabel.gridy = 11;
 		lblSensorErrorMessageLabel.setName("lblSensorErrorMessageLabel");
 		contentPane.add(lblSensorErrorMessageLabel, gbc_lblSensorErrorMessageLabel);
+	}
+	
+	private Integer parseIntOrNull(String value) {
+	    try {
+	        return Integer.parseInt(value);
+	    } catch (NumberFormatException e) {
+	        return null;
+	    }
+	}
+	
+	private void btnAddSystem_Click() {
+		Integer id = parseIntOrNull(txtSystemId.getText());
+		if(id == null) {
+			lblSystemErrorMessageLabel.setText("Id not int!");
+			return;
+		}
+		systemsManagerController.addSystem(new SystemEntity(id, txtSystemName.getText(), txtSystemDescription.getText(), false));
 	}
 
 	@Override

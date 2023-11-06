@@ -85,5 +85,20 @@ public class SystemsManagerControllerTest extends TestCase{
 		verify(view, never()).ShowSensorsOfSystem(null);
 		verify(view).showOneSystemError(error_msg, null);
 	}
-
+	
+	@Test
+	public void testaddSystem() {
+		SystemEntity system = new SystemEntity(10, "bar", "Description of 'bar' ", false);
+		controller.addSystem(system);
+		verify(systemService).create(system);
+		verify(view).onSystemAdded(system);
+	}
+	
+	@Test
+	public void testremoveSystem() {
+		SystemEntity system = new SystemEntity(10, "bar", "Description of 'bar' ", false);
+		controller.removeSystem(system);
+		verify(systemService).delete(system.getId());
+		verify(view).onSystemRemoved(system);
+	}
 }
