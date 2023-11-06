@@ -23,6 +23,7 @@ import org.assertj.swing.core.matcher.JTextComponentMatcher;
 import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.fixture.FrameFixture;
 import org.assertj.swing.fixture.JButtonFixture;
+import org.assertj.swing.fixture.JTextComponentFixture;
 
 @RunWith(GUITestRunner.class)
 public class IotSwingViewTest extends AssertJSwingJUnitTestCase {
@@ -88,7 +89,7 @@ public class IotSwingViewTest extends AssertJSwingJUnitTestCase {
 		String[] listContents = window.list("listSystems").contents();
 		assertThat(listContents).containsExactly(system1.toString(), system2.toString());
 	}
-	
+
 	@Test
 	public void testsShowSensorsOfSystemShouldAddSensorsToTheList() {
 		SensorEntity sensor1 = new SensorEntity(0, "bar", "Description of 'bar' ", 0.1, 0.2, 10);
@@ -110,5 +111,49 @@ public class IotSwingViewTest extends AssertJSwingJUnitTestCase {
 		SystemEntity system1 = new SystemEntity(0, "bar", "Description of 'bar' ", false);
 		GuiActionRunner.execute(() -> iotSwingView.showOneSystemError("error message", system1));
 		window.label(JLabelMatcher.withName("lblSystemErrorMessageLabel")).requireText("error message: " + system1);
+	}
+
+	@Test
+	public void testSystemWhenEitherIdOrNameOrDescriptionAreBlankThenAddButtonShouldBeDisabled() {
+		JTextComponentFixture idTextBox = window.textBox(JTextComponentMatcher.withName("txtSystemId"));
+		JTextComponentFixture nameTextBox = window.textBox(JTextComponentMatcher.withName("txtSystemName"));
+		JTextComponentFixture descriptionTextBox = window
+				.textBox(JTextComponentMatcher.withName("txtSystemDescription"));
+
+		idTextBox.enterText("1");
+		nameTextBox.enterText("");
+		descriptionTextBox.enterText("s");
+		window.button(JButtonMatcher.withName("btnAddSystem")).requireDisabled();
+
+		// reset
+		idTextBox.setText("");
+		nameTextBox.setText("");
+		descriptionTextBox.setText("");
+
+		idTextBox.enterText("");
+		nameTextBox.enterText("");
+		descriptionTextBox.enterText("");
+		window.button(JButtonMatcher.withName("btnAddSystem")).requireDisabled();
+
+		// reset
+		idTextBox.setText("");
+		nameTextBox.setText("");
+		descriptionTextBox.setText("");
+
+		idTextBox.enterText(" ");
+		nameTextBox.enterText(" ");
+		descriptionTextBox.enterText("s2");
+		window.button(JButtonMatcher.withName("btnAddSystem")).requireDisabled();
+		
+
+		// reset
+		idTextBox.setText("");
+		nameTextBox.setText("");
+		descriptionTextBox.setText("");
+
+		idTextBox.enterText(" ");
+		nameTextBox.enterText(" ");
+		descriptionTextBox.enterText(" ");
+		window.button(JButtonMatcher.withName("btnAddSystem")).requireDisabled();
 	}
 }

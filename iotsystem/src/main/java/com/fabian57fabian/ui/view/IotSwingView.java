@@ -20,6 +20,11 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 
@@ -82,11 +87,21 @@ public class IotSwingView extends JFrame implements IotView {
 		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
 		gbl_contentPane.columnWidths = new int[] { 0, 303, 0, 0, 0, 0 };
-		gbl_contentPane.rowHeights = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+		gbl_contentPane.rowHeights = new int[] { 0, 0, 0, 0, 0, 0, 0, 14, 0, 0, 0, 0, 0 };
 		gbl_contentPane.columnWeights = new double[] { 0.0, 1.0, 0.0, 0.0, 1.0, Double.MIN_VALUE };
-		gbl_contentPane.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0,
+		gbl_contentPane.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0,
 				Double.MIN_VALUE };
 		contentPane.setLayout(gbl_contentPane);
+
+		// All listeners
+		KeyAdapter btnSystemAddEnabler = new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				btnAddSystem
+						.setEnabled(!txtSystemId.getText().trim().isEmpty() && !txtSystemName.getText().trim().isEmpty()
+								&& !txtSystemDescription.getText().trim().isEmpty());
+			}
+		};
 
 		JLabel lblSystemId = new JLabel("id");
 		GridBagConstraints gbc_lblSystemId = new GridBagConstraints();
@@ -106,6 +121,7 @@ public class IotSwingView extends JFrame implements IotView {
 		txtSystemId.setName("txtSystemId");
 		contentPane.add(txtSystemId, gbc_txtSystemId);
 		txtSystemId.setColumns(10);
+		txtSystemId.addKeyListener(btnSystemAddEnabler);
 
 		lblSensorId = new JLabel("id");
 		GridBagConstraints gbc_lblSensorId = new GridBagConstraints();
@@ -143,6 +159,7 @@ public class IotSwingView extends JFrame implements IotView {
 		txtSystemName.setName("txtSystemName");
 		contentPane.add(txtSystemName, gbc_txtSystemName);
 		txtSystemName.setColumns(10);
+		txtSystemName.addKeyListener(btnSystemAddEnabler);
 
 		lblSensorName = new JLabel("name");
 		GridBagConstraints gbc_lblSensorName = new GridBagConstraints();
@@ -180,6 +197,7 @@ public class IotSwingView extends JFrame implements IotView {
 		txtSystemDescription.setName("txtSystemDescription");
 		contentPane.add(txtSystemDescription, gbc_txtSystemDescription);
 		txtSystemDescription.setColumns(10);
+		txtSystemDescription.addKeyListener(btnSystemAddEnabler);
 
 		lblSensorDescription = new JLabel("desc");
 		GridBagConstraints gbc_lblSensorDescription = new GridBagConstraints();
@@ -276,7 +294,7 @@ public class IotSwingView extends JFrame implements IotView {
 		gbc_scrollPaneSystem.insets = new Insets(0, 0, 5, 5);
 		gbc_scrollPaneSystem.fill = GridBagConstraints.BOTH;
 		gbc_scrollPaneSystem.gridx = 1;
-		gbc_scrollPaneSystem.gridy = 7;
+		gbc_scrollPaneSystem.gridy = 8;
 		contentPane.add(scrollPaneSystem, gbc_scrollPaneSystem);
 
 		listSystemsModel = new DefaultListModel<>();
@@ -291,7 +309,7 @@ public class IotSwingView extends JFrame implements IotView {
 		gbc_scrollPaneSensor.insets = new Insets(0, 0, 5, 0);
 		gbc_scrollPaneSensor.fill = GridBagConstraints.BOTH;
 		gbc_scrollPaneSensor.gridx = 4;
-		gbc_scrollPaneSensor.gridy = 7;
+		gbc_scrollPaneSensor.gridy = 8;
 		contentPane.add(scrollPaneSensor, gbc_scrollPaneSensor);
 
 		listSensorsModel = new DefaultListModel<>();
@@ -305,7 +323,7 @@ public class IotSwingView extends JFrame implements IotView {
 		GridBagConstraints gbc_lblCurrentSystemDescription = new GridBagConstraints();
 		gbc_lblCurrentSystemDescription.insets = new Insets(0, 0, 5, 5);
 		gbc_lblCurrentSystemDescription.gridx = 1;
-		gbc_lblCurrentSystemDescription.gridy = 8;
+		gbc_lblCurrentSystemDescription.gridy = 9;
 		lblCurrentSystemDescription.setName("lblCurrentSystemDescription");
 		contentPane.add(lblCurrentSystemDescription, gbc_lblCurrentSystemDescription);
 
@@ -314,7 +332,7 @@ public class IotSwingView extends JFrame implements IotView {
 		GridBagConstraints gbc_btnDeleteSystem = new GridBagConstraints();
 		gbc_btnDeleteSystem.insets = new Insets(0, 0, 5, 5);
 		gbc_btnDeleteSystem.gridx = 1;
-		gbc_btnDeleteSystem.gridy = 9;
+		gbc_btnDeleteSystem.gridy = 10;
 		btnDeleteSystem.setName("btnDeleteSystem");
 		contentPane.add(btnDeleteSystem, gbc_btnDeleteSystem);
 
@@ -323,21 +341,21 @@ public class IotSwingView extends JFrame implements IotView {
 		GridBagConstraints gbc_btnDeleteSensor = new GridBagConstraints();
 		gbc_btnDeleteSensor.insets = new Insets(0, 0, 5, 0);
 		gbc_btnDeleteSensor.gridx = 4;
-		gbc_btnDeleteSensor.gridy = 9;
+		gbc_btnDeleteSensor.gridy = 10;
 		contentPane.add(btnDeleteSensor, gbc_btnDeleteSensor);
 
 		lblSystemErrorMessageLabel = new JLabel(" ");
 		GridBagConstraints gbc_errorMessageLabel = new GridBagConstraints();
 		gbc_errorMessageLabel.insets = new Insets(0, 0, 0, 5);
 		gbc_errorMessageLabel.gridx = 1;
-		gbc_errorMessageLabel.gridy = 10;
+		gbc_errorMessageLabel.gridy = 11;
 		lblSystemErrorMessageLabel.setName("lblSystemErrorMessageLabel");
 		contentPane.add(lblSystemErrorMessageLabel, gbc_errorMessageLabel);
-		
+
 		lblSensorErrorMessageLabel = new JLabel(" ");
 		GridBagConstraints gbc_lblSensorErrorMessageLabel = new GridBagConstraints();
 		gbc_lblSensorErrorMessageLabel.gridx = 4;
-		gbc_lblSensorErrorMessageLabel.gridy = 10;
+		gbc_lblSensorErrorMessageLabel.gridy = 11;
 		lblSensorErrorMessageLabel.setName("lblSensorErrorMessageLabel");
 		contentPane.add(lblSensorErrorMessageLabel, gbc_lblSensorErrorMessageLabel);
 	}
