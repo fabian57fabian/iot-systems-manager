@@ -1,5 +1,6 @@
 package com.fabian57fabian.app.controller;
 
+import com.fabian57fabian.app.model.entities.SensorEntity;
 import com.fabian57fabian.app.model.entities.SystemEntity;
 import com.fabian57fabian.app.model.service.ISensorService;
 import com.fabian57fabian.app.model.service.ISystemService;
@@ -38,5 +39,15 @@ public class SystemsManagerController {
 	public void removeSystem(SystemEntity system) {
 		systemService.delete(system.getId());
 		view.onSystemRemoved(system);
+	}
+	
+	public void addSensor(SensorEntity sensor) {
+		sensorService.create(sensor);
+		view.onSensorAdded(sensor);
+	}
+	
+	public void removeSensor(SensorEntity sensor) {
+		sensorService.delete(sensor.getId());
+		view.onSensorRemoved(sensor);
 	}
 }

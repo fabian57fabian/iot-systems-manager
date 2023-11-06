@@ -19,4 +19,8 @@ public interface IotView {
 	public void onSystemAdded(SystemEntity system);
 	
 	public void onSystemRemoved(SystemEntity system);
+	
+	public void onSensorAdded(SensorEntity sensor);
+	
+	public void onSensorRemoved(SensorEntity sensor);
 }

@@ -101,4 +101,20 @@ public class SystemsManagerControllerTest extends TestCase{
 		verify(systemService).delete(system.getId());
 		verify(view).onSystemRemoved(system);
 	}
+	
+	@Test
+	public void testAddSensor() {
+		SensorEntity sensor =new SensorEntity(0,  "foo", "description of foo",  0.1,  0.2, 10);
+		controller.addSensor(sensor);
+		verify(sensorService).create(sensor);
+		verify(view).onSensorAdded(sensor);
+	}
+	
+	@Test
+	public void testRemoveSensor() {
+		SensorEntity sensor =new SensorEntity(0,  "foo", "description of foo",  0.1,  0.2, 10);
+		controller.removeSensor(sensor);
+		verify(sensorService).delete(sensor.getId());
+		verify(view).onSensorRemoved(sensor);
+	}
 }
