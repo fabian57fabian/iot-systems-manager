@@ -103,6 +103,16 @@ public class IotSwingView extends JFrame implements IotView {
 			}
 		};
 
+		KeyAdapter btnSensorAddEnabler = new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				btnAddSensor.setEnabled(!txtSensorId.getText().trim().isEmpty()
+						&& !txtSensorName.getText().trim().isEmpty() && !txtSensorDescription.getText().trim().isEmpty()
+						&& !txtSensorUnit.getText().trim().isEmpty() && !txtSensorOffset.getText().trim().isEmpty()
+						&& !txtSensorMultiplier.getText().trim().isEmpty());
+			}
+		};
+
 		JLabel lblSystemId = new JLabel("id");
 		GridBagConstraints gbc_lblSystemId = new GridBagConstraints();
 		gbc_lblSystemId.insets = new Insets(0, 0, 5, 5);
@@ -129,6 +139,7 @@ public class IotSwingView extends JFrame implements IotView {
 		gbc_lblSensorId.insets = new Insets(0, 0, 5, 5);
 		gbc_lblSensorId.gridx = 3;
 		gbc_lblSensorId.gridy = 0;
+		lblSensorId.setName("lblSensorId");
 		contentPane.add(lblSensorId, gbc_lblSensorId);
 
 		txtSensorId = new JTextField();
@@ -138,8 +149,10 @@ public class IotSwingView extends JFrame implements IotView {
 		gbc_txtSensorId.gridx = 4;
 		gbc_txtSensorId.gridy = 0;
 		txtSensorId.setName("txtSensorId");
+		txtSensorId.setName("txtSensorId");
 		contentPane.add(txtSensorId, gbc_txtSensorId);
 		txtSensorId.setColumns(10);
+		txtSensorId.addKeyListener(btnSensorAddEnabler);
 
 		lblSystemName = new JLabel("name");
 		GridBagConstraints gbc_lblSystemName = new GridBagConstraints();
@@ -167,6 +180,7 @@ public class IotSwingView extends JFrame implements IotView {
 		gbc_lblSensorName.insets = new Insets(0, 0, 5, 5);
 		gbc_lblSensorName.gridx = 3;
 		gbc_lblSensorName.gridy = 1;
+		lblSensorName.setName("lblSensorName");
 		contentPane.add(lblSensorName, gbc_lblSensorName);
 
 		txtSensorName = new JTextField();
@@ -178,6 +192,7 @@ public class IotSwingView extends JFrame implements IotView {
 		txtSensorName.setName("txtSensorName");
 		contentPane.add(txtSensorName, gbc_txtSensorName);
 		txtSensorName.setColumns(10);
+		txtSensorName.addKeyListener(btnSensorAddEnabler);
 
 		lblSystemDescription = new JLabel("desc");
 		GridBagConstraints gbc_lblSystemDescription = new GridBagConstraints();
@@ -199,12 +214,13 @@ public class IotSwingView extends JFrame implements IotView {
 		txtSystemDescription.setColumns(10);
 		txtSystemDescription.addKeyListener(btnSystemAddEnabler);
 
-		lblSensorDescription = new JLabel("desc");
+		lblSensorDescription = new JLabel("description");
 		GridBagConstraints gbc_lblSensorDescription = new GridBagConstraints();
 		gbc_lblSensorDescription.anchor = GridBagConstraints.EAST;
 		gbc_lblSensorDescription.insets = new Insets(0, 0, 5, 5);
 		gbc_lblSensorDescription.gridx = 3;
 		gbc_lblSensorDescription.gridy = 2;
+		lblSensorDescription.setName("lblSensorDescription");
 		contentPane.add(lblSensorDescription, gbc_lblSensorDescription);
 
 		txtSensorDescription = new JTextField();
@@ -216,6 +232,7 @@ public class IotSwingView extends JFrame implements IotView {
 		txtSensorDescription.setName("txtSensorDescription");
 		contentPane.add(txtSensorDescription, gbc_txtSensorDescription);
 		txtSensorDescription.setColumns(10);
+		txtSensorDescription.addKeyListener(btnSensorAddEnabler);
 
 		lblSensorUnit = new JLabel("unit");
 		GridBagConstraints gbc_lblSensorUnit = new GridBagConstraints();
@@ -223,6 +240,7 @@ public class IotSwingView extends JFrame implements IotView {
 		gbc_lblSensorUnit.insets = new Insets(0, 0, 5, 5);
 		gbc_lblSensorUnit.gridx = 3;
 		gbc_lblSensorUnit.gridy = 3;
+		lblSensorUnit.setName("lblSensorUnit");
 		contentPane.add(lblSensorUnit, gbc_lblSensorUnit);
 
 		txtSensorUnit = new JTextField();
@@ -234,6 +252,7 @@ public class IotSwingView extends JFrame implements IotView {
 		txtSensorUnit.setName("txtSensorUnit");
 		contentPane.add(txtSensorUnit, gbc_txtSensorUnit);
 		txtSensorUnit.setColumns(10);
+		txtSensorUnit.addKeyListener(btnSensorAddEnabler);
 
 		lblSensorOffset = new JLabel("offset");
 		GridBagConstraints gbc_lblSensorOffset = new GridBagConstraints();
@@ -241,6 +260,7 @@ public class IotSwingView extends JFrame implements IotView {
 		gbc_lblSensorOffset.insets = new Insets(0, 0, 5, 5);
 		gbc_lblSensorOffset.gridx = 3;
 		gbc_lblSensorOffset.gridy = 4;
+		lblSensorOffset.setName("lblSensorOffset");
 		contentPane.add(lblSensorOffset, gbc_lblSensorOffset);
 
 		txtSensorOffset = new JTextField();
@@ -252,6 +272,7 @@ public class IotSwingView extends JFrame implements IotView {
 		txtSensorOffset.setName("txtSensorOffset");
 		contentPane.add(txtSensorOffset, gbc_txtSensorOffset);
 		txtSensorOffset.setColumns(10);
+		txtSensorOffset.addKeyListener(btnSensorAddEnabler);
 
 		lblSensorMultiplier = new JLabel("multiplier");
 		GridBagConstraints gbc_lblSensorMultiplier = new GridBagConstraints();
@@ -259,6 +280,7 @@ public class IotSwingView extends JFrame implements IotView {
 		gbc_lblSensorMultiplier.insets = new Insets(0, 0, 5, 5);
 		gbc_lblSensorMultiplier.gridx = 3;
 		gbc_lblSensorMultiplier.gridy = 5;
+		lblSensorMultiplier.setName("lblSensorMultiplier");
 		contentPane.add(lblSensorMultiplier, gbc_lblSensorMultiplier);
 
 		txtSensorMultiplier = new JTextField();
@@ -270,6 +292,7 @@ public class IotSwingView extends JFrame implements IotView {
 		txtSensorMultiplier.setName("txtSensorMultiplier");
 		contentPane.add(txtSensorMultiplier, gbc_txtSensorMultiplier);
 		txtSensorMultiplier.setColumns(10);
+		txtSensorMultiplier.addKeyListener(btnSensorAddEnabler);
 
 		btnAddSystem = new JButton("add");
 		btnAddSystem.setEnabled(false);
@@ -342,6 +365,7 @@ public class IotSwingView extends JFrame implements IotView {
 		gbc_btnDeleteSensor.insets = new Insets(0, 0, 5, 0);
 		gbc_btnDeleteSensor.gridx = 4;
 		gbc_btnDeleteSensor.gridy = 10;
+		btnDeleteSensor.setName("btnDeleteSensor");
 		contentPane.add(btnDeleteSensor, gbc_btnDeleteSensor);
 
 		lblSystemErrorMessageLabel = new JLabel(" ");

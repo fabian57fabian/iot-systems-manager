@@ -68,16 +68,44 @@ public class IotSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.label(JLabelMatcher.withName("lblSystemErrorMessageLabel")).requireText(" ");
 		window.label(JLabelMatcher.withName("lblCurrentSystemDescription")).requireText(" ");
 		window.list("listSystems");
+		
+		window.label(JLabelMatcher.withName("lblSensorId")).requireText("id");
+		window.label(JLabelMatcher.withName("lblSensorName")).requireText("name");
+		window.label(JLabelMatcher.withName("lblSensorDescription")).requireText("description");
+		window.label(JLabelMatcher.withName("lblSensorUnit")).requireText("unit");
+		window.label(JLabelMatcher.withName("lblSensorOffset")).requireText("offset");
+		window.label(JLabelMatcher.withName("lblSensorMultiplier")).requireText("multiplier");
+		window.textBox(JTextComponentMatcher.withName("txtSensorId")).requireEnabled();
+		window.textBox(JTextComponentMatcher.withName("txtSensorName")).requireEnabled();
+		window.textBox(JTextComponentMatcher.withName("txtSensorDescription")).requireEnabled();
+		window.textBox(JTextComponentMatcher.withName("txtSensorUnit")).requireEnabled();
+		window.textBox(JTextComponentMatcher.withName("txtSensorOffset")).requireEnabled();
+		window.textBox(JTextComponentMatcher.withName("txtSensorMultiplier")).requireEnabled();
+		window.button(JButtonMatcher.withName("btnAddSensor")).requireDisabled();
+		window.button(JButtonMatcher.withName("btnDeleteSensor")).requireDisabled();
+		window.label(JLabelMatcher.withName("lblSensorErrorMessageLabel")).requireText(" ");
+		window.list("listSensors");
 	}
 
 	@Test
-	public void testDeleteButtonShouldBeEnabledOnlyWhenASystemIsSelected() {
+	public void testSystemDeleteButtonShouldBeEnabledOnlyWhenASystemIsSelected() {
 		GuiActionRunner.execute(() -> iotSwingView.getListSystemsModel()
 				.addElement(new SystemEntity(0, "bar", "Description of 'bar' ", false)));
 		window.list("listSystems").selectItem(0);
 		JButtonFixture deleteButton = window.button(JButtonMatcher.withName("btnDeleteSystem"));
 		deleteButton.requireEnabled();
 		window.list("listSystems").clearSelection();
+		deleteButton.requireDisabled();
+	}
+
+	@Test
+	public void testSensorDeleteButtonShouldBeEnabledOnlyWhenASensorIsSelected() {
+		GuiActionRunner.execute(() -> iotSwingView.getListSensorsModel()
+				.addElement(new SensorEntity(0, "bar", "Description of 'bar' ", 0.1, 0.2, 1)));
+		window.list("listSensors").selectItem(0);
+		JButtonFixture deleteButton = window.button(JButtonMatcher.withName("btnDeleteSensor"));
+		deleteButton.requireEnabled();
+		window.list("listSensors").clearSelection();
 		deleteButton.requireDisabled();
 	}
 
@@ -155,5 +183,110 @@ public class IotSwingViewTest extends AssertJSwingJUnitTestCase {
 		nameTextBox.enterText(" ");
 		descriptionTextBox.enterText(" ");
 		window.button(JButtonMatcher.withName("btnAddSystem")).requireDisabled();
+	}
+	
+	@Test
+	public void testSystemWhenAllAreFilledThenAddButtonShouldBeEnabled() {
+		JTextComponentFixture idTextBox = window.textBox(JTextComponentMatcher.withName("txtSystemId"));
+		JTextComponentFixture nameTextBox = window.textBox(JTextComponentMatcher.withName("txtSystemName"));
+		JTextComponentFixture descriptionTextBox = window
+				.textBox(JTextComponentMatcher.withName("txtSystemDescription"));
+
+		idTextBox.enterText("10");
+		nameTextBox.enterText("n");
+		descriptionTextBox.enterText("n");
+		window.button(JButtonMatcher.withName("btnAddSystem")).requireEnabled();
+	}
+	
+
+	@Test
+	public void testSensorWhenEitherAllAreBlankThenAddButtonShouldBeDisabled() {
+		JTextComponentFixture idTextBox = window.textBox(JTextComponentMatcher.withName("txtSensorId"));
+		JTextComponentFixture nameTextBox = window.textBox(JTextComponentMatcher.withName("txtSensorName"));
+		JTextComponentFixture descriptionTextBox = window
+				.textBox(JTextComponentMatcher.withName("txtSensorDescription"));
+		JTextComponentFixture unitTextBox = window.textBox(JTextComponentMatcher.withName("txtSensorUnit"));
+		JTextComponentFixture offsetTextBox = window.textBox(JTextComponentMatcher.withName("txtSensorOffset"));
+		JTextComponentFixture multiplierTextBox = window.textBox(JTextComponentMatcher.withName("txtSensorMultiplier"));
+
+		// One empty
+		idTextBox.enterText("1");
+		nameTextBox.enterText("");
+		descriptionTextBox.enterText("s");
+		unitTextBox.enterText("s");
+		offsetTextBox.enterText("s");
+		multiplierTextBox.enterText("s");
+		window.button(JButtonMatcher.withName("btnAddSensor")).requireDisabled();
+
+		// reset
+		idTextBox.setText("");
+		nameTextBox.setText("");
+		descriptionTextBox.setText("");
+		unitTextBox.setText("");
+		offsetTextBox.setText("");
+		multiplierTextBox.setText("");
+		
+		// all empty
+		idTextBox.enterText("");
+		nameTextBox.enterText("");
+		descriptionTextBox.enterText("");
+		unitTextBox.enterText("");
+		offsetTextBox.enterText("");
+		multiplierTextBox.enterText("");
+		window.button(JButtonMatcher.withName("btnAddSensor")).requireDisabled();
+
+		// reset
+		idTextBox.setText("");
+		nameTextBox.setText("");
+		descriptionTextBox.setText("");
+		unitTextBox.setText("");
+		offsetTextBox.setText("");
+		multiplierTextBox.setText("");
+
+		idTextBox.enterText(" ");
+		nameTextBox.enterText(" ");
+		descriptionTextBox.enterText("s2");
+		unitTextBox.enterText(" ");
+		offsetTextBox.enterText(" s3");
+		multiplierTextBox.enterText(" ");
+		window.button(JButtonMatcher.withName("btnAddSensor")).requireDisabled();
+		
+
+		// reset
+		idTextBox.setText("");
+		nameTextBox.setText("");
+		descriptionTextBox.setText("");
+		unitTextBox.setText("");
+		offsetTextBox.setText("");
+		multiplierTextBox.setText("");
+		
+		// all spaces
+		idTextBox.enterText(" ");
+		nameTextBox.enterText(" ");
+		descriptionTextBox.enterText(" ");
+		unitTextBox.enterText(" ");
+		offsetTextBox.enterText(" ");
+		multiplierTextBox.enterText(" ");
+		window.button(JButtonMatcher.withName("btnAddSensor")).requireDisabled();
+	}
+	
+	@Test
+	public void testSensorWhenAllAreFilledThenAddButtonShouldBeEnabled() {
+		JTextComponentFixture idTextBox = window.textBox(JTextComponentMatcher.withName("txtSensorId"));
+		JTextComponentFixture nameTextBox = window.textBox(JTextComponentMatcher.withName("txtSensorName"));
+		JTextComponentFixture descriptionTextBox = window
+				.textBox(JTextComponentMatcher.withName("txtSensorDescription"));
+		JTextComponentFixture unitTextBox = window.textBox(JTextComponentMatcher.withName("txtSensorUnit"));
+		JTextComponentFixture offsetTextBox = window.textBox(JTextComponentMatcher.withName("txtSensorOffset"));
+		JTextComponentFixture multiplierTextBox = window.textBox(JTextComponentMatcher.withName("txtSensorMultiplier"));
+
+		// One empty
+		idTextBox.enterText("1");
+		nameTextBox.enterText("n");
+		descriptionTextBox.enterText("d");
+		unitTextBox.enterText("u");
+		offsetTextBox.enterText("0.1");
+		multiplierTextBox.enterText("0.2");
+		window.button(JButtonMatcher.withName("btnAddSensor")).requireEnabled();
 	}
 }
