@@ -36,10 +36,23 @@ This code with be the official project for the exam involving:
 
 # Usage
 
+From [REPO_DIR]/iotsystem/ directory:
+
 This app needs a mongoDb database. If you don't have an installed db, you can launch it with docker:
 
 ```bash
 docker run -p 27017:27017 --rm mongo:4.4.3
 ```
 
-Now you can launch and use the app.
+Then, in a separate terminal, we can build a fatjar with following command:
+
+```bash
+mvn package
+```
+
+Now you can launch the builded jar inside **target** directory called **iotsystem-[version]-jar-with-dependencies.jar** :
+
+```bash
+java -jar target/iotsystem-0.2-SNAPSHOT-jar-with-dependencies.jar
+```
+
