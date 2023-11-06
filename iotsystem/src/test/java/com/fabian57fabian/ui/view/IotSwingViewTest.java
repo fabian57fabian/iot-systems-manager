@@ -4,6 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Arrays;
 
+import javax.swing.DefaultListModel;
+
 import com.fabian57fabian.app.controller.SystemsManagerController;
 import com.fabian57fabian.app.model.entities.SensorEntity;
 import com.fabian57fabian.app.model.entities.SystemEntity;
@@ -68,7 +70,7 @@ public class IotSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.label(JLabelMatcher.withName("lblSystemErrorMessageLabel")).requireText(" ");
 		window.label(JLabelMatcher.withName("lblCurrentSystemDescription")).requireText(" ");
 		window.list("listSystems");
-		
+
 		window.label(JLabelMatcher.withName("lblSensorId")).requireText("id");
 		window.label(JLabelMatcher.withName("lblSensorName")).requireText("name");
 		window.label(JLabelMatcher.withName("lblSensorDescription")).requireText("description");
@@ -142,6 +144,34 @@ public class IotSwingViewTest extends AssertJSwingJUnitTestCase {
 	}
 
 	@Test
+	public void testSystemAddedShouldAddTheStudentToTheListAndResetTheErrorLabel() {
+		SystemEntity system1 = new SystemEntity(0, "bar", "Description of bar ", false);
+		GuiActionRunner
+				.execute(() -> iotSwingView.onSystemAdded(new SystemEntity(0, "bar", "Description of bar ", false)));
+		String[] listContents = window.list("listSystems").contents();
+		assertThat(listContents).containsExactly(system1.toString());
+		window.label("lblSystemErrorMessageLabel").requireText(" ");
+	}
+
+	@Test
+	public void testStudentRemovedShouldRemoveTheStudentFromTheListAndResetTheErrorLabel() {
+		// setup
+		SystemEntity system1 = new SystemEntity(0, "bar", "Description of 'bar' ", false);
+		SystemEntity system2 = new SystemEntity(1, "foo", "Description of 'foo' ", true);
+		GuiActionRunner.execute(() -> {
+			DefaultListModel<SystemEntity> listSystemsModel = iotSwingView.getListSystemsModel();
+			listSystemsModel.addElement(system1);
+			listSystemsModel.addElement(system2);
+		});
+		// execute
+		GuiActionRunner.execute(() -> iotSwingView.onSystemRemoved(new SystemEntity(1, "foo", "Description of 'foo' ", true)));
+		// verify
+		String[] listContents = window.list("listSystems").contents();
+		assertThat(listContents).containsExactly(system1.toString());
+		window.label("lblSystemErrorMessageLabel").requireText(" ");
+	}
+
+	@Test
 	public void testSystemWhenEitherIdOrNameOrDescriptionAreBlankThenAddButtonShouldBeDisabled() {
 		JTextComponentFixture idTextBox = window.textBox(JTextComponentMatcher.withName("txtSystemId"));
 		JTextComponentFixture nameTextBox = window.textBox(JTextComponentMatcher.withName("txtSystemName"));
@@ -172,7 +202,6 @@ public class IotSwingViewTest extends AssertJSwingJUnitTestCase {
 		nameTextBox.enterText(" ");
 		descriptionTextBox.enterText("s2");
 		window.button(JButtonMatcher.withName("btnAddSystem")).requireDisabled();
-		
 
 		// reset
 		idTextBox.setText("");
@@ -184,7 +213,7 @@ public class IotSwingViewTest extends AssertJSwingJUnitTestCase {
 		descriptionTextBox.enterText(" ");
 		window.button(JButtonMatcher.withName("btnAddSystem")).requireDisabled();
 	}
-	
+
 	@Test
 	public void testSystemWhenAllAreFilledThenAddButtonShouldBeEnabled() {
 		JTextComponentFixture idTextBox = window.textBox(JTextComponentMatcher.withName("txtSystemId"));
@@ -197,7 +226,6 @@ public class IotSwingViewTest extends AssertJSwingJUnitTestCase {
 		descriptionTextBox.enterText("n");
 		window.button(JButtonMatcher.withName("btnAddSystem")).requireEnabled();
 	}
-	
 
 	@Test
 	public void testSensorWhenEitherAllAreBlankThenAddButtonShouldBeDisabled() {
@@ -225,7 +253,7 @@ public class IotSwingViewTest extends AssertJSwingJUnitTestCase {
 		unitTextBox.setText("");
 		offsetTextBox.setText("");
 		multiplierTextBox.setText("");
-		
+
 		// all empty
 		idTextBox.enterText("");
 		nameTextBox.enterText("");
@@ -250,7 +278,6 @@ public class IotSwingViewTest extends AssertJSwingJUnitTestCase {
 		offsetTextBox.enterText(" s3");
 		multiplierTextBox.enterText(" ");
 		window.button(JButtonMatcher.withName("btnAddSensor")).requireDisabled();
-		
 
 		// reset
 		idTextBox.setText("");
@@ -259,7 +286,7 @@ public class IotSwingViewTest extends AssertJSwingJUnitTestCase {
 		unitTextBox.setText("");
 		offsetTextBox.setText("");
 		multiplierTextBox.setText("");
-		
+
 		// all spaces
 		idTextBox.enterText(" ");
 		nameTextBox.enterText(" ");
@@ -269,7 +296,7 @@ public class IotSwingViewTest extends AssertJSwingJUnitTestCase {
 		multiplierTextBox.enterText(" ");
 		window.button(JButtonMatcher.withName("btnAddSensor")).requireDisabled();
 	}
-	
+
 	@Test
 	public void testSensorWhenAllAreFilledThenAddButtonShouldBeEnabled() {
 		JTextComponentFixture idTextBox = window.textBox(JTextComponentMatcher.withName("txtSensorId"));

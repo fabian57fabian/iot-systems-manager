@@ -409,4 +409,25 @@ public class IotSwingView extends JFrame implements IotView {
 		sensors.stream().forEach(listSensorsModel::addElement);
 	}
 
+	@Override
+	public void removeOneSystem(SystemEntity system) {
+		listSystemsModel.removeElement(system);
+	}
+
+	@Override
+	public void onSystemAdded(SystemEntity system) {
+		listSystemsModel.addElement(system);
+		resetSystemErrorLabel();
+	}
+
+	@Override
+	public void onSystemRemoved(SystemEntity system) {
+		listSystemsModel.removeElement(system);
+		resetSystemErrorLabel();
+	}
+
+	private void resetSystemErrorLabel() {
+		lblSystemErrorMessageLabel.setText(" ");
+	}
+
 }
