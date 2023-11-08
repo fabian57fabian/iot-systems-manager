@@ -24,7 +24,6 @@ public class SystemsManagerController {
 	public void expandOneSystem(int id) {
 		SystemEntity s = systemService.getSystemById(id);
 		if (s != null) {
-			view.showOneSystem(s);
 			view.ShowSensorsOfSystem(sensorService.getSensorsOfSystem(id));
 		} else {
 			view.showOneSystemError("System not found.", null);

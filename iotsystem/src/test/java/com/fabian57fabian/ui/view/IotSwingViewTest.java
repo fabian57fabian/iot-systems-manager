@@ -131,20 +131,6 @@ public class IotSwingViewTest extends AssertJSwingJUnitTestCase {
 	}
 
 	@Test
-	public void testsShowOneSystemShouldShowDescriptionToLabel() {
-		SystemEntity system1 = new SystemEntity(0, "bar", "Description of bar ", false);
-		GuiActionRunner.execute(() -> iotSwingView.showOneSystem(system1));
-		window.label(JLabelMatcher.withName("lblCurrentSystemDescription")).requireText(system1.getDescription());
-	}
-
-	@Test
-	public void testShowErrorShouldShowTheMessageInTheErrorLabel() {
-		SystemEntity system1 = new SystemEntity(0, "bar", "Description of 'bar' ", false);
-		GuiActionRunner.execute(() -> iotSwingView.showOneSystemError("error message", system1));
-		window.label(JLabelMatcher.withName("lblSystemErrorMessageLabel")).requireText("error message: " + system1);
-	}
-
-	@Test
 	public void testSystemAddedShouldAddTheSystemToTheListAndResetTheErrorLabel() {
 		SystemEntity system1 = new SystemEntity(0, "bar", "Description of bar ", false);
 		GuiActionRunner

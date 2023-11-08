@@ -67,6 +67,7 @@ public class IotSwingView extends JFrame implements IotView {
 	private JButton btnDeleteSensor;
 	private JLabel lblSensorDescription;
 	private JLabel lblSensorErrorMessageLabel;
+	private JLabel lblCurrentSensorDescription;
 
 	DefaultListModel<SystemEntity> getListSystemsModel() {
 		return listSystemsModel;
@@ -89,9 +90,9 @@ public class IotSwingView extends JFrame implements IotView {
 		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
 		gbl_contentPane.columnWidths = new int[] { 0, 303, 0, 0, 0, 0 };
-		gbl_contentPane.rowHeights = new int[] { 0, 0, 0, 0, 0, 0, 0, 14, 0, 0, 0, 0, 0 };
+		gbl_contentPane.rowHeights = new int[] { 0, 0, 0, 0, 0, 0, 0, 14, 0, 0, 0, 0, 0, 0, 0 };
 		gbl_contentPane.columnWeights = new double[] { 0.0, 1.0, 0.0, 0.0, 1.0, Double.MIN_VALUE };
-		gbl_contentPane.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0,
+		gbl_contentPane.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0,
 				Double.MIN_VALUE };
 		contentPane.setLayout(gbl_contentPane);
 
@@ -330,8 +331,10 @@ public class IotSwingView extends JFrame implements IotView {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				btnDeleteSystem.setEnabled(listSystems.getSelectedIndex() != -1);
-				if (listSystems.getSelectedValue() != null) {
-					systemsManagerController.expandOneSystem(listSystems.getSelectedValue().getId());
+				SystemEntity system = listSystems.getSelectedValue();
+				if (system != null) {
+					systemsManagerController.expandOneSystem(system.getId());
+					showOneSystem(system);
 				}
 			}
 		});
@@ -349,7 +352,16 @@ public class IotSwingView extends JFrame implements IotView {
 
 		listSensorsModel = new DefaultListModel<>();
 		listSensors = new JList<>(listSensorsModel);
-		listSensors.addListSelectionListener(e -> btnDeleteSensor.setEnabled(listSensors.getSelectedIndex() != -1));
+		listSensors.addListSelectionListener(new ListSelectionListener() {
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				btnDeleteSensor.setEnabled(listSensors.getSelectedIndex() != -1);
+				SensorEntity sensor = listSensors.getSelectedValue();
+				if(sensor != null) {
+					showOneSensor(sensor);
+				}
+			}
+		});
 		listSensors.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		listSensors.setName("listSensors");
 		scrollPaneSensor.setViewportView(listSensors);
@@ -361,13 +373,37 @@ public class IotSwingView extends JFrame implements IotView {
 		gbc_lblCurrentSystemDescription.gridy = 9;
 		lblCurrentSystemDescription.setName("lblCurrentSystemDescription");
 		contentPane.add(lblCurrentSystemDescription, gbc_lblCurrentSystemDescription);
+		
+		lblCurrentSensorDescription = new JLabel(" ");
+		GridBagConstraints gbc_lblCurrentSensorDescription = new GridBagConstraints();
+		gbc_lblCurrentSensorDescription.insets = new Insets(0, 0, 5, 0);
+		gbc_lblCurrentSensorDescription.gridx = 4;
+		gbc_lblCurrentSensorDescription.gridy = 9;
+		lblCurrentSensorDescription.setName("lblCurrentSensorDescription");
+		contentPane.add(lblCurrentSensorDescription, gbc_lblCurrentSensorDescription);
 
+		lblSystemErrorMessageLabel = new JLabel(" ");
+		GridBagConstraints gbc_errorMessageLabel = new GridBagConstraints();
+		gbc_errorMessageLabel.insets = new Insets(0, 0, 5, 5);
+		gbc_errorMessageLabel.gridx = 1;
+		gbc_errorMessageLabel.gridy = 10;
+		lblSystemErrorMessageLabel.setName("lblSystemErrorMessageLabel");
+		contentPane.add(lblSystemErrorMessageLabel, gbc_errorMessageLabel);
+
+		lblSensorErrorMessageLabel = new JLabel(" ");
+		GridBagConstraints gbc_lblSensorErrorMessageLabel = new GridBagConstraints();
+		gbc_lblSensorErrorMessageLabel.insets = new Insets(0, 0, 5, 0);
+		gbc_lblSensorErrorMessageLabel.gridx = 4;
+		gbc_lblSensorErrorMessageLabel.gridy = 10;
+		lblSensorErrorMessageLabel.setName("lblSensorErrorMessageLabel");
+		contentPane.add(lblSensorErrorMessageLabel, gbc_lblSensorErrorMessageLabel);
+		
 		btnDeleteSystem = new JButton("delete");
 		btnDeleteSystem.setEnabled(false);
 		GridBagConstraints gbc_btnDeleteSystem = new GridBagConstraints();
 		gbc_btnDeleteSystem.insets = new Insets(0, 0, 5, 5);
 		gbc_btnDeleteSystem.gridx = 1;
-		gbc_btnDeleteSystem.gridy = 10;
+		gbc_btnDeleteSystem.gridy = 11;
 		btnDeleteSystem.setName("btnDeleteSystem");
 		contentPane.add(btnDeleteSystem, gbc_btnDeleteSystem);
 		btnDeleteSystem.addActionListener(e -> systemsManagerController.removeSystem(listSystems.getSelectedValue()));
@@ -377,33 +413,10 @@ public class IotSwingView extends JFrame implements IotView {
 		GridBagConstraints gbc_btnDeleteSensor = new GridBagConstraints();
 		gbc_btnDeleteSensor.insets = new Insets(0, 0, 5, 0);
 		gbc_btnDeleteSensor.gridx = 4;
-		gbc_btnDeleteSensor.gridy = 10;
+		gbc_btnDeleteSensor.gridy = 11;
 		btnDeleteSensor.setName("btnDeleteSensor");
 		contentPane.add(btnDeleteSensor, gbc_btnDeleteSensor);
 		btnDeleteSensor.addActionListener(e -> systemsManagerController.removeSensor(listSensors.getSelectedValue()));
-
-		lblSystemErrorMessageLabel = new JLabel(" ");
-		GridBagConstraints gbc_errorMessageLabel = new GridBagConstraints();
-		gbc_errorMessageLabel.insets = new Insets(0, 0, 0, 5);
-		gbc_errorMessageLabel.gridx = 1;
-		gbc_errorMessageLabel.gridy = 11;
-		lblSystemErrorMessageLabel.setName("lblSystemErrorMessageLabel");
-		contentPane.add(lblSystemErrorMessageLabel, gbc_errorMessageLabel);
-
-		lblSensorErrorMessageLabel = new JLabel(" ");
-		GridBagConstraints gbc_lblSensorErrorMessageLabel = new GridBagConstraints();
-		gbc_lblSensorErrorMessageLabel.gridx = 4;
-		gbc_lblSensorErrorMessageLabel.gridy = 11;
-		lblSensorErrorMessageLabel.setName("lblSensorErrorMessageLabel");
-		contentPane.add(lblSensorErrorMessageLabel, gbc_lblSensorErrorMessageLabel);
-	}
-
-	private Object listSystems_SelectionChanged() {
-		btnDeleteSystem.setEnabled(listSystems.getSelectedIndex() != -1);
-		if (listSystems.getSelectedIndex() != -1) {
-			systemsManagerController.expandOneSystem(listSystems.getSelectedValue().getId());
-		}
-		return null;
 	}
 
 	private Integer parseIntOrNull(String value) {
@@ -461,10 +474,13 @@ public class IotSwingView extends JFrame implements IotView {
 		listSensorsModel.clear();
 		systems.stream().forEach(listSystemsModel::addElement);
 	}
-
-	@Override
+	
 	public void showOneSystem(SystemEntity system) {
 		lblCurrentSystemDescription.setText(system.getDescription());
+	}
+
+	public void showOneSensor(SensorEntity sensor) {
+		lblCurrentSensorDescription.setText(sensor.getDescription());
 	}
 	
 	@Override

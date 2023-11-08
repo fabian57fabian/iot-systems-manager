@@ -70,7 +70,6 @@ public class SystemsManagerControllerTest extends TestCase {
 		when(sensorService.getSensorsOfSystem(systemId)).thenReturn(sensors);
 
 		controller.expandOneSystem(systemId);
-		verify(view).showOneSystem(sys);
 		verify(view).ShowSensorsOfSystem(sensors);
 	}
 
@@ -81,7 +80,6 @@ public class SystemsManagerControllerTest extends TestCase {
 		when(systemService.getSystemById(id)).thenReturn(null);
 
 		controller.expandOneSystem(id);
-		verify(view, never()).showOneSystem(null);
 		verify(view, never()).ShowSensorsOfSystem(null);
 		verify(view).showOneSystemError(error_msg, null);
 	}
