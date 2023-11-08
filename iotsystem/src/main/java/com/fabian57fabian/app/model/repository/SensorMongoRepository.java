@@ -20,7 +20,7 @@ public class SensorMongoRepository implements SensorRepository {
 	}
 
 	private SensorEntity fromDocumentToSensor(Document d) {
-		return new SensorEntity((int) d.get("id"), "" + d.get("name"), "" + d.get("description"),
+		return new SensorEntity((int) d.get("id"), "" + d.get("name"), "" + d.get("description"), "" + d.get("unit"),
 				(double) d.get("offset"), (double) d.get("multiplier"), (int) d.get("systemId"));
 	}
 
@@ -49,8 +49,9 @@ public class SensorMongoRepository implements SensorRepository {
 	@Override
 	public void save(SensorEntity system) {
 		sensorsCollection.insertOne(new Document().append("id", system.getId()).append("name", system.getName())
-				.append("description", system.getDescription()).append("offset", system.getOffset())
-				.append("multiplier", system.getMultiplier()).append("systemId", system.getSystemId()));
+				.append("description", system.getDescription()).append("unit", system.getUnit())
+				.append("offset", system.getOffset()).append("multiplier", system.getMultiplier())
+				.append("systemId", system.getSystemId()));
 	}
 
 	@Override

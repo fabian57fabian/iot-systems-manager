@@ -104,7 +104,7 @@ public class IotSwingViewTest extends AssertJSwingJUnitTestCase {
 	@Test
 	public void testSensorDeleteButtonShouldBeEnabledOnlyWhenASensorIsSelected() {
 		GuiActionRunner.execute(() -> iotSwingView.getListSensorsModel()
-				.addElement(new SensorEntity(0, "bar", "Description of 'bar' ", 0.1, 0.2, 1)));
+				.addElement(new SensorEntity(0, "bar", "Description of 'bar' ", "mm", 0.1, 0.2, 1)));
 		window.list("listSensors").selectItem(0);
 		JButtonFixture deleteButton = window.button(JButtonMatcher.withName("btnDeleteSensor"));
 		deleteButton.requireEnabled();
@@ -123,8 +123,8 @@ public class IotSwingViewTest extends AssertJSwingJUnitTestCase {
 
 	@Test
 	public void testsShowSensorsOfSystemShouldAddSensorsToTheList() {
-		SensorEntity sensor1 = new SensorEntity(0, "bar", "Description of 'bar' ", 0.1, 0.2, 10);
-		SensorEntity sensor2 = new SensorEntity(1, "foo", "Description of 'foo' ", 0.3, 0.4, 10);
+		SensorEntity sensor1 = new SensorEntity(0, "bar", "Description of 'bar' ", "mm", 0.1, 0.2, 10);
+		SensorEntity sensor2 = new SensorEntity(1, "foo", "Description of 'foo' ", "mm", 0.3, 0.4, 10);
 		GuiActionRunner.execute(() -> iotSwingView.ShowSensorsOfSystem(Arrays.asList(sensor1, sensor2)));
 		String[] listContents = window.list("listSensors").contents();
 		assertThat(listContents).containsExactly(sensor1.toString(), sensor2.toString());
@@ -145,7 +145,7 @@ public class IotSwingViewTest extends AssertJSwingJUnitTestCase {
 	}
 
 	@Test
-	public void testSystemAddedShouldAddTheStudentToTheListAndResetTheErrorLabel() {
+	public void testSystemAddedShouldAddTheSystemToTheListAndResetTheErrorLabel() {
 		SystemEntity system1 = new SystemEntity(0, "bar", "Description of bar ", false);
 		GuiActionRunner
 				.execute(() -> iotSwingView.onSystemAdded(new SystemEntity(0, "bar", "Description of bar ", false)));
@@ -155,7 +155,7 @@ public class IotSwingViewTest extends AssertJSwingJUnitTestCase {
 	}
 
 	@Test
-	public void testStudentRemovedShouldRemoveTheStudentFromTheListAndResetTheErrorLabel() {
+	public void testSystemRemovedShouldRemoveTheSystemFromTheListAndResetTheErrorLabel() {
 		// setup
 		SystemEntity system1 = new SystemEntity(0, "bar", "Description of 'bar' ", false);
 		SystemEntity system2 = new SystemEntity(1, "foo", "Description of 'foo' ", true);
@@ -338,7 +338,7 @@ public class IotSwingViewTest extends AssertJSwingJUnitTestCase {
 	}
 
 	@Test
-	public void testDeleteButtonShouldDelegateToSchoolControllerDeleteStudent() {
+	public void testDeleteButtonShouldDelegateToSchoolControllerDeleteSystem() {
 		SystemEntity system1 = new SystemEntity(0, "bar", "Description of 'bar' ", false);
 		SystemEntity system2 = new SystemEntity(1, "foo", "Description of 'foo' ", true);
 		GuiActionRunner.execute(() -> {
@@ -350,7 +350,7 @@ public class IotSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.button(JButtonMatcher.withName("btnDeleteSystem")).click();
 		verify(controller).removeSystem(system2);
 	}
-	
+
 	@Test
 	public void testAddSystemButtonShouldDelegateToSystemsControllerNewSensor() {
 		// Set a system
@@ -360,20 +360,20 @@ public class IotSwingViewTest extends AssertJSwingJUnitTestCase {
 			DefaultListModel<SystemEntity> listSystemsModel = iotSwingView.getListSystemsModel();
 			listSystemsModel.addElement(system1);
 		});
-		//Select system
+		// Select system
 		window.list("listSystems").selectItem(0);
-		
-		// Set sensor fields		
+
+		// Set sensor fields
 		window.textBox(JTextComponentMatcher.withName("txtSensorId")).enterText("10");
 		window.textBox(JTextComponentMatcher.withName("txtSensorName")).enterText("n");
 		window.textBox(JTextComponentMatcher.withName("txtSensorDescription")).enterText("d");
-		window.textBox(JTextComponentMatcher.withName("txtSensorUnit")).enterText("u");
+		window.textBox(JTextComponentMatcher.withName("txtSensorUnit")).enterText("mm");
 		window.textBox(JTextComponentMatcher.withName("txtSensorOffset")).enterText("0.1");
 		window.textBox(JTextComponentMatcher.withName("txtSensorMultiplier")).enterText("0.2");
-		
+
 		window.button(JButtonMatcher.withName("btnAddSensor")).click();
-		
-		verify(controller).addSensor(new SensorEntity(10, "n", "d", 0.1, 0.2, systemId));
+
+		verify(controller).addSensor(new SensorEntity(10, "n", "d", "mm", 0.1, 0.2, systemId));
 	}
 
 	@Test
@@ -385,20 +385,20 @@ public class IotSwingViewTest extends AssertJSwingJUnitTestCase {
 			DefaultListModel<SystemEntity> listSystemsModel = iotSwingView.getListSystemsModel();
 			listSystemsModel.addElement(system1);
 		});
-		//Select system
+		// Select system
 		window.list("listSystems").selectItem(0);
-		//Set fields
+		// Set fields
 		window.textBox(JTextComponentMatcher.withName("txtSensorId")).enterText("aaa");
 		window.textBox(JTextComponentMatcher.withName("txtSensorName")).enterText("n");
 		window.textBox(JTextComponentMatcher.withName("txtSensorDescription")).enterText("d");
 		window.textBox(JTextComponentMatcher.withName("txtSensorUnit")).enterText("u");
 		window.textBox(JTextComponentMatcher.withName("txtSensorOffset")).enterText("0.1");
 		window.textBox(JTextComponentMatcher.withName("txtSensorMultiplier")).enterText("0.2");
-		
+
 		window.button(JButtonMatcher.withName("btnAddSensor")).click();
 		window.label(JLabelMatcher.withName("lblSensorErrorMessageLabel")).requireText("Id not int!");
 	}
-	
+
 	@Test
 	public void testAddSensorButtonOnNotDoubleOffsetShouldShowAnError() {
 		// Set a system
@@ -408,20 +408,20 @@ public class IotSwingViewTest extends AssertJSwingJUnitTestCase {
 			DefaultListModel<SystemEntity> listSystemsModel = iotSwingView.getListSystemsModel();
 			listSystemsModel.addElement(system1);
 		});
-		//Select system
+		// Select system
 		window.list("listSystems").selectItem(0);
-		//Set fields
+		// Set fields
 		window.textBox(JTextComponentMatcher.withName("txtSensorId")).enterText("1");
 		window.textBox(JTextComponentMatcher.withName("txtSensorName")).enterText("n");
 		window.textBox(JTextComponentMatcher.withName("txtSensorDescription")).enterText("d");
 		window.textBox(JTextComponentMatcher.withName("txtSensorUnit")).enterText("u");
 		window.textBox(JTextComponentMatcher.withName("txtSensorOffset")).enterText("aaa");
 		window.textBox(JTextComponentMatcher.withName("txtSensorMultiplier")).enterText("0.2");
-		
+
 		window.button(JButtonMatcher.withName("btnAddSensor")).click();
 		window.label(JLabelMatcher.withName("lblSensorErrorMessageLabel")).requireText("Offset not float!");
 	}
-	
+
 	@Test
 	public void testAddSensorButtonOnNotDoubleMultiplierShouldShowAnError() {
 		// Set a system
@@ -431,38 +431,38 @@ public class IotSwingViewTest extends AssertJSwingJUnitTestCase {
 			DefaultListModel<SystemEntity> listSystemsModel = iotSwingView.getListSystemsModel();
 			listSystemsModel.addElement(system1);
 		});
-		//Select system
+		// Select system
 		window.list("listSystems").selectItem(0);
-		//Set fields
+		// Set fields
 		window.textBox(JTextComponentMatcher.withName("txtSensorId")).enterText("1");
 		window.textBox(JTextComponentMatcher.withName("txtSensorName")).enterText("n");
 		window.textBox(JTextComponentMatcher.withName("txtSensorDescription")).enterText("d");
 		window.textBox(JTextComponentMatcher.withName("txtSensorUnit")).enterText("u");
 		window.textBox(JTextComponentMatcher.withName("txtSensorOffset")).enterText("0.1");
 		window.textBox(JTextComponentMatcher.withName("txtSensorMultiplier")).enterText("bbb");
-		
+
 		window.button(JButtonMatcher.withName("btnAddSensor")).click();
 		window.label(JLabelMatcher.withName("lblSensorErrorMessageLabel")).requireText("Multiplier not float!");
 	}
-	
+
 	@Test
 	public void testAddSensorButtonOnSystemNotSelectedShouldShowAnError() {
-		//Set fields
+		// Set fields
 		window.textBox(JTextComponentMatcher.withName("txtSensorId")).enterText("1");
 		window.textBox(JTextComponentMatcher.withName("txtSensorName")).enterText("n");
 		window.textBox(JTextComponentMatcher.withName("txtSensorDescription")).enterText("d");
 		window.textBox(JTextComponentMatcher.withName("txtSensorUnit")).enterText("u");
 		window.textBox(JTextComponentMatcher.withName("txtSensorOffset")).enterText("0.1");
 		window.textBox(JTextComponentMatcher.withName("txtSensorMultiplier")).enterText("0.2");
-		
+
 		window.button(JButtonMatcher.withName("btnAddSensor")).click();
 		window.label(JLabelMatcher.withName("lblSensorErrorMessageLabel")).requireText("No system selected!");
 	}
-	
+
 	@Test
 	public void testDeleteSensorButtonShouldDelegateToSystemsControllerDeleteSensor() {
-		SensorEntity sensor1 = new SensorEntity(0, "foo", "Description of 'foo' ", 0.1, 0.2, 10);
-		SensorEntity sensor2 = new SensorEntity(1, "bar", "Description of 'bar' ", 0.3, 0.4, 10);
+		SensorEntity sensor1 = new SensorEntity(0, "foo", "Description of 'foo' ", "mm", 0.1, 0.2, 10);
+		SensorEntity sensor2 = new SensorEntity(1, "bar", "Description of 'bar' ", "mm", 0.3, 0.4, 10);
 		GuiActionRunner.execute(() -> {
 			DefaultListModel<SensorEntity> listSensorsModel = iotSwingView.getListSensorsModel();
 			listSensorsModel.addElement(sensor1);

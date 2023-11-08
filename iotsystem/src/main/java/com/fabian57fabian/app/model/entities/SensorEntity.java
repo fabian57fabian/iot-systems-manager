@@ -4,13 +4,16 @@ import java.util.Objects;
 
 public class SensorEntity extends EntityBase {
 	private String description;
+	private String unit;
 	private double offset;
 	private double multiplier;
 	private int systemId;
 
-	public SensorEntity(int id, String name, String description, double offset, double multiplier, int systemId) {
+	public SensorEntity(int id, String name, String description, String unit, double offset, double multiplier,
+			int systemId) {
 		super(id, name);
 		this.description = description;
+		this.unit = unit;
 		this.offset = offset;
 		this.multiplier = multiplier;
 		this.setSystemId(systemId);
@@ -28,16 +31,21 @@ public class SensorEntity extends EntityBase {
 		if (!super.equals(o))
 			return false;
 		return Objects.equals(description, second.description) && Objects.equals(offset, second.offset)
-				&& Objects.equals(multiplier, second.multiplier) && Objects.equals(systemId, second.systemId);
+				&& Objects.equals(unit, second.unit) && Objects.equals(multiplier, second.multiplier)
+				&& Objects.equals(systemId, second.systemId);
 	}
 
 	@Override
 	public int hashCode() {
 		return super.hashCode();
 	}
-
+	
 	public String getDescription() {
 		return description;
+	}
+
+	public String getUnit() {
+		return unit;
 	}
 
 	public double getOffset() {
@@ -55,7 +63,7 @@ public class SensorEntity extends EntityBase {
 	public void setSystemId(int systemId) {
 		this.systemId = systemId;
 	}
-	
+
 	@Override
 	public String toString() {
 		return getId() + " : " + getName() + " ( " + getDescription() + " ) ";

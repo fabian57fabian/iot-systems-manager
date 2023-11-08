@@ -235,16 +235,16 @@ public class IotSwingView extends JFrame implements IotView {
 		contentPane.add(txtSensorDescription, gbc_txtSensorDescription);
 		txtSensorDescription.setColumns(10);
 		txtSensorDescription.addKeyListener(btnSensorAddEnabler);
-		
-				btnAddSystem = new JButton("add");
-				btnAddSystem.setEnabled(false);
-				GridBagConstraints gbc_btnAddSystem = new GridBagConstraints();
-				gbc_btnAddSystem.insets = new Insets(0, 0, 5, 5);
-				gbc_btnAddSystem.gridx = 1;
-				gbc_btnAddSystem.gridy = 3;
-				btnAddSystem.setName("btnAddSystem");
-				contentPane.add(btnAddSystem, gbc_btnAddSystem);
-				btnAddSystem.addActionListener(e -> btnAddSystem_Click());
+
+		btnAddSystem = new JButton("add");
+		btnAddSystem.setEnabled(false);
+		GridBagConstraints gbc_btnAddSystem = new GridBagConstraints();
+		gbc_btnAddSystem.insets = new Insets(0, 0, 5, 5);
+		gbc_btnAddSystem.gridx = 1;
+		gbc_btnAddSystem.gridy = 3;
+		btnAddSystem.setName("btnAddSystem");
+		contentPane.add(btnAddSystem, gbc_btnAddSystem);
+		btnAddSystem.addActionListener(e -> btnAddSystem_Click());
 
 		lblSensorUnit = new JLabel("unit");
 		GridBagConstraints gbc_lblSensorUnit = new GridBagConstraints();
@@ -453,7 +453,7 @@ public class IotSwingView extends JFrame implements IotView {
 			return;
 		}
 		systemsManagerController.addSensor(new SensorEntity(id, txtSensorName.getText(), txtSensorDescription.getText(),
-				offset, multiplier, listSystems.getSelectedValue().getId()));
+				txtSensorUnit.getText(), offset, multiplier, listSystems.getSelectedValue().getId()));
 	}
 
 	@Override

@@ -65,40 +65,37 @@ public class SensorMongoRepositoryTest {
 	public void testRetrieveSensorNamesWhenDatabaseIsEmpty() {
 		assertThat(sensorRepository.retrieveSensorsNames()).isEmpty();
 	}
-	
-	private void addTestSensorToDatabase(Integer id, String name, String description, double offset,
+
+	private void addTestSensorToDatabase(Integer id, String name, String description, String unit, double offset,
 			double multiplier, int systemId) {
-		sensorCollection.insertOne(new Document()
-				.append("id", id)
-				.append("name", name)
-				.append("description", description)
-				.append("offset", offset)
-				.append("multiplier", multiplier)
-				.append("systemId", systemId));
+		sensorCollection.insertOne(new Document().append("id", id).append("name", name)
+				.append("description", description).append("unit", unit).append("offset", offset)
+				.append("multiplier", multiplier).append("systemId", systemId));
 	}
 
 	@Test
 	public void testRetrieveSensorNamesWhenDatabaseIsNotEmpty() {
-		addTestSensorToDatabase(1, "test1", "wow", 0.1, 0.2, -1);
-		addTestSensorToDatabase(2, "test2", "woow", 0.3, 0.4, -1);
+		addTestSensorToDatabase(1, "test1", "wow", "mm", 0.1, 0.2, -1);
+		addTestSensorToDatabase(2, "test2", "woow", "mm", 0.3, 0.4, -1);
 		assertThat(sensorRepository.retrieveSensorsNames()).containsExactly(
-				new SensorEntity(1, "test1", "wow", 0.1, 0.2, -1), new SensorEntity(2, "test2", "woow", 0.3, 0.4, -1));
+				new SensorEntity(1, "test1", "wow", "mm", 0.1, 0.2, -1),
+				new SensorEntity(2, "test2", "woow", "mm", 0.3, 0.4, -1));
 	}
-	
+
 	@Test
 	public void testGetSensorsOfSystemWhenDatabaseIsEmpty() {
 		assertThat(sensorRepository.getSensorsOfSystem(0)).isEmpty();
 	}
-	
+
 	@Test
 	public void testGetSensorsOfSystemWhenDatabaseIsNotEmpty() {
 		int systemId = 10;
-		addTestSensorToDatabase(1, "test1", "wow", 0.1, 0.2, systemId);
-		addTestSensorToDatabase(2, "test2", "woow", 0.3, 0.4, systemId);
-		addTestSensorToDatabase(3, "test3", "wooow", 0.5, 0.6, systemId + 1);
+		addTestSensorToDatabase(1, "test1", "wow", "mm", 0.1, 0.2, systemId);
+		addTestSensorToDatabase(2, "test2", "woow", "mm", 0.3, 0.4, systemId);
+		addTestSensorToDatabase(3, "test3", "wooow", "mm", 0.5, 0.6, systemId + 1);
 		assertThat(sensorRepository.getSensorsOfSystem(systemId)).containsExactly(
-				new SensorEntity(1, "test1", "wow", 0.1, 0.2, systemId), 
-				new SensorEntity(2, "test2", "woow", 0.3, 0.4, systemId));
+				new SensorEntity(1, "test1", "wow", "mm", 0.1, 0.2, systemId),
+				new SensorEntity(2, "test2", "woow", "mm", 0.3, 0.4, systemId));
 	}
 
 	@Test
@@ -108,14 +105,15 @@ public class SensorMongoRepositoryTest {
 
 	@Test
 	public void testFindByIdFound() {
-		addTestSensorToDatabase(1, "test1", "wow", 0.1, 0.2, -1);
-		addTestSensorToDatabase(2, "test2", "woow", 0.3, 0.4, -1);
-		assertThat(sensorRepository.getSensorById(2)).isEqualTo(new SensorEntity(2, "test2", "woow", 0.3, 0.4, -1));
+		addTestSensorToDatabase(1, "test1", "wow", "mm", 0.1, 0.2, -1);
+		addTestSensorToDatabase(2, "test2", "woow", "mm", 0.3, 0.4, -1);
+		assertThat(sensorRepository.getSensorById(2))
+				.isEqualTo(new SensorEntity(2, "test2", "woow", "mm", 0.3, 0.4, -1));
 	}
 
 	@Test
 	public void testSave() {
-		SensorEntity sensor = new SensorEntity(1, "test1", "wow", 0.1, 0.2, -1);
+		SensorEntity sensor = new SensorEntity(1, "test1", "wow", "mm", 0.1, 0.2, -1);
 		sensorRepository.save(sensor);
 		assertThat(readAllSensorsFromDatabase()).containsExactly(sensor);
 	}
@@ -123,13 +121,14 @@ public class SensorMongoRepositoryTest {
 	private List<SensorEntity> readAllSensorsFromDatabase() {
 		return StreamSupport.stream(sensorCollection.find().spliterator(), false)
 				.map(d -> new SensorEntity((int) d.get("id"), "" + d.get("name"), "" + d.get("description"),
-						(double) d.get("offset"), (double) d.get("multiplier"), (int)d.getInteger("systemId")))
+						"" + d.get("unit"), (double) d.get("offset"), (double) d.get("multiplier"),
+						(int) d.getInteger("systemId")))
 				.collect(Collectors.toList());
 	}
 
 	@Test
 	public void testDelete() {
-		addTestSensorToDatabase(1, "test1", "wow", 0.1, 0.2, -1);
+		addTestSensorToDatabase(1, "test1", "wow", "mm", 0.1, 0.2, -1);
 		sensorRepository.delete(1);
 		assertThat(readAllSensorsFromDatabase()).isEmpty();
 	}
