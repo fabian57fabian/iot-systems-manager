@@ -10,6 +10,8 @@ import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import java.awt.GridBagLayout;
 import javax.swing.JLabel;
@@ -302,9 +304,7 @@ public class IotSwingView extends JFrame implements IotView {
 		gbc_btnAddSystem.gridy = 6;
 		btnAddSystem.setName("btnAddSystem");
 		contentPane.add(btnAddSystem, gbc_btnAddSystem);
-		btnAddSystem.addActionListener(
-				e -> btnAddSystem_Click()
-				);
+		btnAddSystem.addActionListener(e -> btnAddSystem_Click());
 
 		btnAddSensor = new JButton("add");
 		btnAddSensor.setEnabled(false);
@@ -314,9 +314,7 @@ public class IotSwingView extends JFrame implements IotView {
 		gbc_btnAddSensor.gridy = 6;
 		btnAddSensor.setName("btnAddSensor");
 		contentPane.add(btnAddSensor, gbc_btnAddSensor);
-		btnAddSensor.addActionListener(
-				e -> btnAddSensor_Click()
-				);
+		btnAddSensor.addActionListener(e -> btnAddSensor_Click());
 
 		scrollPaneSystem = new JScrollPane();
 		GridBagConstraints gbc_scrollPaneSystem = new GridBagConstraints();
@@ -328,7 +326,15 @@ public class IotSwingView extends JFrame implements IotView {
 
 		listSystemsModel = new DefaultListModel<>();
 		listSystems = new JList<>(listSystemsModel);
-		listSystems.addListSelectionListener(e -> btnDeleteSystem.setEnabled(listSystems.getSelectedIndex() != -1));
+		listSystems.addListSelectionListener(new ListSelectionListener() {
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				btnDeleteSystem.setEnabled(listSystems.getSelectedIndex() != -1);
+				if (listSystems.getSelectedValue() != null) {
+					systemsManagerController.expandOneSystem(listSystems.getSelectedValue().getId());
+				}
+			}
+		});
 		listSystems.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		listSystems.setName("listSystems");
 		scrollPaneSystem.setViewportView(listSystems);
@@ -364,9 +370,7 @@ public class IotSwingView extends JFrame implements IotView {
 		gbc_btnDeleteSystem.gridy = 10;
 		btnDeleteSystem.setName("btnDeleteSystem");
 		contentPane.add(btnDeleteSystem, gbc_btnDeleteSystem);
-		btnDeleteSystem.addActionListener(
-				e -> systemsManagerController.removeSystem(listSystems.getSelectedValue())
-				);
+		btnDeleteSystem.addActionListener(e -> systemsManagerController.removeSystem(listSystems.getSelectedValue()));
 
 		btnDeleteSensor = new JButton("delete");
 		btnDeleteSensor.setEnabled(false);
@@ -376,9 +380,7 @@ public class IotSwingView extends JFrame implements IotView {
 		gbc_btnDeleteSensor.gridy = 10;
 		btnDeleteSensor.setName("btnDeleteSensor");
 		contentPane.add(btnDeleteSensor, gbc_btnDeleteSensor);
-		btnDeleteSensor.addActionListener(
-				e -> systemsManagerController.removeSensor(listSensors.getSelectedValue())
-				);
+		btnDeleteSensor.addActionListener(e -> systemsManagerController.removeSensor(listSensors.getSelectedValue()));
 
 		lblSystemErrorMessageLabel = new JLabel(" ");
 		GridBagConstraints gbc_errorMessageLabel = new GridBagConstraints();
@@ -395,58 +397,68 @@ public class IotSwingView extends JFrame implements IotView {
 		lblSensorErrorMessageLabel.setName("lblSensorErrorMessageLabel");
 		contentPane.add(lblSensorErrorMessageLabel, gbc_lblSensorErrorMessageLabel);
 	}
-	
+
+	private Object listSystems_SelectionChanged() {
+		btnDeleteSystem.setEnabled(listSystems.getSelectedIndex() != -1);
+		if (listSystems.getSelectedIndex() != -1) {
+			systemsManagerController.expandOneSystem(listSystems.getSelectedValue().getId());
+		}
+		return null;
+	}
+
 	private Integer parseIntOrNull(String value) {
-	    try {
-	        return Integer.parseInt(value);
-	    } catch (NumberFormatException e) {
-	        return null;
-	    }
+		try {
+			return Integer.parseInt(value);
+		} catch (NumberFormatException e) {
+			return null;
+		}
 	}
-	
+
 	private Double parseDoubleOrNull(String value) {
-	    try {
-	        return Double.parseDouble(value);
-	    } catch (NumberFormatException e) {
-	        return null;
-	    }
+		try {
+			return Double.parseDouble(value);
+		} catch (NumberFormatException e) {
+			return null;
+		}
 	}
-	
+
 	private void btnAddSystem_Click() {
 		Integer id = parseIntOrNull(txtSystemId.getText());
-		if(id == null) {
+		if (id == null) {
 			lblSystemErrorMessageLabel.setText("Id not int!");
 			return;
 		}
-		systemsManagerController.addSystem(new SystemEntity(id, txtSystemName.getText(), txtSystemDescription.getText(), false));
+		systemsManagerController
+				.addSystem(new SystemEntity(id, txtSystemName.getText(), txtSystemDescription.getText(), false));
 	}
-	
+
 	private void btnAddSensor_Click() {
 		Integer id = parseIntOrNull(txtSensorId.getText());
-		if(id == null) {
+		if (id == null) {
 			lblSensorErrorMessageLabel.setText("Id not int!");
 			return;
 		}
 		Double offset = parseDoubleOrNull(txtSensorOffset.getText());
-		if(offset == null) {
+		if (offset == null) {
 			lblSensorErrorMessageLabel.setText("Offset not float!");
 			return;
 		}
 		Double multiplier = parseDoubleOrNull(txtSensorMultiplier.getText());
-		if(multiplier == null) {
+		if (multiplier == null) {
 			lblSensorErrorMessageLabel.setText("Multiplier not float!");
 			return;
 		}
-		if(listSystems.getSelectedIndex() == -1) {
+		if (listSystems.getSelectedIndex() == -1) {
 			lblSensorErrorMessageLabel.setText("No system selected!");
 			return;
 		}
-		systemsManagerController.addSensor(new SensorEntity(id, txtSensorName.getText(), 
-				txtSensorDescription.getText(), offset, multiplier, listSystems.getSelectedValue().getId()));
+		systemsManagerController.addSensor(new SensorEntity(id, txtSensorName.getText(), txtSensorDescription.getText(),
+				offset, multiplier, listSystems.getSelectedValue().getId()));
 	}
 
 	@Override
 	public void showSystems(List<SystemEntity> systems) {
+		listSensorsModel.clear();
 		systems.stream().forEach(listSystemsModel::addElement);
 	}
 
@@ -467,6 +479,7 @@ public class IotSwingView extends JFrame implements IotView {
 
 	@Override
 	public void ShowSensorsOfSystem(List<SensorEntity> sensors) {
+		listSensorsModel.clear();
 		sensors.stream().forEach(listSensorsModel::addElement);
 	}
 
