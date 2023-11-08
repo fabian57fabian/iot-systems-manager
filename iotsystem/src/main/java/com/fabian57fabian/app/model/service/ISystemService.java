@@ -9,7 +9,7 @@ public interface ISystemService {
 
 	public SystemEntity getSystemById(int id);
 
-	void create(SystemEntity system);
+	Boolean create(SystemEntity system);
 	
 	void delete(int id);
 }

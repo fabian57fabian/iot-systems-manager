@@ -89,9 +89,20 @@ public class SystemsManagerControllerTest extends TestCase{
 	@Test
 	public void testaddSystem() {
 		SystemEntity system = new SystemEntity(10, "bar", "Description of 'bar' ", false);
+		when(systemService.create(system)).thenReturn(true);
 		controller.addSystem(system);
 		verify(systemService).create(system);
 		verify(view).onSystemAdded(system);
+	}
+	
+	@Test
+	public void testaddSystemWhenAlreadyEsists() {
+		String error_msg = "System with same id already exists.";
+		SystemEntity system = new SystemEntity(10, "bar", "Description of 'bar' ", false);
+		when(systemService.create(system)).thenReturn(false);
+		controller.addSystem(system);
+		verify(view, never()).onSystemAdded(system);
+		verify(view).showOneSystemError(error_msg, null);
 	}
 	
 	@Test

@@ -1,7 +1,10 @@
 package com.fabian57fabian.app.model.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -15,6 +18,8 @@ import org.junit.Test;
 
 import com.fabian57fabian.app.model.entities.SystemEntity;
 import com.fabian57fabian.app.model.repository.SystemRepository;
+
+import junit.framework.Assert;
 
 public class SystemServiceTest {
 	SystemService systemService;
@@ -66,10 +71,23 @@ public class SystemServiceTest {
 	}
 	
 	@Test
-	public void testCreate() {
+	public void testCreateWhenNotExists() {
+		when(systemRepository.getSystemById(0)).thenReturn(null);
 		SystemEntity system = new SystemEntity(0, "foo", "", true);
-		systemService.create(system);
+		Boolean res = systemService.create(system);
+		assertTrue(res);
 		verify(systemRepository, times(1)).save(system);
+	}
+	
+	@Test
+	public void testCreateWhenIdAlreadyExists() {
+		int id = 3;
+		when(systemRepository.getSystemById(id)).thenReturn(new SystemEntity(id, "bar", "d", true));
+
+		SystemEntity system = new SystemEntity(id, "foo", "", true);
+		Boolean res = systemService.create(system);
+		assertFalse(res);
+		verify(systemRepository, never()).save(system);
 	}
 	
 	@Test

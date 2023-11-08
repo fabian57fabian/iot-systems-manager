@@ -32,8 +32,11 @@ public class SystemsManagerController {
 	}
 	
 	public void addSystem(SystemEntity system) {
-		systemService.create(system);
-		view.onSystemAdded(system);
+		if(!systemService.create(system)) {
+			view.showOneSystemError("System with same id already exists.", null);
+		}else {
+			view.onSystemAdded(system);
+		}
 	}
 	
 	public void removeSystem(SystemEntity system) {

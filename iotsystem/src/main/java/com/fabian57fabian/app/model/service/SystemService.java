@@ -23,8 +23,12 @@ public class SystemService implements ISystemService{
 	}
 
 	@Override
-	public void create(SystemEntity system) {
+	public Boolean create(SystemEntity system) {
+		if(systemRepository.getSystemById(system.getId()) != null) {
+			return false;
+		}
 		systemRepository.save(system);	
+		return true;
 	}
 
 	@Override

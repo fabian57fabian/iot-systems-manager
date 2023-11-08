@@ -134,7 +134,7 @@ public class IotSwingAppE2E extends AssertJSwingJUnitTestCase {
 	@Test
 	@GUITest
 	public void testAddSystemSuccess() {
-		String id = "11";
+		String id = "17";
 		String name = "n";
 		String desc = "d";
 		window.textBox(JTextComponentMatcher.withName("txtSystemId")).enterText(id);
