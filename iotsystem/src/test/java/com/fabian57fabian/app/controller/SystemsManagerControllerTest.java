@@ -116,9 +116,20 @@ public class SystemsManagerControllerTest extends TestCase {
 	@Test
 	public void testAddSensor() {
 		SensorEntity sensor = new SensorEntity(0, "foo", "description of foo", "mm", 0.1, 0.2, 10);
+		when(sensorService.create(sensor)).thenReturn(true);
 		controller.addSensor(sensor);
 		verify(sensorService).create(sensor);
 		verify(view).onSensorAdded(sensor);
+	}
+	
+	@Test
+	public void testaddSensorWhenAlreadyEsists() {
+		String error_msg = "Sensor with same id already exists.";
+		SensorEntity sensor = new SensorEntity(0, "foo", "description of foo", "mm", 0.1, 0.2, 10);
+		when(sensorService.create(sensor)).thenReturn(false);
+		controller.addSensor(sensor);
+		verify(view, never()).onSensorAdded(sensor);
+		verify(view).showOneSensorError(error_msg, null);
 	}
 
 	@Test

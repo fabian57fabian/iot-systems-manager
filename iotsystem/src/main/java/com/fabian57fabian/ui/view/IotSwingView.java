@@ -466,11 +466,15 @@ public class IotSwingView extends JFrame implements IotView {
 	public void showOneSystem(SystemEntity system) {
 		lblCurrentSystemDescription.setText(system.getDescription());
 	}
+	
+	@Override
+	public void showOneSensorError(String message, SensorEntity system) {
+		lblSensorErrorMessageLabel.setText(message + ": " + system);
+	}
 
 	@Override
 	public void showOneSystemError(String message, SystemEntity system) {
 		lblSystemErrorMessageLabel.setText(message + ": " + system);
-
 	}
 
 	public void setController(SystemsManagerController controller) {

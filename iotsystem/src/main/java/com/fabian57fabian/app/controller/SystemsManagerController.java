@@ -45,8 +45,11 @@ public class SystemsManagerController {
 	}
 	
 	public void addSensor(SensorEntity sensor) {
-		sensorService.create(sensor);
-		view.onSensorAdded(sensor);
+		if(!sensorService.create(sensor)) {
+			view.showOneSensorError("Sensor with same id already exists.", null);
+		}else {
+			view.onSensorAdded(sensor);
+		}
 	}
 	
 	public void removeSensor(SensorEntity sensor) {

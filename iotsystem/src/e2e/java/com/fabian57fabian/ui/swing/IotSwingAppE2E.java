@@ -157,6 +157,19 @@ public class IotSwingAppE2E extends AssertJSwingJUnitTestCase {
 		assertThat(window.label(JLabelMatcher.withName("lblSystemErrorMessageLabel")).text()).contains("Id", "int",
 				"!");
 	}
+	
+	@Test
+	@GUITest
+	public void testAddSystemFailOnIdAlreadyPrensent() {
+		String id = Integer.toString(SYSTEM_FIXTURE_1_ID);
+		String name = "n";
+		String desc = "d";
+		window.textBox(JTextComponentMatcher.withName("txtSystemId")).enterText(id);
+		window.textBox(JTextComponentMatcher.withName("txtSystemName")).enterText(name);
+		window.textBox(JTextComponentMatcher.withName("txtSystemDescription")).enterText(desc);
+		window.button(JButtonMatcher.withName("btnAddSystem")).click();
+		assertThat(window.label(JLabelMatcher.withName("lblSystemErrorMessageLabel")).text()).contains("same", "id", "exists");
+	}
 
 	@Test
 	@GUITest
@@ -218,6 +231,27 @@ public class IotSwingAppE2E extends AssertJSwingJUnitTestCase {
 		window.button(JButtonMatcher.withName("btnAddSensor")).click();
 		assertThat(window.label(JLabelMatcher.withName("lblSensorErrorMessageLabel")).text()).contains("Offset",
 				"float", "!");
+	}
+	
+	@Test
+	@GUITest
+	public void testAddSensorFailOnIdAlreadyPrensent() {
+		window.list("listSystems").selectItem(0);
+		String id = Integer.toString(SENSOR_FIXTURE_1_OF_SYS_1_ID);
+		String name = "n";
+		String desc = "d";
+		String unit = "m";
+		String offset = "0.1";
+		String multiplier = "0.2";
+		window.list("listSystems").selectItem(0);
+		window.textBox(JTextComponentMatcher.withName("txtSensorId")).enterText(id);
+		window.textBox(JTextComponentMatcher.withName("txtSensorName")).enterText(name);
+		window.textBox(JTextComponentMatcher.withName("txtSensorDescription")).enterText(desc);
+		window.textBox(JTextComponentMatcher.withName("txtSensorUnit")).enterText(unit);
+		window.textBox(JTextComponentMatcher.withName("txtSensorOffset")).enterText(offset);
+		window.textBox(JTextComponentMatcher.withName("txtSensorMultiplier")).enterText(multiplier);
+		window.button(JButtonMatcher.withName("btnAddSensor")).click();
+		assertThat(window.label(JLabelMatcher.withName("lblSensorErrorMessageLabel")).text()).contains("same", "id", "exists");
 	}
 
 	@Test

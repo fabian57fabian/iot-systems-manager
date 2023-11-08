@@ -11,6 +11,8 @@ public interface IotView {
 	public void showOneSystem(SystemEntity getSystemById);
 
 	public void showOneSystemError(String string, SystemEntity system);
+	
+	public void showOneSensorError(String string, SensorEntity sensor);
 
 	public void ShowSensorsOfSystem(List<SensorEntity> sensorsOfSystem);
 	

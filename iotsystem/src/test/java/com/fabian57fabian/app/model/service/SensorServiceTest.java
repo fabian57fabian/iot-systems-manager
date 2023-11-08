@@ -1,7 +1,10 @@
 package com.fabian57fabian.app.model.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -14,6 +17,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.fabian57fabian.app.model.entities.SensorEntity;
+import com.fabian57fabian.app.model.entities.SystemEntity;
 import com.fabian57fabian.app.model.repository.SensorRepository;
 
 public class SensorServiceTest {
@@ -83,12 +87,25 @@ public class SensorServiceTest {
 		assertThat(sensorService.getSensorById(id)).isEqualTo(sensor);
 		verify(sensorRepository).getSensorById(id);
 	}
-
+	
 	@Test
-	public void testCreate() {
+	public void testCreateWhenNotExists() {
+		when(sensorRepository.getSensorById(0)).thenReturn(null);
 		SensorEntity sensor = new SensorEntity(0, "foo", "", "mm",0.1, 0.2, -1);
-		sensorService.create(sensor);
+		Boolean res = sensorService.create(sensor);
+		assertTrue(res);
 		verify(sensorRepository, times(1)).save(sensor);
+	}
+	
+	@Test
+	public void testCreateWhenIdAlreadyExists() {
+		int id = 3;
+		when(sensorRepository.getSensorById(id)).thenReturn(new SensorEntity(id, "foo", "", "mm",0.1, 0.2, -1));
+
+		SensorEntity sensor = new SensorEntity(id, "foo", "", "mm",0.1, 0.2, -1);
+		Boolean res = sensorService.create(sensor);
+		assertFalse(res);
+		verify(sensorRepository, never()).save(sensor);
 	}
 
 	@Test

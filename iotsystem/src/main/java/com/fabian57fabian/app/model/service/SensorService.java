@@ -28,8 +28,12 @@ public class SensorService implements ISensorService{
 	}
 
 	@Override
-	public void create(SensorEntity sensor) {
+	public Boolean create(SensorEntity sensor) {
+		if(sensorRepository.getSensorById(sensor.getId()) != null) {
+			return false;
+		}
 		sensorRepository.save(sensor);	
+		return true;
 	}
 
 	@Override

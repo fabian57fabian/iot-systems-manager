@@ -11,7 +11,7 @@ public interface ISensorService {
 	
 	public List<SensorEntity> getSensorsOfSystem(int id);
 
-	void create(SensorEntity sensor);
+	Boolean create(SensorEntity sensor);
 	
 	void delete(int id);
 }
