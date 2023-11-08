@@ -132,5 +132,15 @@ public class SensorMongoRepositoryTest {
 		sensorRepository.delete(1);
 		assertThat(readAllSensorsFromDatabase()).isEmpty();
 	}
+	
+	@Test
+	public void testUpdate() {
+		int id = 11;
+		SensorEntity sensor = new SensorEntity(id, "test1", "wow", "mm", 8.9, 9.7, 20);
+		addTestSensorToDatabase(id, "test1", "wow", "mm", 0.1, 0.2, 20);
+		sensorRepository.update(id, sensor);
+		assertThat(readAllSensorsFromDatabase().get(0)).isEqualTo(sensor);
+		
+	}
 
 }

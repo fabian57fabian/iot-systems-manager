@@ -40,4 +40,9 @@ public class SensorService implements ISensorService{
 	public void delete(int id) {
 		sensorRepository.delete(id);		
 	}
+
+	@Override
+	public void modify(int id, SensorEntity new_sensor) {
+		sensorRepository.update(id, new_sensor);		
+	}
 }

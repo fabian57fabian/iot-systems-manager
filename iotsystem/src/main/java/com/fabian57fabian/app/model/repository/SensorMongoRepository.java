@@ -10,6 +10,7 @@ import com.mongodb.MongoClient;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Updates;
 import com.fabian57fabian.app.model.entities.SensorEntity;
 
 public class SensorMongoRepository implements SensorRepository {
@@ -22,6 +23,12 @@ public class SensorMongoRepository implements SensorRepository {
 	private SensorEntity fromDocumentToSensor(Document d) {
 		return new SensorEntity((int) d.get("id"), "" + d.get("name"), "" + d.get("description"), "" + d.get("unit"),
 				(double) d.get("offset"), (double) d.get("multiplier"), (int) d.get("systemId"));
+	}
+
+	private Document fromSensorToDocument(SensorEntity sensor) {
+		return new Document().append("id", sensor.getId()).append("name", sensor.getName()).append("description", sensor.getDescription())
+				.append("unit", sensor.getUnit()).append("offset", sensor.getOffset())
+				.append("multiplier", sensor.getMultiplier()).append("systemId", sensor.getSystemId());
 	}
 
 	@Override
@@ -47,16 +54,18 @@ public class SensorMongoRepository implements SensorRepository {
 	}
 
 	@Override
-	public void save(SensorEntity system) {
-		sensorsCollection.insertOne(new Document().append("id", system.getId()).append("name", system.getName())
-				.append("description", system.getDescription()).append("unit", system.getUnit())
-				.append("offset", system.getOffset()).append("multiplier", system.getMultiplier())
-				.append("systemId", system.getSystemId()));
+	public void save(SensorEntity sensor) {
+		sensorsCollection.insertOne(fromSensorToDocument(sensor));
 	}
 
 	@Override
 	public void delete(int id) {
 		sensorsCollection.deleteOne(Filters.eq("id", id));
+	}
+
+	@Override
+	public void update(int id, SensorEntity new_sensor) {
+		sensorsCollection.updateOne(Filters.eq("id", id), new Document("$set", fromSensorToDocument(new_sensor)));
 	}
 
 }

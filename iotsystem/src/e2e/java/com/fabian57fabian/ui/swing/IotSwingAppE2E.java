@@ -1,6 +1,8 @@
 package com.fabian57fabian.ui.swing;
 
 import static org.assertj.swing.launcher.ApplicationLauncher.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.regex.Pattern;
 

@@ -115,4 +115,12 @@ public class SensorServiceTest {
 		verify(sensorRepository, times(1)).delete(id);
 	}
 
+
+	@Test
+	public void testModify() {
+		SensorEntity sensor = new SensorEntity(0, "foo", "", "mm",0.1, 0.2, -1);
+		sensorService.modify(sensor.getId(), sensor);
+		verify(sensorRepository).update(sensor.getId(), sensor);
+	}
+
 }

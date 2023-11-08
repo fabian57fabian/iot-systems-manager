@@ -14,4 +14,6 @@ public interface ISensorService {
 	Boolean create(SensorEntity sensor);
 	
 	void delete(int id);
+	
+	public void modify(int id, SensorEntity new_sensor);
 }

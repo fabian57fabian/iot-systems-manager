@@ -29,30 +29,36 @@ public class SystemsManagerController {
 			view.showOneSystemError("System not found.", null);
 		}
 	}
-	
+
 	public void addSystem(SystemEntity system) {
-		if(!systemService.create(system)) {
+		if (!systemService.create(system)) {
 			view.showOneSystemError("System with same id already exists.", null);
-		}else {
+		} else {
 			view.onSystemAdded(system);
 		}
 	}
-	
+
 	public void removeSystem(SystemEntity system) {
 		systemService.delete(system.getId());
 		view.onSystemRemoved(system);
 	}
-	
+
 	public void addSensor(SensorEntity sensor) {
-		if(!sensorService.create(sensor)) {
+		if (!sensorService.create(sensor)) {
 			view.showOneSensorError("Sensor with same id already exists.", null);
-		}else {
+		} else {
 			view.onSensorAdded(sensor);
 		}
 	}
-	
+
 	public void removeSensor(SensorEntity sensor) {
 		sensorService.delete(sensor.getId());
 		view.onSensorRemoved(sensor);
+	}
+
+	public void calibrateSensor(SensorEntity sensor, Double new_offset, Double new_multiplier) {
+		sensorService.modify(sensor.getId(), new SensorEntity(sensor.getId(), sensor.getName(), sensor.getDescription(), sensor.getUnit(), new_offset, new_multiplier, sensor.getSystemId()));
+		// Refresh view
+		view.ShowSensorsOfSystem(sensorService.getSensorsOfSystem(sensor.getSystemId()));
 	}
 }

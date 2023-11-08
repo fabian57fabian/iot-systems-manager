@@ -1,6 +1,9 @@
 package com.fabian57fabian.ui.view;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
 import java.util.Arrays;
@@ -457,5 +460,78 @@ public class IotSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.list("listSensors").selectItem(1);
 		window.button(JButtonMatcher.withName("btnDeleteSensor")).click();
 		verify(controller).removeSensor(sensor2);
+	}
+	
+	@Test
+	@GUITest
+	public void testSelectSensorShouldEnableCalibrationFields() {
+		assertFalse(window.button(JButtonMatcher.withName("btnCalibrateSensor")).isEnabled());
+		assertFalse(window.textBox(JTextComponentMatcher.withName("txtSensorNewOffset")).isEnabled());
+		assertFalse(window.textBox(JTextComponentMatcher.withName("txtSensorNewMultiplier")).isEnabled());
+		SensorEntity sensor1 = new SensorEntity(0, "bar", "Description of 'bar' ", "mm", 0.1, 0.2, 10);
+		GuiActionRunner.execute(() -> iotSwingView.ShowSensorsOfSystem(Arrays.asList(sensor1)));
+		window.list("listSensors").selectItem(0);
+		assertTrue(window.button(JButtonMatcher.withName("btnCalibrateSensor")).isEnabled());
+		assertTrue(window.textBox(JTextComponentMatcher.withName("txtSensorNewOffset")).isEnabled());
+		assertTrue(window.textBox(JTextComponentMatcher.withName("txtSensorNewMultiplier")).isEnabled());
+	}
+	
+	@Test
+	@GUITest
+	public void testCalibrateSensorFieldsShouldDisplayCurrentData() {
+		Double offset = 1.2;
+		Double multiplier = 4.5;
+		SensorEntity sensor1 = new SensorEntity(0, "bar", "Description of 'bar' ", "mm", offset, multiplier, 10);
+		GuiActionRunner.execute(() -> iotSwingView.ShowSensorsOfSystem(Arrays.asList(sensor1)));
+		window.list("listSensors").selectItem(0);
+		assertEquals(Double.toString(offset), window.textBox(JTextComponentMatcher.withName("txtSensorNewOffset")).text());
+		assertEquals(Double.toString(multiplier), window.textBox(JTextComponentMatcher.withName("txtSensorNewMultiplier")).text());
+	}
+	
+	@Test
+	@GUITest
+	public void testButtonCalibrateSensorFieldsShouldCallController() {
+		Double new_offset = 1.2;
+		Double new_multiplier = 4.5;
+		SensorEntity sensor1 = new SensorEntity(0, "bar", "Description of 'bar' ", "mm", 8.8, 9.9, 10);
+		GuiActionRunner.execute(() -> iotSwingView.ShowSensorsOfSystem(Arrays.asList(sensor1)));
+		window.list("listSensors").selectItem(0);
+		window.textBox(JTextComponentMatcher.withName("txtSensorNewOffset")).setText("");
+		window.textBox(JTextComponentMatcher.withName("txtSensorNewMultiplier")).setText("");
+		
+		window.textBox(JTextComponentMatcher.withName("txtSensorNewOffset")).enterText(Double.toString(new_offset));
+		window.textBox(JTextComponentMatcher.withName("txtSensorNewMultiplier")).enterText(Double.toString(new_multiplier));
+		window.button(JButtonMatcher.withName("btnCalibrateSensor")).click();
+		verify(controller).calibrateSensor(sensor1, new_offset, new_multiplier);
+	}
+	
+	@Test
+	@GUITest
+	public void testButtonCalibrateSensorWrongNewMultiplierShouldShowError() {
+		SensorEntity sensor1 = new SensorEntity(0, "bar", "Description of 'bar' ", "mm", 8.8, 9.9, 10);
+		GuiActionRunner.execute(() -> iotSwingView.ShowSensorsOfSystem(Arrays.asList(sensor1)));
+		window.list("listSensors").selectItem(0);
+		window.textBox(JTextComponentMatcher.withName("txtSensorNewOffset")).setText("");
+		window.textBox(JTextComponentMatcher.withName("txtSensorNewMultiplier")).setText("");
+		
+		window.textBox(JTextComponentMatcher.withName("txtSensorNewOffset")).enterText("1.1");
+		window.textBox(JTextComponentMatcher.withName("txtSensorNewMultiplier")).enterText("aaa");
+		window.button(JButtonMatcher.withName("btnCalibrateSensor")).click();
+		window.label(JLabelMatcher.withName("lblSensorErrorMessageLabel")).requireText("New Multiplier not float!");
+	}
+	
+	@Test
+	@GUITest
+	public void testButtonCalibrateSensorWrongNewOffsetShouldShowError() {
+		SensorEntity sensor1 = new SensorEntity(0, "bar", "Description of 'bar' ", "mm", 8.8, 9.9, 10);
+		GuiActionRunner.execute(() -> iotSwingView.ShowSensorsOfSystem(Arrays.asList(sensor1)));
+		window.list("listSensors").selectItem(0);
+		window.textBox(JTextComponentMatcher.withName("txtSensorNewOffset")).setText("");
+		window.textBox(JTextComponentMatcher.withName("txtSensorNewMultiplier")).setText("");
+		
+		window.textBox(JTextComponentMatcher.withName("txtSensorNewOffset")).enterText("aaaa");
+		window.textBox(JTextComponentMatcher.withName("txtSensorNewMultiplier")).enterText("2.2");
+		window.button(JButtonMatcher.withName("btnCalibrateSensor")).click();
+		window.label(JLabelMatcher.withName("lblSensorErrorMessageLabel")).requireText("New Offset not float!");
 	}
 }

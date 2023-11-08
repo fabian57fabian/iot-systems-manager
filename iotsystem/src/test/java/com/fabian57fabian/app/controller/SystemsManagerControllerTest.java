@@ -9,6 +9,7 @@ import com.fabian57fabian.ui.view.IotView;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.assertj.core.util.Arrays;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -136,5 +137,23 @@ public class SystemsManagerControllerTest extends TestCase {
 		controller.removeSensor(sensor);
 		verify(sensorService).delete(sensor.getId());
 		verify(view).onSensorRemoved(sensor);
+	}
+	
+	@Test
+	public void testcalibrateSensor() {
+		int id = 34;
+		int systemId = 20;
+		Double new_offset = 16.88;
+		Double new_multiplier = 29.97;
+		SensorEntity sensor = new SensorEntity(id, "foo", "description of foo", "mm", 0.1, 0.2, systemId);
+		SensorEntity sensor_modified = new SensorEntity(id, "foo", "description of foo", "mm", new_offset, new_multiplier, systemId);
+		List<SensorEntity> list = new ArrayList<SensorEntity>();
+		list.add(sensor_modified);
+		when(sensorService.getSensorsOfSystem(systemId)).thenReturn(list);
+		
+		controller.calibrateSensor(sensor, new_offset, new_multiplier);
+		verify(sensorService).modify(id, sensor_modified);
+
+		verify(view).ShowSensorsOfSystem(list);
 	}
 }

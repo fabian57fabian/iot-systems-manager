@@ -14,4 +14,6 @@ public interface SensorRepository {
 	void save(SensorEntity system);
 
 	void delete(int id);
+	
+	public void update(int id, SensorEntity new_sensor);
 }
