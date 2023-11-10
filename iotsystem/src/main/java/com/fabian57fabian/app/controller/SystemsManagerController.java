@@ -32,7 +32,7 @@ public class SystemsManagerController {
 
 	public void addSystem(SystemEntity system) {
 		Boolean res = systemService.create(system);
-		if (!res) {
+		if (Boolean.FALSE.equals(res)) {
 			view.showOneSystemError("System with same id already exists.", null);
 		} else {
 			view.onSystemAdded(system);
@@ -46,7 +46,7 @@ public class SystemsManagerController {
 
 	public void addSensor(SensorEntity sensor) {
 		Boolean res = sensorService.create(sensor);
-		if (!res) {
+		if (Boolean.FALSE.equals(res)) {
 			view.showOneSensorError("Sensor with same id already exists.", null);
 		} else {
 			view.onSensorAdded(sensor);
