@@ -568,11 +568,6 @@ public class IotSwingView extends JFrame implements IotView {
 	}
 
 	@Override
-	public void removeOneSystem(SystemEntity system) {
-		listSystemsModel.removeElement(system);
-	}
-
-	@Override
 	public void onSystemAdded(SystemEntity system) {
 		listSystemsModel.addElement(system);
 		resetSystemErrorLabel();
