@@ -15,5 +15,5 @@ public interface ISensorService {
 	
 	void delete(int id);
 	
-	public void modify(int id, SensorEntity new_sensor);
+	public void modify(int id, SensorEntity newSensor);
 }
