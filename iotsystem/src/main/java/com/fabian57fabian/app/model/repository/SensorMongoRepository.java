@@ -10,10 +10,11 @@ import com.mongodb.MongoClient;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
-import com.mongodb.client.model.Updates;
 import com.fabian57fabian.app.model.entities.SensorEntity;
 
 public class SensorMongoRepository implements SensorRepository {
+	private static final String SYSTEM_ID_KEY = "systemId";
+
 	private MongoCollection<Document> sensorsCollection;
 
 	public SensorMongoRepository(MongoClient client, String dbName, String collectionName) {
@@ -22,13 +23,13 @@ public class SensorMongoRepository implements SensorRepository {
 
 	private SensorEntity fromDocumentToSensor(Document d) {
 		return new SensorEntity((int) d.get("id"), "" + d.get("name"), "" + d.get("description"), "" + d.get("unit"),
-				(double) d.get("offset"), (double) d.get("multiplier"), (int) d.get("systemId"));
+				(double) d.get("offset"), (double) d.get("multiplier"), (int) d.get(SYSTEM_ID_KEY));
 	}
 
 	private Document fromSensorToDocument(SensorEntity sensor) {
 		return new Document().append("id", sensor.getId()).append("name", sensor.getName()).append("description", sensor.getDescription())
 				.append("unit", sensor.getUnit()).append("offset", sensor.getOffset())
-				.append("multiplier", sensor.getMultiplier()).append("systemId", sensor.getSystemId());
+				.append("multiplier", sensor.getMultiplier()).append(SYSTEM_ID_KEY, sensor.getSystemId());
 	}
 
 	@Override
@@ -48,7 +49,7 @@ public class SensorMongoRepository implements SensorRepository {
 
 	@Override
 	public List<SensorEntity> getSensorsOfSystem(int systemId) {
-		FindIterable<Document> documents = sensorsCollection.find(Filters.eq("systemId", systemId));
+		FindIterable<Document> documents = sensorsCollection.find(Filters.eq(SYSTEM_ID_KEY, systemId));
 		return StreamSupport.stream(documents.spliterator(), false).map(this::fromDocumentToSensor)
 				.collect(Collectors.toList());
 	}
@@ -64,8 +65,8 @@ public class SensorMongoRepository implements SensorRepository {
 	}
 
 	@Override
-	public void update(int id, SensorEntity new_sensor) {
-		sensorsCollection.updateOne(Filters.eq("id", id), new Document("$set", fromSensorToDocument(new_sensor)));
+	public void update(int id, SensorEntity newSensor) {
+		sensorsCollection.updateOne(Filters.eq("id", id), new Document("$set", fromSensorToDocument(newSensor)));
 	}
 
 }

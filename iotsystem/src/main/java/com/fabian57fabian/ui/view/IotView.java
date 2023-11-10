@@ -12,7 +12,7 @@ public interface IotView {
 	
 	public void showOneSensorError(String string, SensorEntity sensor);
 
-	public void ShowSensorsOfSystem(List<SensorEntity> sensorsOfSystem);
+	public void showSensorsOfSystem(List<SensorEntity> sensorsOfSystem);
 	
 	public void removeOneSystem(SystemEntity system);
 	

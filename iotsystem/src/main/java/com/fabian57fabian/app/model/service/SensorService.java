@@ -23,8 +23,8 @@ public class SensorService implements ISensorService{
 	}
 	
 	@Override
-	public List<SensorEntity> getSensorsOfSystem(int system_id){
-		return sensorRepository.getSensorsOfSystem(system_id);
+	public List<SensorEntity> getSensorsOfSystem(int systemId){
+		return sensorRepository.getSensorsOfSystem(systemId);
 	}
 
 	@Override
@@ -42,7 +42,7 @@ public class SensorService implements ISensorService{
 	}
 
 	@Override
-	public void modify(int id, SensorEntity new_sensor) {
-		sensorRepository.update(id, new_sensor);		
+	public void modify(int id, SensorEntity newSensor) {
+		sensorRepository.update(id, newSensor);		
 	}
 }

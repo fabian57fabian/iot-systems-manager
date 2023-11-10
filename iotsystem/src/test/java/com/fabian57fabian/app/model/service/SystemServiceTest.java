@@ -19,8 +19,6 @@ import org.junit.Test;
 import com.fabian57fabian.app.model.entities.SystemEntity;
 import com.fabian57fabian.app.model.repository.SystemRepository;
 
-import junit.framework.Assert;
-
 public class SystemServiceTest {
 	SystemService systemService;
 
@@ -52,7 +50,7 @@ public class SystemServiceTest {
 		assertThat(systemService.getSystemNames()).containsExactly(systems.get(0), systems.get(1));
 		verify(systemRepository).retrieveSystemNames();
 	}
-	
+
 	@Test
 	public void testFindByIdNotFound() {
 		int id = 0;
@@ -60,7 +58,7 @@ public class SystemServiceTest {
 		assertThat(systemService.getSystemById(id)).isNull();
 		verify(systemRepository).getSystemById(id);
 	}
-	
+
 	@Test
 	public void testFindByIdFound() {
 		int id = 0;
@@ -69,7 +67,7 @@ public class SystemServiceTest {
 		assertThat(systemService.getSystemById(id)).isEqualTo(system);
 		verify(systemRepository).getSystemById(id);
 	}
-	
+
 	@Test
 	public void testCreateWhenNotExists() {
 		when(systemRepository.getSystemById(0)).thenReturn(null);
@@ -78,7 +76,7 @@ public class SystemServiceTest {
 		assertTrue(res);
 		verify(systemRepository, times(1)).save(system);
 	}
-	
+
 	@Test
 	public void testCreateWhenIdAlreadyExists() {
 		int id = 3;
@@ -89,7 +87,7 @@ public class SystemServiceTest {
 		assertFalse(res);
 		verify(systemRepository, never()).save(system);
 	}
-	
+
 	@Test
 	public void testDelete() {
 		int id = 0;

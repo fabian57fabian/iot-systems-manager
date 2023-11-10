@@ -128,7 +128,7 @@ public class IotSwingViewTest extends AssertJSwingJUnitTestCase {
 	public void testsShowSensorsOfSystemShouldAddSensorsToTheList() {
 		SensorEntity sensor1 = new SensorEntity(0, "bar", "Description of 'bar' ", "mm", 0.1, 0.2, 10);
 		SensorEntity sensor2 = new SensorEntity(1, "foo", "Description of 'foo' ", "mm", 0.3, 0.4, 10);
-		GuiActionRunner.execute(() -> iotSwingView.ShowSensorsOfSystem(Arrays.asList(sensor1, sensor2)));
+		GuiActionRunner.execute(() -> iotSwingView.showSensorsOfSystem(Arrays.asList(sensor1, sensor2)));
 		String[] listContents = window.list("listSensors").contents();
 		assertThat(listContents).containsExactly(sensor1.toString(), sensor2.toString());
 	}
@@ -469,7 +469,7 @@ public class IotSwingViewTest extends AssertJSwingJUnitTestCase {
 		assertFalse(window.textBox(JTextComponentMatcher.withName("txtSensorNewOffset")).isEnabled());
 		assertFalse(window.textBox(JTextComponentMatcher.withName("txtSensorNewMultiplier")).isEnabled());
 		SensorEntity sensor1 = new SensorEntity(0, "bar", "Description of 'bar' ", "mm", 0.1, 0.2, 10);
-		GuiActionRunner.execute(() -> iotSwingView.ShowSensorsOfSystem(Arrays.asList(sensor1)));
+		GuiActionRunner.execute(() -> iotSwingView.showSensorsOfSystem(Arrays.asList(sensor1)));
 		window.list("listSensors").selectItem(0);
 		assertTrue(window.button(JButtonMatcher.withName("btnCalibrateSensor")).isEnabled());
 		assertTrue(window.textBox(JTextComponentMatcher.withName("txtSensorNewOffset")).isEnabled());
@@ -482,7 +482,7 @@ public class IotSwingViewTest extends AssertJSwingJUnitTestCase {
 		Double offset = 1.2;
 		Double multiplier = 4.5;
 		SensorEntity sensor1 = new SensorEntity(0, "bar", "Description of 'bar' ", "mm", offset, multiplier, 10);
-		GuiActionRunner.execute(() -> iotSwingView.ShowSensorsOfSystem(Arrays.asList(sensor1)));
+		GuiActionRunner.execute(() -> iotSwingView.showSensorsOfSystem(Arrays.asList(sensor1)));
 		window.list("listSensors").selectItem(0);
 		assertEquals(Double.toString(offset), window.textBox(JTextComponentMatcher.withName("txtSensorNewOffset")).text());
 		assertEquals(Double.toString(multiplier), window.textBox(JTextComponentMatcher.withName("txtSensorNewMultiplier")).text());
@@ -494,7 +494,7 @@ public class IotSwingViewTest extends AssertJSwingJUnitTestCase {
 		Double new_offset = 1.2;
 		Double new_multiplier = 4.5;
 		SensorEntity sensor1 = new SensorEntity(0, "bar", "Description of 'bar' ", "mm", 8.8, 9.9, 10);
-		GuiActionRunner.execute(() -> iotSwingView.ShowSensorsOfSystem(Arrays.asList(sensor1)));
+		GuiActionRunner.execute(() -> iotSwingView.showSensorsOfSystem(Arrays.asList(sensor1)));
 		window.list("listSensors").selectItem(0);
 		window.textBox(JTextComponentMatcher.withName("txtSensorNewOffset")).setText("");
 		window.textBox(JTextComponentMatcher.withName("txtSensorNewMultiplier")).setText("");
@@ -509,7 +509,7 @@ public class IotSwingViewTest extends AssertJSwingJUnitTestCase {
 	@GUITest
 	public void testButtonCalibrateSensorWrongNewMultiplierShouldShowError() {
 		SensorEntity sensor1 = new SensorEntity(0, "bar", "Description of 'bar' ", "mm", 8.8, 9.9, 10);
-		GuiActionRunner.execute(() -> iotSwingView.ShowSensorsOfSystem(Arrays.asList(sensor1)));
+		GuiActionRunner.execute(() -> iotSwingView.showSensorsOfSystem(Arrays.asList(sensor1)));
 		window.list("listSensors").selectItem(0);
 		window.textBox(JTextComponentMatcher.withName("txtSensorNewOffset")).setText("");
 		window.textBox(JTextComponentMatcher.withName("txtSensorNewMultiplier")).setText("");
@@ -524,7 +524,7 @@ public class IotSwingViewTest extends AssertJSwingJUnitTestCase {
 	@GUITest
 	public void testButtonCalibrateSensorWrongNewOffsetShouldShowError() {
 		SensorEntity sensor1 = new SensorEntity(0, "bar", "Description of 'bar' ", "mm", 8.8, 9.9, 10);
-		GuiActionRunner.execute(() -> iotSwingView.ShowSensorsOfSystem(Arrays.asList(sensor1)));
+		GuiActionRunner.execute(() -> iotSwingView.showSensorsOfSystem(Arrays.asList(sensor1)));
 		window.list("listSensors").selectItem(0);
 		window.textBox(JTextComponentMatcher.withName("txtSensorNewOffset")).setText("");
 		window.textBox(JTextComponentMatcher.withName("txtSensorNewMultiplier")).setText("");

@@ -24,14 +24,15 @@ public class SystemsManagerController {
 	public void expandOneSystem(int id) {
 		SystemEntity s = systemService.getSystemById(id);
 		if (s != null) {
-			view.ShowSensorsOfSystem(sensorService.getSensorsOfSystem(id));
+			view.showSensorsOfSystem(sensorService.getSensorsOfSystem(id));
 		} else {
 			view.showOneSystemError("System not found.", null);
 		}
 	}
 
 	public void addSystem(SystemEntity system) {
-		if (!systemService.create(system)) {
+		Boolean res = systemService.create(system);
+		if (!res) {
 			view.showOneSystemError("System with same id already exists.", null);
 		} else {
 			view.onSystemAdded(system);
@@ -44,7 +45,8 @@ public class SystemsManagerController {
 	}
 
 	public void addSensor(SensorEntity sensor) {
-		if (!sensorService.create(sensor)) {
+		Boolean res = sensorService.create(sensor);
+		if (!res) {
 			view.showOneSensorError("Sensor with same id already exists.", null);
 		} else {
 			view.onSensorAdded(sensor);
@@ -56,9 +58,9 @@ public class SystemsManagerController {
 		view.onSensorRemoved(sensor);
 	}
 
-	public void calibrateSensor(SensorEntity sensor, Double new_offset, Double new_multiplier) {
-		sensorService.modify(sensor.getId(), new SensorEntity(sensor.getId(), sensor.getName(), sensor.getDescription(), sensor.getUnit(), new_offset, new_multiplier, sensor.getSystemId()));
+	public void calibrateSensor(SensorEntity sensor, Double newOffset, Double newMultiplier) {
+		sensorService.modify(sensor.getId(), new SensorEntity(sensor.getId(), sensor.getName(), sensor.getDescription(), sensor.getUnit(), newOffset, newMultiplier, sensor.getSystemId()));
 		// Refresh view
-		view.ShowSensorsOfSystem(sensorService.getSensorsOfSystem(sensor.getSystemId()));
+		view.showSensorsOfSystem(sensorService.getSensorsOfSystem(sensor.getSystemId()));
 	}
 }

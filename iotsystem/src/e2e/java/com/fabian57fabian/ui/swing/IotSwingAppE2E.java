@@ -1,8 +1,6 @@
 package com.fabian57fabian.ui.swing;
 
 import static org.assertj.swing.launcher.ApplicationLauncher.*;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 import java.util.regex.Pattern;
 
@@ -159,7 +157,7 @@ public class IotSwingAppE2E extends AssertJSwingJUnitTestCase {
 		assertThat(window.label(JLabelMatcher.withName("lblSystemErrorMessageLabel")).text()).contains("Id", "int",
 				"!");
 	}
-	
+
 	@Test
 	@GUITest
 	public void testAddSystemFailOnIdAlreadyPrensent() {
@@ -170,7 +168,8 @@ public class IotSwingAppE2E extends AssertJSwingJUnitTestCase {
 		window.textBox(JTextComponentMatcher.withName("txtSystemName")).enterText(name);
 		window.textBox(JTextComponentMatcher.withName("txtSystemDescription")).enterText(desc);
 		window.button(JButtonMatcher.withName("btnAddSystem")).click();
-		assertThat(window.label(JLabelMatcher.withName("lblSystemErrorMessageLabel")).text()).contains("same", "id", "exists");
+		assertThat(window.label(JLabelMatcher.withName("lblSystemErrorMessageLabel")).text()).contains("same", "id",
+				"exists");
 	}
 
 	@Test
@@ -234,7 +233,7 @@ public class IotSwingAppE2E extends AssertJSwingJUnitTestCase {
 		assertThat(window.label(JLabelMatcher.withName("lblSensorErrorMessageLabel")).text()).contains("Offset",
 				"float", "!");
 	}
-	
+
 	@Test
 	@GUITest
 	public void testAddSensorFailOnIdAlreadyPrensent() {
@@ -253,7 +252,8 @@ public class IotSwingAppE2E extends AssertJSwingJUnitTestCase {
 		window.textBox(JTextComponentMatcher.withName("txtSensorOffset")).enterText(offset);
 		window.textBox(JTextComponentMatcher.withName("txtSensorMultiplier")).enterText(multiplier);
 		window.button(JButtonMatcher.withName("btnAddSensor")).click();
-		assertThat(window.label(JLabelMatcher.withName("lblSensorErrorMessageLabel")).text()).contains("same", "id", "exists");
+		assertThat(window.label(JLabelMatcher.withName("lblSensorErrorMessageLabel")).text()).contains("same", "id",
+				"exists");
 	}
 
 	@Test

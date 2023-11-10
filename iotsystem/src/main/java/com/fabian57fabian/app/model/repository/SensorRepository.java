@@ -15,5 +15,5 @@ public interface SensorRepository {
 
 	void delete(int id);
 	
-	public void update(int id, SensorEntity new_sensor);
+	public void update(int id, SensorEntity newSensor);
 }

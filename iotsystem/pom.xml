@@ -64,6 +64,16 @@
 		<sonar.issue.ignore.multicriteria.e12.resourceKey>
 			**/IotSwingView.java
 		</sonar.issue.ignore.multicriteria.e12.resourceKey>
+		
+		<!-- sonarcloud is not aware of AssertJ Swing, so it would throw an error on "Tests should include assertions " -->
+		<sonar.issue.ignore.multicriteria.e2.ruleKey>
+			java:S2699
+		</sonar.issue.ignore.multicriteria.e2.ruleKey>
+
+		<!-- Disable rule for E2E test class not ending correctly -->
+		<sonar.issue.ignore.multicriteria.e3.resourceKey>
+			**/*E2E.java
+		</sonar.issue.ignore.multicriteria.e3.resourceKey>
 
 		<sonar.junit.reportPaths>
 			${project.build.directory}/surefire-reports,
@@ -138,7 +148,8 @@
 							</descriptorRefs>
 							<archive>
 								<manifest>
-									<mainClass>com.fabian57fabian.ui.swing.IotSwingApp</mainClass>
+									<mainClass>
+										com.fabian57fabian.ui.swing.IotSwingApp</mainClass>
 								</manifest>
 							</archive>
 						</configuration>

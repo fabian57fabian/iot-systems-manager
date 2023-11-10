@@ -17,7 +17,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.fabian57fabian.app.model.entities.SensorEntity;
-import com.fabian57fabian.app.model.entities.SystemEntity;
 import com.fabian57fabian.app.model.repository.SensorRepository;
 
 public class SensorServiceTest {
