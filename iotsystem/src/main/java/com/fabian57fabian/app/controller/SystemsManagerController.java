@@ -1,8 +1,6 @@
 package com.fabian57fabian.app.controller;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.StreamSupport;
 
 import com.fabian57fabian.app.model.entities.SensorEntity;
 import com.fabian57fabian.app.model.entities.SystemEntity;
@@ -48,7 +46,7 @@ public class SystemsManagerController {
 		for (SensorEntity sensor : sensorService.getSensorsOfSystem(system.getId())) {
 			sensorService.delete(sensor.getId());
 		}
-		view.showSensorsOfSystem(new ArrayList<SensorEntity>());
+		view.showSensorsOfSystem(new ArrayList<>());
 		view.onSystemRemoved(system);
 	}
 
