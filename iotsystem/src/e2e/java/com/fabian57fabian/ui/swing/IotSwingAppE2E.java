@@ -262,6 +262,8 @@ public class IotSwingAppE2E extends AssertJSwingJUnitTestCase {
 		window.list("listSystems").selectItem(Pattern.compile(".*" + SYSTEM_FIXTURE_1_NAME + ".*"));
 		window.button(JButtonMatcher.withName("btnDeleteSystem")).click();
 		assertThat(window.list("listSystems").contents()).noneMatch(e -> e.contains(SYSTEM_FIXTURE_1_NAME));
+		assertThat(window.list("listSystems").contents()).noneMatch(e -> e.contains(SENSOR_FIXTURE_1_OF_SYS_1_NAME));
+		assertThat(window.list("listSystems").contents()).noneMatch(e -> e.contains(SENSOR_FIXTURE_2_OF_SYS_1_NAME));
 	}
 
 	@Test

@@ -7,6 +7,7 @@ import com.fabian57fabian.app.model.service.ISystemService;
 import com.fabian57fabian.ui.view.IotView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.After;
@@ -106,9 +107,13 @@ public class SystemsManagerControllerTest extends TestCase {
 	@Test
 	public void testremoveSystem() {
 		SystemEntity system = new SystemEntity(10, "bar", "Description of 'bar' ", false);
+		SensorEntity sensor = new SensorEntity(0, "foo", "description of foo", "mm", 0.1, 0.2, 10);
+		when(sensorService.getSensorsOfSystem(system.getId())).thenReturn(Arrays.asList(sensor));
 		controller.removeSystem(system);
 		verify(systemService).delete(system.getId());
+		verify(sensorService).delete(sensor.getId());
 		verify(view).onSystemRemoved(system);
+		verify(view).showSensorsOfSystem(new ArrayList<SensorEntity>());
 	}
 
 	@Test

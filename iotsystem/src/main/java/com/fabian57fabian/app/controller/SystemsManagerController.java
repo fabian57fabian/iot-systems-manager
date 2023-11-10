@@ -1,5 +1,9 @@
 package com.fabian57fabian.app.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.StreamSupport;
+
 import com.fabian57fabian.app.model.entities.SensorEntity;
 import com.fabian57fabian.app.model.entities.SystemEntity;
 import com.fabian57fabian.app.model.service.ISensorService;
@@ -41,6 +45,10 @@ public class SystemsManagerController {
 
 	public void removeSystem(SystemEntity system) {
 		systemService.delete(system.getId());
+		for (SensorEntity sensor : sensorService.getSensorsOfSystem(system.getId())) {
+			sensorService.delete(sensor.getId());
+		}
+		view.showSensorsOfSystem(new ArrayList<SensorEntity>());
 		view.onSystemRemoved(system);
 	}
 
@@ -59,7 +67,8 @@ public class SystemsManagerController {
 	}
 
 	public void calibrateSensor(SensorEntity sensor, Double newOffset, Double newMultiplier) {
-		sensorService.modify(sensor.getId(), new SensorEntity(sensor.getId(), sensor.getName(), sensor.getDescription(), sensor.getUnit(), newOffset, newMultiplier, sensor.getSystemId()));
+		sensorService.modify(sensor.getId(), new SensorEntity(sensor.getId(), sensor.getName(), sensor.getDescription(),
+				sensor.getUnit(), newOffset, newMultiplier, sensor.getSystemId()));
 		// Refresh view
 		view.showSensorsOfSystem(sensorService.getSensorsOfSystem(sensor.getSystemId()));
 	}
